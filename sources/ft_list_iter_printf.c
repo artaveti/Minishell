@@ -12,9 +12,10 @@ void	ft_list_iter_printf_for_token(t_token_list	*list,	int (f)(const char *, ...
 	i = 0;
 	while (tmp != NULL)
 	{
+		f("========================================\n");
 		f("TOKEN_INDEX[%d]\n", i);
 		f("TOKEN_TYPE:::%d\n", tmp->type);
-		f("TOKEN_VALUE:::%s\n", tmp->value);
+		f("TOKEN_VALUE:::(%s)\n", tmp->value);
 		f("TOKEN_NEXT:::%d\n", tmp->next > 0);
 		tmp = tmp->next;
 		i++;

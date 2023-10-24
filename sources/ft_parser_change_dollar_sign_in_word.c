@@ -13,8 +13,6 @@ char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int 
 char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **name_and_value, int num_for_last, int *result);
 char	*ft_strdup_quant(const char	*str, size_t quant);
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -33,16 +31,16 @@ char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list)
         joined_str = ft_strdup(string);
         return (joined_str);
     }
-    first_part = ft_creat_first_part_of_word(string, "$"); ///malloced (char *first_part)
-    splitted_dollar = ft_creat_splitted_dollar(string); ///malloced (char **splitted_dollar)
+    first_part = ft_creat_first_part_of_word(string, "$");
+    splitted_dollar = ft_creat_splitted_dollar(string);
     ft_change_splitted_dollar(&splitted_dollar, &envp_list);
-    i = 0;
-    while(splitted_dollar[i] != NULL)
-    {
-        printf("{1}splitted_dollar[%d](%s)\n", i, splitted_dollar[i]);
-        i++;
-    }
-    printf("first_partfirst_partfirst_partfirst_part(%s)\n", first_part);
+    // printf("first_part_of_word(%s)\n", first_part);
+    // i = 0;
+    // while(splitted_dollar[i] != NULL)
+    // {
+    //     printf("{1}splitted_dollar[%d](%s)\n", i, splitted_dollar[i]);
+    //     i++;
+    // }
     i = 0;
     joined_str = ft_strjoin(first_part, splitted_dollar[i]);
     i++;
@@ -53,9 +51,9 @@ char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list)
         free(tmp_joined_str);
         i++;
     }
+    free(first_part);
     ft_free_splitted_dollar(&splitted_dollar);
     splitted_dollar = NULL;
-    free(first_part);
     //system("leaks minishell");
     return (joined_str);
 }
@@ -239,28 +237,28 @@ char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int 
     char *before_end_symb;
     char *after_end_symb;
     int i;
-
+    
     tmp_str = *string;
-    if (tmp_str[1] == '\0')
-    {
-        *result = 1;
-        tmp_str = (char *)malloc(sizeof(char) * 2);
-        tmp_str[0] = '$';
-        tmp_str[1] = '\0';
-        return (tmp_str);
-    }
-    i = 0;
+    i = 1;
     while (!(ft_strchr(END_OF_DOLLAR_SIGN, tmp_str[i])) && tmp_str[i] != '\0')
         i++;
     if(tmp_str[i] == '\0')
     {
-        before_end_symb = ft_strdup(tmp_str); ///malloc (char *before_end_symb)
+        before_end_symb = ft_strdup(tmp_str);
         after_end_symb = ft_strdup("");
     }
     else
     {
-        before_end_symb = ft_creat_first_part_of_word(tmp_str, END_OF_DOLLAR_SIGN); ///malloc (char *before_end_symb)
-        after_end_symb = ft_creat_last_part_of_word(tmp_str, END_OF_DOLLAR_SIGN); ///malloc (char *after_end_symb)
+        before_end_symb = ft_creat_first_part_of_word(tmp_str, END_OF_DOLLAR_SIGN);
+        after_end_symb = ft_creat_last_part_of_word(tmp_str, END_OF_DOLLAR_SIGN);
+        if (before_end_symb[1] == '\0' && after_end_symb[0] == '?')
+        {
+            free(before_end_symb);
+            before_end_symb = ft_strdup("$?");
+            tmp_str = after_end_symb;
+            after_end_symb = ft_strdup(after_end_symb + 1);
+            free(tmp_str);
+        }
     }
     tmp_str = before_end_symb;
     //printf("{4}Before(%s)\n", before_end_symb);
@@ -269,13 +267,13 @@ char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int 
     if (*result == 1)
     {
         free(tmp_str);
-        if (before_end_symb[0] == '\0' && after_end_symb[0] == '\0')
-            tmp_str = ft_strdup("");
-        else if (before_end_symb[0] == '\0')
-            tmp_str = ft_strdup(after_end_symb);
-        else if (after_end_symb[0] == '\0')
-            tmp_str = ft_strdup(before_end_symb);  
-        else
+        // if (before_end_symb[0] == '\0' && after_end_symb[0] == '\0')
+        //     tmp_str = ft_strdup("");
+        // else if (before_end_symb[0] == '\0')
+        //     tmp_str = ft_strdup(after_end_symb);
+        // else if (after_end_symb[0] == '\0')
+        //     tmp_str = ft_strdup(before_end_symb);  
+        // else
             tmp_str = ft_strjoin(before_end_symb, after_end_symb);
     }
     free(before_end_symb);
@@ -294,9 +292,14 @@ char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **na
 
     tmp_str = *before_end_symb;
     *result = 0;
-    if (ft_strchr("?0123456789", tmp_str[1]) && tmp_str[1] != '\0')
+    if (tmp_str[1] == '\0')
     {
-        str_for_dup = ft_strdup(&tmp_str[2]);/// malloc (char *str_for_dup)
+        tmp_str = ft_strdup("$");
+        *result = 1;
+    }
+    else if (ft_strchr("?0123456789", tmp_str[1]) && tmp_str[1] != '\0')
+    {
+        str_for_dup = ft_strdup(&tmp_str[2]);
         if (tmp_str[1] == '?')
         {
             exit_status_str = ft_itoa(exit_status);
@@ -344,66 +347,3 @@ char *ft_creat_last_part_of_word(char *string, char *symbols)
     }
     return (NULL);
 }
-
-
-
-// void ft_join_splitted_and_word(char ***splitted_dollar_sign, char **word)
-// {
-//     char *tmp;
-//     int i;
-
-//     i = 0;
-//     while(splitted_dollar_sign[0][i] != NULL)
-//     {
-//         tmp = *word;
-//         *word = ft_strjoin(*word, splitted_dollar_sign[0][i]);
-//         free(tmp);
-//         free(splitted_dollar_sign[0][i]);
-//         i++;
-//     }
-//     return ;
-// }
-
-
-
-// char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **name_and_value)
-// {
-//     char *tmp_str;
-//     char *str_for_dup;
-//     char *exit_status_str;
-//     //int  result;
-
-//     tmp_str = *before_end_symb;
-//     //result = 0;
-//     if (ft_strchr("?0123456789", tmp_str[1]) && tmp_str[1] != '\0')
-//     {
-//         str_for_dup = ft_strdup(&tmp_str[2]);/// malloc (char *str_for_dup)
-//         if (tmp_str[1] == '?')
-//         {
-//             exit_status_str = ft_itoa(exit_status);
-//             //free(tmp_str);
-//             tmp_str = ft_strjoin(exit_status_str, str_for_dup);
-//             free(exit_status_str);
-//         }
-//         else if (tmp_str[1] == '0')
-//         {
-//             //free(tmp_str);
-//             tmp_str = ft_strjoin("minishell", str_for_dup);
-//         }
-//         else
-//         {
-//             //free(tmp_str);
-//             tmp_str = ft_strdup(str_for_dup);
-//         }
-//         free(str_for_dup);
-//     //    result = 1;
-//     }
-//     else if (!ft_memcmp(&tmp_str[1], name_and_value[0], ft_strlen(&tmp_str[1]) + 1))
-//     {
-//         //free(tmp_str);
-//         tmp_str = ft_strdup(name_and_value[1]);
-//         //result = 1;
-//     }
-//     free(*before_end_symb);
-//     return (tmp_str);
-// }

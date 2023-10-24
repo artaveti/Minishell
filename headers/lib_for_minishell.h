@@ -11,7 +11,7 @@
 
 # define START 100
 # define WHITESPACES " \t\r\n\v"
-# define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'"
+# define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
 
 int exit_status;
@@ -96,6 +96,6 @@ void ft_is_token_word(int *i, char *input_str, t_token_list *token_list); /////
 //parser
 void ft_parser(t_token_list **token_list, t_environment_list *envp_list);
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list); /////123456
-void ft_change_dollar_sign_in_q_double(char **string, t_environment_list *envp_list);
+char *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *envp_list);
 
 #endif
