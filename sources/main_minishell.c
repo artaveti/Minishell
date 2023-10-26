@@ -27,7 +27,9 @@ int main(int argc, char *argv[], char *envp[])
     {
         input_str = ft_readline();
         ft_lexer(input_str, token_list);
+        ft_list_iter_printf_for_token(token_list, printf);
         ft_parser(&token_list, envp_list);
+        printf("\n\n");
         ft_list_iter_printf_for_token(token_list, printf);
         free(input_str);
         // pid = fork();

@@ -13,6 +13,7 @@
 # define WHITESPACES " \t\r\n\v"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
+# define ERROR_REDIRECT "minishell: syntax error near unexpected token `%s'\n"
 
 int exit_status;
 
@@ -26,11 +27,11 @@ typedef enum s_type_of_token
     REDIR_APPEND,
     HEREDOC,
     PIPE,
-    AND,
-    OR,
-    PAR_LEFT,
-    PAR_RIGHT,
     WORD,
+    // AND,
+    // OR,
+    // PAR_LEFT,
+    // PAR_RIGHT,
 } t_type_of_token;
 
 typedef struct s_environment_list
@@ -95,7 +96,7 @@ void ft_is_token_word(int *i, char *input_str, t_token_list *token_list); /////
 
 //parser
 void ft_parser(t_token_list **token_list, t_environment_list *envp_list);
-char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list); /////123456
-char *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *envp_list);
+char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list);
+char *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_list);
 
 #endif

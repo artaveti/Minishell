@@ -1,7 +1,6 @@
 
 #include "lib_for_minishell.h"
 
-char    *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *envp_list);
 int ft_count_spaces_for_joined_after_change(char *string);
 int ft_count_chars_for_joined_after_change(char **splitted_str_q_double);
 void    ft_creat_joined_after_change(char **joined_after_change, char *string, char **splitted_str_q_double);
@@ -10,7 +9,7 @@ void    ft_creat_joined_after_change(char **joined_after_change, char *string, c
 
 
 
-char    *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *envp_list)
+char    *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_list)
 {
     char **splitted_str_q_double;
     char *joined_after_change;
@@ -19,7 +18,7 @@ char    *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *en
     int space_count;
     int char_count;
 
-    splitted_str_q_double = ft_split(*string, ' ');
+    splitted_str_q_double = ft_split(string, ' ');
     i = 0;
     // while(splitted_str_q_double[i] != NULL)
     // {
@@ -35,18 +34,18 @@ char    *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *en
         i++;
     }
     tmp_for_splitted = NULL;
-    i = 0;
+    //i = 0;
     // while(splitted_str_q_double[i] != NULL)
     // {
     //     printf("After:I[%d]%s\n", i, splitted_str_q_double[i]);
     //     i++;
     // }
-    space_count = ft_count_spaces_for_joined_after_change(*string);
+    space_count = ft_count_spaces_for_joined_after_change(string);
     char_count = ft_count_chars_for_joined_after_change(splitted_str_q_double);
     //printf("SPACE_COUNT:::%d:::\n", space_count);
     //printf("CHAR_COUNT:::%d:::\n", char_count);
     joined_after_change = (char *)malloc(sizeof(char) * (space_count + char_count + 1));
-    ft_creat_joined_after_change(&joined_after_change, *string, splitted_str_q_double);
+    ft_creat_joined_after_change(&joined_after_change, string, splitted_str_q_double);
     //printf("joined_after_change:::%s:::\n", joined_after_change);
     i = 0;
     while (splitted_str_q_double[i] != NULL)
@@ -56,9 +55,6 @@ char    *ft_change_dollar_sign_in_q_double(char **string, t_environment_list *en
     }
     free(splitted_str_q_double[i]);
     free(splitted_str_q_double);
-    //free(*string);
-    //*string = ft_strdup(joined_after_change);
-    //free(joined_after_change);
     return (joined_after_change);
 }
 
