@@ -66,7 +66,6 @@ char *ft_readline(void); /////
 
 //from pipex
 void	ft_execve_firstfork(char **path_arr, t_token_list **list, char **envp);
-char	**ft_make_path_arr(char	**envp);
 char	**ft_prog_names_join(char	**path_arr, char	*prog_name);
 
 //environment list
@@ -98,5 +97,13 @@ void ft_is_token_word(int *i, char *input_str, t_token_list *token_list); /////
 void ft_parser(t_token_list **token_list, t_environment_list *envp_list);
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list);
 char *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_list);
+
+//execve
+char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
+void    ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve);
+char	**ft_make_path_arr_for_execve(char	**envp);
+
+//free
+void ft_free_double_pointer_array(char ***array);
 
 #endif

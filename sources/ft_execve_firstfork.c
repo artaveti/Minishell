@@ -4,10 +4,10 @@
 void	ft_execve_firstfork(char **path_arr, t_token_list **list, char **envp)
 {
 	t_token_list *tmp;
-	char	**argv_for_execve;
-	char	**prog_paths;
-	int		list_len;
-	int		i;
+	char		**argv_for_execve;
+	char		**prog_paths;
+	int			list_len;
+	int			i;
 
 	tmp = *list;
 	tmp = tmp->next;
