@@ -12,8 +12,8 @@ void    ft_list_free_for_token(t_token_list **list)
     while(tmp != NULL)
     {
         next = tmp->next;
-        if (tmp->type == Q_SINGLE || tmp->type == Q_DOUBLE
-            || tmp->type == WORD)
+        if (tmp->type == WORD || tmp->type == REDIR_INT || tmp->type == REDIR_OUT
+            || tmp->type == REDIR_APPEND || tmp->type == HEREDOC)
                 free(tmp->value);
         free(tmp);
         tmp = next;
@@ -21,3 +21,13 @@ void    ft_list_free_for_token(t_token_list **list)
     *list = NULL;
     return ;
 }
+
+    // while(tmp != NULL)
+    // {
+    //     next = tmp->next;
+    //     if (tmp->type == Q_SINGLE || tmp->type == Q_DOUBLE
+    //         || tmp->type == WORD || tmp->type == WORD_REDIR)
+    //             free(tmp->value);
+    //     free(tmp);
+    //     tmp = next;
+    // }

@@ -12,6 +12,8 @@ void ft_parser_third(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fourth(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fifth(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list);
+void ft_parser_seventh(t_token_list **list, t_environment_list *envp_list);
+void ft_parser_eighth(t_token_list **list, t_environment_list *envp_list);
 void ft_change_char_starting_from_the_last(char *string, char symbol);
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +27,8 @@ void ft_parser(t_token_list **list, t_environment_list *envp_list)
     ft_parser_fourth(list, envp_list);
     ft_parser_fifth(list, envp_list);
     ft_parser_sixth(list, envp_list);
+    ft_parser_seventh(list, envp_list);
+    ft_parser_eighth(list, envp_list);
     return ;
 }
 
@@ -142,6 +146,7 @@ void ft_parser_fifth(t_token_list **list, t_environment_list *envp_list)
     tmp = *list;
     while (tmp != NULL)
     {
+        
         if (tmp->type == Q_SINGLE || tmp->type == Q_DOUBLE)
             tmp->type = WORD;
         tmp = tmp->next;
@@ -165,12 +170,12 @@ void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list)
         {
             if (tmp->next == NULL)
             {
-                printf(ERROR_REDIRECT, "newline");
+                printf(ERROR_SYNTAX, "newline");
                 return ; //// must change exit_status = 1 and exit(exit_status);
             }
             else if (tmp->next->type != WORD)
             {
-                printf(ERROR_REDIRECT, tmp->next->value);
+                printf(ERROR_SYNTAX, tmp->next->value);
                 return ; //// must change exit_status = 1 and exit(exit_status);
             }
         }
@@ -178,17 +183,69 @@ void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list)
         {
             if (tmp->next == NULL)
             {
-                printf(ERROR_REDIRECT, "newline");
+                printf(ERROR_SYNTAX, "newline");
                 return ; //// must change exit_status = 1 and exit(exit_status);
             }
             else if (tmp->next->type == PIPE)
             {
-                printf(ERROR_REDIRECT, tmp->next->value);
+                printf(ERROR_SYNTAX, tmp->next->value);
                 return ; //// must change exit_status = 1 and exit(exit_status);
             }
         }
         tmp = tmp->next;
     }
+    return ;
+}
+
+
+
+void ft_parser_seventh(t_token_list **list, t_environment_list *envp_list)
+{
+    t_token_list *tmp;
+
+    (void)envp_list;
+    tmp = *list;
+    while (tmp != NULL)
+    {
+        if (tmp->type == REDIR_INT || tmp->type == REDIR_OUT
+            || tmp->type == REDIR_APPEND || tmp->type == HEREDOC)
+        {
+            tmp->value = ft_strdup(tmp->next->value);
+            free(tmp->next->value);
+            tmp->next->value = NULL;
+            tmp->next->type = WORD_REDIR;
+        }
+        tmp = tmp->next;
+    }
+    //system("leaks minishell");
+    return ;
+}
+
+
+
+void ft_parser_eighth(t_token_list **list, t_environment_list *envp_list)
+{
+    t_token_list *previous;
+    t_token_list *tmp;
+
+    (void)envp_list;
+    previous = *list;
+    tmp = previous->next;
+    while (tmp != NULL)
+    {
+        if (tmp->type == WORD_REDIR)
+        {
+            previous->next = tmp->next;
+            free(tmp);
+            tmp = previous->next;
+        }
+        else
+        {
+            previous = previous->next;
+            tmp = previous->next;
+        }
+    }
+    //system("leaks minishell");
     return ;
 }
 

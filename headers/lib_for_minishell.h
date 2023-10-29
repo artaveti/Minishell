@@ -13,25 +13,26 @@
 # define WHITESPACES " \t\r\n\v"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
-# define ERROR_REDIRECT "minishell: syntax error near unexpected token `%s'\n"
+# define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
 
 int exit_status;
 
 typedef enum s_type_of_token
 {
-    SEP,
-    Q_SINGLE,
-    Q_DOUBLE,
-    REDIR_INT,
-    REDIR_OUT,
-    REDIR_APPEND,
-    HEREDOC,
-    PIPE,
-    WORD,
+    SEP, //0
+    Q_SINGLE, //1
+    Q_DOUBLE, //2
+    REDIR_INT, //3
+    REDIR_OUT, //4
+    REDIR_APPEND, //5
+    HEREDOC, //6
+    PIPE, //7
+    WORD, //8
     // AND,
     // OR,
     // PAR_LEFT,
     // PAR_RIGHT,
+    WORD_REDIR, //9
 } t_type_of_token;
 
 typedef struct s_environment_list
@@ -100,10 +101,15 @@ char *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_l
 
 //execve
 char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
-void    ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve);
+void    ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve, char **path_arr);
 char	**ft_make_path_arr_for_execve(char	**envp);
+int     ft_fd_quant(t_token_list *token_list);
 
 //free
 void ft_free_double_pointer_array(char ***array);
+void ft_free_double_pointer_int(int ***array, int fd_quant);
+
+//for printf
+void ft_printf_double_arr(char **double_arr);
 
 #endif
