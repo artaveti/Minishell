@@ -30,24 +30,20 @@ int main(int argc, char *argv[], char *envp[])
         ft_lexer(input_str, token_list);
         //ft_list_iter_printf_for_token(token_list, printf);
         ft_parser(&token_list, envp_list);
+        //printf("\n\n\n");
         //ft_list_iter_printf_for_token(token_list, printf);
         envp_for_execve = ft_creat_envp_for_execve(envp_list);
         //ft_printf_double_arr(envp_for_execve);
         path_arr = ft_make_path_arr_for_execve(envp_for_execve);
         //ft_printf_double_arr(path_arr);
         ft_execve(token_list, envp_list, envp_for_execve, path_arr);
-        // pid = fork();
-        // if (pid == 0)
-        // {
-        //     ft_execve_firstfork(path_arr, &token_list, envp);
-        //     exit(EXIT_SUCCESS);
-        // }
-        // wait(NULL);
+        while (wait(NULL) != -1)
+		;
         free(input_str);
         ft_list_free_for_token(&token_list->next);
         ft_free_double_pointer_array(&envp_for_execve);
         ft_free_double_pointer_array(&path_arr);
-        system("leaks minishell");
+        //system("leaks minishell");
     }
     exit(EXIT_SUCCESS);
 }

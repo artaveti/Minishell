@@ -6,9 +6,11 @@ int	**ft_make_and_open_pipes(int fd_quant);
 char **ft_creat_arr_for_execve(t_token_list *token_list, int fd_quant);
 t_token_list *ft_creat_redir_list(t_token_list *token_list);
 void ft_is_token_redir_int_out_heredoc_redir_append_pipe_execve(t_token_list *token_list, t_token_list *redir_list);
+void ft_fd_close(int **fd, int fd_quant);
 
 void ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve, char **path_arr)
 {
+    //must change "" '' for execve
     int fd_quant;
     int **fd_arr;
     char **arr_for_execve;
@@ -24,8 +26,10 @@ void ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **e
     arr_for_execve = ft_creat_arr_for_execve(token_list, fd_quant);
     redir_list = ft_creat_redir_list(token_list);
     //ft_list_iter_printf_for_token(redir_list, printf);
+    ft_fork(path_arr, fd_arr, arr_for_execve, redir_list, envp_for_execve);
     //ft_printf_double_arr(arr_for_execve);
-    ft_free_double_pointer_array(&arr_for_execve);
+    //ft_free_double_pointer_array(&arr_for_execve);
+    ft_fd_close(fd_arr, fd_quant);
     ft_free_double_pointer_int(&fd_arr, fd_quant);
     ft_list_free_for_token(&redir_list);
     return ;
@@ -182,3 +186,18 @@ void ft_is_token_redir_int_out_heredoc_redir_append_pipe_execve(t_token_list *to
     return ;
 }
 
+
+
+void	ft_fd_close(int **fd, int fd_quant)
+{
+	int	i;
+
+	i = 0;
+	while (i < fd_quant)
+	{
+		close(fd[i][0]);
+		close(fd[i][1]);
+		i++;
+	}
+	return ;
+}

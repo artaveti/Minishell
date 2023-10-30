@@ -104,6 +104,7 @@ char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
 void    ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve, char **path_arr);
 char	**ft_make_path_arr_for_execve(char	**envp);
 int     ft_fd_quant(t_token_list *token_list);
+void    ft_fork(char **path_arr, int **fd_arr, char **arr_for_execve, t_token_list *redir_list, char **envp_for_execve);
 
 //free
 void ft_free_double_pointer_array(char ***array);
