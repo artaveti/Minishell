@@ -14,6 +14,7 @@
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
+# define ERROR_COMMAND "minishell: %s: command not found\n"
 
 int exit_status;
 
@@ -101,16 +102,19 @@ char *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_l
 
 //execve
 char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
-void    ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve, char **path_arr);
-char	**ft_make_path_arr_for_execve(char	**envp);
+void    ft_execve(t_token_list *token_list, t_environment_list *envp_list);
+char	**ft_make_path_argv_for_execve(char	**envp);
 int     ft_fd_quant(t_token_list *token_list);
-void    ft_fork(char **path_arr, int **fd_arr, char **arr_for_execve, t_token_list *redir_list, char **envp_for_execve);
+void	ft_fd_close(int **fd, int fd_quant);
+void    ft_fork(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve, t_token_list *redir_list, char **envp_for_execve);
 
 //free
 void ft_free_double_pointer_array(char ***array);
 void ft_free_double_pointer_int(int ***array, int fd_quant);
+void ft_free_triple_pointer_array(char ****array);
 
 //for printf
 void ft_printf_double_arr(char **double_arr);
+void ft_printf_triple_arr(char ***triple_arr);
 
 #endif

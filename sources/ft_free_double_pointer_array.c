@@ -36,3 +36,20 @@ void ft_free_double_pointer_int(int ***array, int fd_quant)
     *array = NULL;
     return ;
 }
+
+void ft_free_triple_pointer_array(char ****array)
+{
+    int i;
+    char ***tmp;
+
+    tmp = *array;
+    i = 0;
+    while (tmp[i] != NULL)
+    {
+        ft_free_double_pointer_array(&tmp[i]);
+        i++;
+    }
+    free(*array);
+    *array = NULL;
+    return ;
+}

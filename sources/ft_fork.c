@@ -1,44 +1,57 @@
 
 #include "lib_for_minishell.h"
 
-void ft_fork(char **path_arr, int **fd_arr, char **arr_for_execve, t_token_list *redir_list, char **envp_for_execve)
+void ft_fork(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve,
+              t_token_list *redir_list, char **envp_for_execve)
 {
-    int     j;
     int     i;
+    int     j;
     pid_t   pid;
-    char	**argv_for_execve;
     char    **prog_paths;
 
-    (void)fd_arr;
-    (void)redir_list;
-    j = 0;
-    while (arr_for_execve[j] != NULL)
+    i = 0;
+    while (argv_for_execve[i] != NULL)
     {
+        while (redir_list != NULL)
+        {
+          if (redir_list->type == START)
+            break;
+          redir_list = redir_list->next;
+        }
         pid = fork();
         if (pid == 0)
         {
-          i = 0;
-	      argv_for_execve = ft_split(arr_for_execve[i], ' ');
-	        if (argv_for_execve[0] == NULL)
-		        execve("", argv_for_execve, envp_for_execve);
-	        else if (argv_for_execve[0][0] == '/' &&
-		        	(access(argv_for_execve[0], F_OK)) == 0)
-	        	execve(argv_for_execve[0], argv_for_execve, envp_for_execve);
+          ft_creat_redir_fd(fd_arr, redir_list);
+          ft_fd_close(fd_arr, fd_quant);
+	        if (argv_for_execve[i][0][0] == '/' && (access(argv_for_execve[i][0], F_OK)) == 0)
+            execve(argv_for_execve[i][0], argv_for_execve[i], envp_for_execve);
 	        else
 	        {
-		     prog_paths = ft_prog_names_join(path_arr, argv_for_execve[0]);
-		     while (prog_paths[i] != NULL)
+            prog_paths = ft_prog_names_join(path_arr, argv_for_execve[i][0]);
+            j = 0;
+            while (prog_paths[j] != NULL)
 		        {
-			        if ((access(prog_paths[i], F_OK) == 0))
-				        execve(prog_paths[i], argv_for_execve, envp_for_execve);
-                    i++;
+              if ((access(prog_paths[j], F_OK) == 0))
+                execve(prog_paths[j], argv_for_execve[i], envp_for_execve);
+              j++;
 		        }
+            printf(ERROR_COMMAND, argv_for_execve[i][0]);
 	        }
-	        return ;
+	        exit(0);
         }
-        j++;
+        if (redir_list != NULL && redir_list->type == START)
+          redir_list = redir_list->next;
+        i++;
     }
     return ;
 }
 
 
+
+void ft_creat_redir_fd(t_token_list *redir_list)
+{
+
+  return ;
+}
+	        // if (argv_for_execve[0] == NULL)
+		      //   execve("", argv_for_execve, envp_for_execve);

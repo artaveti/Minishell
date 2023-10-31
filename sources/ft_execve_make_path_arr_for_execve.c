@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-char	**ft_make_path_arr_for_execve(char	**envp)
+char	**ft_make_path_argv_for_execve(char	**envp)
 {
 	int		i;
 	int		j;

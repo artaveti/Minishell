@@ -3,37 +3,37 @@
 
 int ft_fd_quant(t_token_list *token_list);
 int	**ft_make_and_open_pipes(int fd_quant);
-char **ft_creat_arr_for_execve(t_token_list *token_list, int fd_quant);
-t_token_list *ft_creat_redir_list(t_token_list *token_list);
-void ft_is_token_redir_int_out_heredoc_redir_append_pipe_execve(t_token_list *token_list, t_token_list *redir_list);
-void ft_fd_close(int **fd, int fd_quant);
+char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant);
+t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
+void ft_is_token_redir_for_execve(t_token_list *token_list, t_token_list *redir_list);
 
-void ft_execve(t_token_list *token_list, t_environment_list *envp_list, char **envp_for_execve, char **path_arr)
+void ft_execve(t_token_list *token_list, t_environment_list *envp_list)
 {
-    //must change "" '' for execve
+    char **envp_for_execve;
+    char **path_arr;
     int fd_quant;
     int **fd_arr;
-    char **arr_for_execve;
     t_token_list *redir_list;
-
-    (void)token_list;
-    (void)envp_list;
-    (void)envp_for_execve;
-    (void)path_arr;
+    char ***argv_for_execve;
     
+    envp_for_execve = ft_creat_envp_for_execve(envp_list);
+    //ft_printf_double_arr(path_arr);
+    path_arr = ft_make_path_argv_for_execve(envp_for_execve);
+    //ft_printf_double_arr(path_arr);
     fd_quant = ft_fd_quant(token_list);
     fd_arr = ft_make_and_open_pipes(fd_quant);
-    arr_for_execve = ft_creat_arr_for_execve(token_list, fd_quant);
-    redir_list = ft_creat_redir_list(token_list);
+    redir_list = ft_creat_redir_list_for_execve(token_list);
+    argv_for_execve = ft_creat_argv_for_execve(token_list, fd_quant);
+    //ft_printf_triple_arr(argv_for_execve);
     //ft_list_iter_printf_for_token(redir_list, printf);
-    ft_fork(path_arr, fd_arr, arr_for_execve, redir_list, envp_for_execve);
-    //ft_printf_double_arr(arr_for_execve);
-    //ft_free_double_pointer_array(&arr_for_execve);
+    ft_fork(path_arr, fd_arr, fd_quant, argv_for_execve, redir_list, envp_for_execve);
     ft_fd_close(fd_arr, fd_quant);
+    ft_free_double_pointer_array(&envp_for_execve);
+    ft_free_double_pointer_array(&path_arr);
     ft_free_double_pointer_int(&fd_arr, fd_quant);
+    ft_free_triple_pointer_array(&argv_for_execve);
     ft_list_free_for_token(&redir_list);
     return ;
-    //creat **token_list_redir; arr_for_execve[i] and token_list_redir[i] for every fork 
 }
 
 
@@ -85,43 +85,54 @@ int	**ft_make_and_open_pipes(int fd_quant)
 
 
 
-char **ft_creat_arr_for_execve(t_token_list *token_list, int fd_quant)
+char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant)
 {   
-    char **arr_for_execve;
-    char *tmp_string;
-    char *tmp_for_arr;
+    t_token_list *tmp_token_list;
+    char ***argv_for_execve;
     int i;
+    int j;
+    int word_quant;
 
-    arr_for_execve = (char **)malloc(sizeof(char *) * (fd_quant + 2));
+    tmp_token_list = token_list;
+    argv_for_execve = (char ***)malloc(sizeof(char **) * (fd_quant + 2));
     i = 0;
-    while(i < fd_quant + 1)
+    word_quant = 0;
+    while(tmp_token_list != NULL)
     {
-        arr_for_execve[i] = ft_strdup("");
-        i++;
-    }
-    i = 0;
-    while (token_list != NULL)
-    {
-        if (token_list->type == WORD)
+        if (tmp_token_list->type == WORD)
+            word_quant++;
+        if (tmp_token_list->type == PIPE || tmp_token_list->next == NULL)
         {
-            tmp_string = ft_strjoin(token_list->value, " ");
-            tmp_for_arr = arr_for_execve[i];
-            arr_for_execve[i] = ft_strjoin(arr_for_execve[i], tmp_string);
-            free(tmp_string);
-            free(tmp_for_arr);
-        }
-        else if (token_list->type == PIPE)
+            argv_for_execve[i] = (char **)malloc(sizeof(char *) * (word_quant + 1));
             i++;
-        token_list = token_list->next;
+        }
+        tmp_token_list = tmp_token_list->next;
     }
-    i++;
-    arr_for_execve[i] = NULL;
-    return (arr_for_execve);
+    tmp_token_list = token_list;
+    i = 0;
+    j = 0;
+    while (tmp_token_list != NULL)
+    {
+        if (tmp_token_list->type == WORD)
+        {
+            argv_for_execve[i][j] = ft_strdup(tmp_token_list->value);
+            j++;
+        }
+        if (tmp_token_list->type == PIPE || tmp_token_list->next == NULL)
+        {
+            argv_for_execve[i][j] = NULL;
+            j = 0;
+            i++;
+        }
+        tmp_token_list = tmp_token_list->next;
+    }
+    argv_for_execve[i] = NULL;
+    return (argv_for_execve);
 }
 
 
 
-t_token_list *ft_creat_redir_list(t_token_list *token_list)
+t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list)
 {   
     t_token_list *redir_list;
 
@@ -131,7 +142,7 @@ t_token_list *ft_creat_redir_list(t_token_list *token_list)
     redir_list->next = NULL;
     while (token_list != NULL)
     {
-        ft_is_token_redir_int_out_heredoc_redir_append_pipe_execve(token_list, redir_list);
+        ft_is_token_redir_for_execve(token_list, redir_list);
         token_list = token_list->next;
     }
     return (redir_list);
@@ -139,7 +150,7 @@ t_token_list *ft_creat_redir_list(t_token_list *token_list)
 
 
 
-void ft_is_token_redir_int_out_heredoc_redir_append_pipe_execve(t_token_list *token_list, t_token_list *redir_list)
+void ft_is_token_redir_for_execve(t_token_list *token_list, t_token_list *redir_list)
 {
     t_token_list *tmp;
 
@@ -178,8 +189,8 @@ void ft_is_token_redir_int_out_heredoc_redir_append_pipe_execve(t_token_list *to
     else if (token_list->type == PIPE)
     {
         tmp = (t_token_list *)malloc(sizeof(t_token_list));
-        tmp->type = PIPE;
-        tmp->value = "|";
+        tmp->type = START;
+        tmp->value = NULL;
         tmp->next = NULL;
         ft_list_add_back_for_token(&redir_list, tmp);
     }
@@ -201,3 +212,5 @@ void	ft_fd_close(int **fd, int fd_quant)
 	}
 	return ;
 }
+
+
