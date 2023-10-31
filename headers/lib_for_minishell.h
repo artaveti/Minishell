@@ -2,12 +2,13 @@
 #ifndef LIB_FOR_MINISHELL_H
 # define LIB_FOR_MINISHELL_H
 
-#include <stdio.h> //readline();
-#include <stdlib.h> //exit();
-#include <readline/readline.h>//readline();
-#include <readline/history.h> //readline();
-#include <unistd.h> //execve();
+#include <stdio.h> // readline();
+#include <stdlib.h> // exit();
+#include <readline/readline.h>// readline();
+#include <readline/history.h> // readline();
+#include <unistd.h> // execve();
 #include <termios.h>
+# include <fcntl.h> // open();
 
 # define START 100
 # define WHITESPACES " \t\r\n\v"
