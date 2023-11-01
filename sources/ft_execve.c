@@ -26,7 +26,7 @@ void ft_execve(t_token_list *token_list, t_environment_list *envp_list)
     argv_for_execve = ft_creat_argv_for_execve(token_list, fd_quant);
     //ft_printf_triple_arr(argv_for_execve);
     //ft_list_iter_printf_for_token(redir_list, printf);
-    ft_fork(path_arr, fd_arr, fd_quant, argv_for_execve, redir_list, envp_for_execve);
+    ft_fork(path_arr, fd_arr, fd_quant, argv_for_execve, redir_list, envp_for_execve, envp_list);
     ft_fd_close(fd_arr, fd_quant);
     ft_free_double_pointer_array(&envp_for_execve);
     ft_free_double_pointer_array(&path_arr);

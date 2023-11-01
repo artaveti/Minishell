@@ -107,7 +107,7 @@ void    ft_execve(t_token_list *token_list, t_environment_list *envp_list);
 char	**ft_make_path_argv_for_execve(char	**envp);
 int     ft_fd_quant(t_token_list *token_list);
 void	ft_fd_close(int **fd, int fd_quant);
-void    ft_fork(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve, t_token_list *redir_list, char **envp_for_execve);
+void    ft_fork(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve, t_token_list *redir_list, char **envp_for_execve, t_environment_list *envp_list);
 
 //free
 void ft_free_double_pointer_array(char ***array);
