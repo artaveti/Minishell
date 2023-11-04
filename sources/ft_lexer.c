@@ -6,6 +6,8 @@ void ft_lexer(char *input_str, t_token_list *token_list)
     int i;
     
     i = 0;
+    if (input_str == NULL)
+        return ;
     while (input_str[i] != '\0')
     {
         ft_is_token_sep(&i, input_str, token_list);

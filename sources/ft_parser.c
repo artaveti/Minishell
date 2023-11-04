@@ -11,7 +11,7 @@ void ft_parser_second(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_third(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fourth(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fifth(t_token_list **list, t_environment_list *envp_list);
-void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list);
+int ft_parser_sixth(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_seventh(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_eighth(t_token_list **list, t_environment_list *envp_list);
 void ft_change_char_starting_from_the_last(char *string, char symbol);
@@ -19,17 +19,21 @@ void ft_change_char_starting_from_the_last(char *string, char symbol);
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-void ft_parser(t_token_list **list, t_environment_list *envp_list)
+int ft_parser(t_token_list **list, t_environment_list *envp_list)
 {
+    int parser_num;
+
     ft_parser_first(list, envp_list);
     ft_parser_second(list, envp_list);
     ft_parser_third(list, envp_list);
     ft_parser_fourth(list, envp_list);
     ft_parser_fifth(list, envp_list);
-    ft_parser_sixth(list, envp_list);
+    parser_num = ft_parser_sixth(list, envp_list);
+    if (parser_num == EXIT_ERROR_SYNTAX)
+        return(EXIT_ERROR_SYNTAX);
     ft_parser_seventh(list, envp_list);
     ft_parser_eighth(list, envp_list);
-    return ;
+    return (0);
 }
 
 
@@ -157,7 +161,7 @@ void ft_parser_fifth(t_token_list **list, t_environment_list *envp_list)
 
 
 
-void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list)
+int ft_parser_sixth(t_token_list **list, t_environment_list *envp_list)
 {
     t_token_list *tmp;
 
@@ -171,12 +175,14 @@ void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list)
             if (tmp->next == NULL)
             {
                 printf(ERROR_SYNTAX, "newline");
-                return ; //// must change exit_status = 1 and exit(exit_status);
+                exit_status = EXIT_ERROR_SYNTAX; // 258
+                return (EXIT_ERROR_SYNTAX); //// must change exit_status = 1 and exit(exit_status);
             }
             else if (tmp->next->type != WORD)
             {
                 printf(ERROR_SYNTAX, tmp->next->value);
-                return ; //// must change exit_status = 1 and exit(exit_status);
+                exit_status = EXIT_ERROR_SYNTAX; // 258
+                return (EXIT_ERROR_SYNTAX); //// must change exit_status = 1 and exit(exit_status);
             }
         }
         else if (tmp->type == PIPE)
@@ -184,17 +190,17 @@ void ft_parser_sixth(t_token_list **list, t_environment_list *envp_list)
             if (tmp->next == NULL)
             {
                 printf(ERROR_SYNTAX, "newline");
-                return ; //// must change exit_status = 1 and exit(exit_status);
+                return (1); //// must change exit_status = 1 and exit(exit_status);
             }
             else if (tmp->next->type == PIPE)
             {
                 printf(ERROR_SYNTAX, tmp->next->value);
-                return ; //// must change exit_status = 1 and exit(exit_status);
+                return (1); //// must change exit_status = 1 and exit(exit_status);
             }
         }
         tmp = tmp->next;
     }
-    return ;
+    return (1);
 }
 
 

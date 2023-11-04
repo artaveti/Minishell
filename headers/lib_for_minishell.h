@@ -11,9 +11,11 @@
 # include <fcntl.h> // open();
 
 # define START 100
+# define EXIT_ERROR_SYNTAX 258
 # define WHITESPACES " \t\r\n\v"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
+# define ERROR_FOR_REDIR "minishell"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_COMMAND "minishell: %s: command not found\n"
 
@@ -97,17 +99,17 @@ void ft_is_token_pipe(int *i, char *input_str, t_token_list *token_list); /////
 void ft_is_token_word(int *i, char *input_str, t_token_list *token_list); /////
 
 //parser
-void ft_parser(t_token_list **token_list, t_environment_list *envp_list);
+int ft_parser(t_token_list **token_list, t_environment_list *envp_list);
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list);
 char *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_list);
 
 //execve
 char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
-void    ft_execve(t_token_list *token_list, t_environment_list *envp_list);
+void    ft_program(t_token_list *token_list, t_environment_list *envp_list);
 char	**ft_make_path_argv_for_execve(char	**envp);
 int     ft_fd_quant(t_token_list *token_list);
 void	ft_fd_close(int **fd, int fd_quant);
-void    ft_fork(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve, t_token_list *redir_list, char **envp_for_execve, t_environment_list *envp_list);
+void    ft_running_with_pipes(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve, t_token_list *redir_list, char **envp_for_execve, t_environment_list *envp_list, int *pid);
 
 //free
 void ft_free_double_pointer_array(char ***array);

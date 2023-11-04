@@ -10,6 +10,8 @@ char *ft_readline(void)
     whitespaces = " \t\r\n\v";
     str = readline("minishell>");
     i = 0;
+    if (str == NULL)
+        return(NULL);
     while(str[i] != '\0')
     {
         if(ft_strchr(WHITESPACES, str[i]))
