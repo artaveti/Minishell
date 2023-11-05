@@ -1,29 +1,30 @@
 
 #include "lib_for_minishell.h"
 
-void ft_change_dollar_sign_word(char **string, t_environment_list *envp_list);
-int	ft_char_find(char c, char const	*string);
-int ft_symbol_quant_in_string(char *string, char symbol);
+int  ft_char_find(char c, char const	*string);
 char *ft_creat_first_part_of_word(char *string, char *symbols);
-char *ft_creat_last_part_of_word(char *string, char *symbols);
 char **ft_creat_splitted_dollar(char *string);
+void ft_creat_string_dollar_in_splitted(int i, char *string, char **splitted_dollar);
 void ft_change_splitted_dollar(char ***splitted_dollar, t_environment_list **envp_list);
+void ft_change_dollar_in_string_of_splitted(t_environment_list *tmp_env, char **string_from_splitted);
+
+void ft_join_splitted_after_change(char **joined_str, char **first_part, char **splitted_dollar);
 void ft_free_splitted_dollar(char ***splitted_dollar);
+char *ft_strdup_quant(const char	*str, size_t quant);
+int  ft_symbol_quant_in_string(char *string, char symbol);
 char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int num_for_last, int *result);
+char *ft_creat_last_part_of_word(char *string, char *symbols);
 char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **name_and_value, int num_for_last, int *result);
-char	*ft_strdup_quant(const char	*str, size_t quant);
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list)
 {
+    char *joined_str;
     char *first_part;
     char **splitted_dollar;
-    char *joined_str;
-    char *tmp_joined_str;
-    int i;
 
     joined_str = NULL;
     if(!ft_char_find('$', string))
@@ -34,27 +35,10 @@ char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list)
     first_part = ft_creat_first_part_of_word(string, "$");
     splitted_dollar = ft_creat_splitted_dollar(string);
     ft_change_splitted_dollar(&splitted_dollar, &envp_list);
-    // printf("first_part_of_word(%s)\n", first_part);
-    // i = 0;
-    // while(splitted_dollar[i] != NULL)
-    // {
-    //     printf("{1}splitted_dollar[%d](%s)\n", i, splitted_dollar[i]);
-    //     i++;
-    // }
-    i = 0;
-    joined_str = ft_strjoin(first_part, splitted_dollar[i]);
-    i++;
-    while (splitted_dollar[i] != NULL)
-    {
-        tmp_joined_str = joined_str;
-        joined_str = ft_strjoin(joined_str, splitted_dollar[i]);
-        free(tmp_joined_str);
-        i++;
-    }
+    ft_join_splitted_after_change(&joined_str, &first_part, splitted_dollar);
     free(first_part);
     ft_free_splitted_dollar(&splitted_dollar);
     splitted_dollar = NULL;
-    //system("leaks minishell");
     return (joined_str);
 }
 
@@ -96,40 +80,29 @@ char *ft_creat_first_part_of_word(char *string, char *symbols)
 
 
 
-char	*ft_strdup_quant(const char	*str, size_t quant)
-{
-	char	*dup;
-	size_t	i;
-
-	dup = malloc(sizeof(char) * (quant + 1));
-	if (!dup)
-		return (0);
-	i = 0;
-	while (i < quant)
-	{
-		dup[i] = str[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
-}
-
-
-
 char **ft_creat_splitted_dollar(char *string)
 {
     char **splitted_dollar;
     int dollar_count;
-    int start;
-    int char_quant;
     int i;
-    int j;
 
     dollar_count = ft_symbol_quant_in_string(string, '$');
     splitted_dollar = (char **)malloc(sizeof(char *) * (dollar_count + 1));
     i = 0;
     while(string[i] != '$' && string[i] != '\0')
         i++;
+    ft_creat_string_dollar_in_splitted(i, string, splitted_dollar);
+    return (splitted_dollar);
+}
+
+
+
+void ft_creat_string_dollar_in_splitted(int i, char *string, char **splitted_dollar)
+{
+    int j;
+    int start;
+    int char_quant;
+
     j = 0;
     while(string[i] != '\0')
     {
@@ -148,26 +121,84 @@ char **ft_creat_splitted_dollar(char *string)
         j++;
     }
     splitted_dollar[j] = NULL;
-    // printf("{2}J(%d)\n", j);
-    // printf("{2}Dollar_count(%d)\n", dollar_count);
-    return (splitted_dollar);
+    return ;
 }
 
 
 
-int ft_symbol_quant_in_string(char *string, char symbol)
+void ft_change_splitted_dollar(char ***splitted_dollar, t_environment_list **envp_list)
 {
+    t_environment_list *tmp_env;
+    char **tmp_splitted;
     int i;
-    int symbol_quant;
 
-    i = symbol_quant = 0;
-    while (string[i] != '\0')
-    {
-        if (string[i] == symbol)
-            symbol_quant++;
+    tmp_splitted = *splitted_dollar;
+    i = 0;
+    while(tmp_splitted[i] != NULL)
+    {   
+        tmp_env = *envp_list;
+        ft_change_dollar_in_string_of_splitted(tmp_env, &tmp_splitted[i]);
         i++;
     }
-    return (symbol_quant);
+    return ;
+}
+
+
+
+void ft_change_dollar_in_string_of_splitted(t_environment_list *tmp_env, char **string_from_splitted)
+{
+    char *tmp_str;
+    int num_for_last;
+    int result;
+
+    num_for_last = 0;
+    result = 0;
+    while (tmp_env != NULL)
+    {
+        if (tmp_env->next == NULL)
+            num_for_last = 1;
+        tmp_str = ft_change_dollar_sign_in_string(string_from_splitted, tmp_env->name_and_value, num_for_last, &result);
+        if (result == 1)
+        {
+            free(*string_from_splitted);
+            *string_from_splitted = ft_strdup(tmp_str);
+            free(tmp_str);
+            break ;
+        }
+        tmp_env = tmp_env->next;
+    }
+    return ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void ft_join_splitted_after_change(char **joined_str, char **first_part, char **splitted_dollar)
+{
+    char *tmp_joined_str;
+    int i;
+
+    *joined_str = ft_strjoin(*first_part, splitted_dollar[0]);
+    i = 1;
+    while (splitted_dollar[i] != NULL)
+    {
+        tmp_joined_str = *joined_str;
+        *joined_str = ft_strjoin(*joined_str, splitted_dollar[i]);
+        free(tmp_joined_str);
+        i++;
+    }
+    return ;
 }
 
 
@@ -193,40 +224,39 @@ void    ft_free_splitted_dollar(char ***splitted_dollar)
 
 
 
-void ft_change_splitted_dollar(char ***splitted_dollar, t_environment_list **envp_list)
+char	*ft_strdup_quant(const char	*str, size_t quant)
 {
-    t_environment_list *tmp_env;
-    char **tmp_splitted;
-    char *tmp_str;
-    int num_for_last;
-    int result;
-    int i;
+	char	*dup;
+	size_t	i;
 
-    tmp_splitted = *splitted_dollar;
-    i = 0;
-    while(tmp_splitted[i] != NULL)
-    {   
-        tmp_env = *envp_list;
-        num_for_last = 0;
-        result = 0;
-        while (tmp_env != NULL)
-        {
-            if (tmp_env->next == NULL)
-                num_for_last = 1;
-            tmp_str = ft_change_dollar_sign_in_string(&tmp_splitted[i], tmp_env->name_and_value, num_for_last, &result);
-            if (result == 1)
-            {
-                free(tmp_splitted[i]);
-                tmp_splitted[i] = ft_strdup(tmp_str);
-                free(tmp_str);
-                break ;
-            }
-            tmp_env = tmp_env->next;
-        }
+	dup = malloc(sizeof(char) * (quant + 1));
+	if (!dup)
+		return (0);
+	i = 0;
+	while (i < quant)
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
+
+
+int ft_symbol_quant_in_string(char *string, char symbol)
+{
+    int i;
+    int symbol_quant;
+
+    i = symbol_quant = 0;
+    while (string[i] != '\0')
+    {
+        if (string[i] == symbol)
+            symbol_quant++;
         i++;
     }
-    //system("leaks minishell");
-    return ;
+    return (symbol_quant);
 }
 
 
@@ -261,25 +291,37 @@ char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int 
         }
     }
     tmp_str = before_end_symb;
-    //printf("{4}Before(%s)\n", before_end_symb);
     before_end_symb = ft_change_dollar_sign_in_before_end_symb(&before_end_symb, name_and_value, num_for_last, result);
-    //printf("{4}After(%s)\n", before_end_symb);
     if (*result == 1)
     {
         free(tmp_str);
-        // if (before_end_symb[0] == '\0' && after_end_symb[0] == '\0')
-        //     tmp_str = ft_strdup("");
-        // else if (before_end_symb[0] == '\0')
-        //     tmp_str = ft_strdup(after_end_symb);
-        // else if (after_end_symb[0] == '\0')
-        //     tmp_str = ft_strdup(before_end_symb);  
-        // else
             tmp_str = ft_strjoin(before_end_symb, after_end_symb);
     }
     free(before_end_symb);
     free(after_end_symb);
-    //system("leaks minishell");
     return (tmp_str);
+}
+
+
+
+char *ft_creat_last_part_of_word(char *string, char *symbols)
+{
+    char *last_part;
+    int string_len;
+    int i;
+
+    i = 0;
+    while (string[i] != '\0')
+    {
+        if (ft_strchr(symbols, string[i]))
+        {
+            string_len = ft_strlen(string);
+            last_part = ft_strdup_quant(&string[i], string_len - i);
+            return (last_part);
+        }
+        i++;
+    }
+    return (NULL);
 }
 
 
@@ -328,22 +370,53 @@ char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **na
 
 
 
-char *ft_creat_last_part_of_word(char *string, char *symbols)
-{
-    char *last_part;
-    int string_len;
-    int i;
 
-    i = 0;
-    while (string[i] != '\0')
-    {
-        if (ft_strchr(symbols, string[i]))
-        {
-            string_len = ft_strlen(string);
-            last_part = ft_strdup_quant(&string[i], string_len - i);
-            return (last_part);
-        }
-        i++;
-    }
-    return (NULL);
-}
+
+//char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list)
+    // joined_str = ft_strjoin(first_part, splitted_dollar[0]);
+    // i = 1;
+    // while (splitted_dollar[i] != NULL)
+    // {
+    //     tmp_joined_str = joined_str;
+    //     joined_str = ft_strjoin(joined_str, splitted_dollar[i]);
+    //     free(tmp_joined_str);
+    //     i++;
+    // }
+
+
+
+    
+// void ft_change_splitted_dollar(char ***splitted_dollar, t_environment_list **envp_list)
+// {
+//     t_environment_list *tmp_env;
+//     char **tmp_splitted;
+//     char *tmp_str;
+//     int num_for_last;
+//     int result;
+//     int i;
+
+//     tmp_splitted = *splitted_dollar;
+//     i = 0;
+//     while(tmp_splitted[i] != NULL)
+//     {   
+//         tmp_env = *envp_list;
+//         num_for_last = 0;
+//         result = 0;
+//         while (tmp_env != NULL)
+//         {
+//             if (tmp_env->next == NULL)
+//                 num_for_last = 1;
+//             tmp_str = ft_change_dollar_sign_in_string(&tmp_splitted[i], tmp_env->name_and_value, num_for_last, &result);
+//             if (result == 1)
+//             {
+//                 free(tmp_splitted[i]);
+//                 tmp_splitted[i] = ft_strdup(tmp_str);
+//                 free(tmp_str);
+//                 break ;
+//             }
+//             tmp_env = tmp_env->next;
+//         }
+//         i++;
+//     }
+//     return ;
+// }

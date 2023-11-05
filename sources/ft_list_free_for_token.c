@@ -21,13 +21,3 @@ void    ft_list_free_for_token(t_token_list **list)
     *list = NULL;
     return ;
 }
-
-    // while(tmp != NULL)
-    // {
-    //     next = tmp->next;
-    //     if (tmp->type == Q_SINGLE || tmp->type == Q_DOUBLE
-    //         || tmp->type == WORD || tmp->type == WORD_REDIR)
-    //             free(tmp->value);
-    //     free(tmp);
-    //     tmp = next;
-    // }

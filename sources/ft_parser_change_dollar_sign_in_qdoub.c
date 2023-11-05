@@ -5,11 +5,11 @@ int ft_count_spaces_for_joined_after_change(char *string);
 int ft_count_chars_for_joined_after_change(char **splitted_str_q_double);
 void    ft_creat_joined_after_change(char **joined_after_change, char *string, char **splitted_str_q_double);
 
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-
-char    *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_list)
+char    *ft_change_dollar_sign_in_qdoub(char *string, t_environment_list *envp_list)
 {
     char **splitted_str_q_double;
     char *joined_after_change;
@@ -20,12 +20,6 @@ char    *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *env
 
     splitted_str_q_double = ft_split(string, ' ');
     i = 0;
-    // while(splitted_str_q_double[i] != NULL)
-    // {
-    //     printf("Before:I[%d]%s\n", i, splitted_str_q_double[i]);
-    //     i++;
-    // }
-    i = 0;
     while(splitted_str_q_double[i] != NULL)
     {
         tmp_for_splitted = ft_change_dollar_sign_in_word(splitted_str_q_double[i], envp_list);
@@ -34,19 +28,10 @@ char    *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *env
         i++;
     }
     tmp_for_splitted = NULL;
-    //i = 0;
-    // while(splitted_str_q_double[i] != NULL)
-    // {
-    //     printf("After:I[%d]%s\n", i, splitted_str_q_double[i]);
-    //     i++;
-    // }
     space_count = ft_count_spaces_for_joined_after_change(string);
     char_count = ft_count_chars_for_joined_after_change(splitted_str_q_double);
-    //printf("SPACE_COUNT:::%d:::\n", space_count);
-    //printf("CHAR_COUNT:::%d:::\n", char_count);
     joined_after_change = (char *)malloc(sizeof(char) * (space_count + char_count + 1));
     ft_creat_joined_after_change(&joined_after_change, string, splitted_str_q_double);
-    //printf("joined_after_change:::%s:::\n", joined_after_change);
     i = 0;
     while (splitted_str_q_double[i] != NULL)
     {
@@ -133,12 +118,3 @@ void    ft_creat_joined_after_change(char **joined_after_change, char *string,
     joined_after_change[0][k] = '\0';
     return ;
 }
-
-
-
-
-
-
-
-
-

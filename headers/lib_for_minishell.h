@@ -11,10 +11,10 @@
 # include <fcntl.h> // open();
 
 # define START 100
-# define EXIT_ERROR_SYNTAX 258
 # define WHITESPACES " \t\r\n\v"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
+# define EXIT_ERROR_SYNTAX 258
 # define ERROR_FOR_REDIR "minishell"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_COMMAND "minishell: %s: command not found\n"
@@ -36,7 +36,6 @@ typedef enum s_type_of_token
     // OR,
     // PAR_LEFT,
     // PAR_RIGHT,
-    WORD_REDIR, //9
 } t_type_of_token;
 
 typedef struct s_environment_list
@@ -99,9 +98,12 @@ void ft_is_token_pipe(int *i, char *input_str, t_token_list *token_list); /////
 void ft_is_token_word(int *i, char *input_str, t_token_list *token_list); /////
 
 //parser
-int ft_parser(t_token_list **token_list, t_environment_list *envp_list);
+void ft_parser(t_token_list **token_list, t_environment_list *envp_list);
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list);
-char *ft_change_dollar_sign_in_q_double(char *string, t_environment_list *envp_list);
+char *ft_change_dollar_sign_in_qdoub(char *string, t_environment_list *envp_list);
+
+//syntax_error
+int ft_syntax_error(t_token_list **list);
 
 //execve
 char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
