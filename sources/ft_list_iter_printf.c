@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-void	ft_list_iter_printf_for_token(t_token_list	*list,	int (f)(const char *, ...))
+void	ft_list_iter_printf_token(t_token_list	*list,	int (f)(const char *, ...))
 {
 	t_token_list	*tmp;
 	int i;
@@ -23,7 +23,7 @@ void	ft_list_iter_printf_for_token(t_token_list	*list,	int (f)(const char *, ...
 	return ;
 }
 
-void	ft_list_iter_printf_for_environment(t_environment_list	*list, int (f)(const char *, ...))
+void	ft_list_iter_printf_environment(t_environment_list	*list, int (f)(const char *, ...))
 {
 	t_environment_list	*tmp;
 	int i;

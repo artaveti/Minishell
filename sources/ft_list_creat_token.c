@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-t_token_list *ft_list_creat_start_of_token(void)
+t_token_list *ft_list_creat_token(void)
 {
     t_token_list *start;
 

@@ -29,7 +29,7 @@ void ft_program(t_token_list *token_list, t_environment_list *envp_list)
     fd_arr = ft_make_and_open_pipes(fd_quant);
     heredoc_quant = ft_creat_heredoc(token_list);
     redir_list = ft_creat_redir_list_for_execve(token_list);
-    //ft_list_iter_printf_for_token(redir_list, printf);
+    //ft_list_iter_printf_token(redir_list, printf);
     argv_for_execve = ft_creat_argv_for_execve(token_list, fd_quant);
     //ft_printf_triple_arr(argv_for_execve);
     pid_arr = (int *)malloc(sizeof(int) * (fd_quant + 1));

@@ -19,6 +19,8 @@ void ft_free_double_pointer_array(char ***array)
     return ;
 }
 
+
+
 void ft_free_double_pointer_int(int ***array, int fd_quant)
 {
     int i;
@@ -36,6 +38,8 @@ void ft_free_double_pointer_int(int ***array, int fd_quant)
     *array = NULL;
     return ;
 }
+
+
 
 void ft_free_triple_pointer_array(char ****array)
 {
