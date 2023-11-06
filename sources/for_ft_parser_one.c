@@ -79,5 +79,3 @@ char *ft_change_char_from_the_last(char *string, char symbol)
     tmp_string = ft_strdup(string);
     return (tmp_string);
 }
-
-

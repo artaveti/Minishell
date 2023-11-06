@@ -101,7 +101,7 @@ void ft_parser_fourth_join_w(t_token_list **list, t_environment_list *envp_list)
 void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_remove_sep_from_list(t_token_list **list, t_environment_list *envp_list);
 
-//change dollar
+//change dollar in word
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list);
 int  ft_char_find(char c, char const	*string);
 char **ft_creat_splitted_dollar(char *string);
@@ -117,7 +117,14 @@ char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **na
 char *ft_creat_last_part_of_word(char *string, char *symbols);
 void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_str, int *result);
 
+//change dollar in qdoub
 char *ft_change_dollar_sign_in_qdoub(char *string, t_environment_list *envp_list);
+void ft_change_dollar_in_splitted_qdoub(char ***splitted_str, t_environment_list *envp_list);
+int  ft_count_spaces_for_joined_after_change(char *string);
+int  ft_count_chars_for_joined_after_change(char **splitted_str);
+char *ft_creat_joined_after_change(char *string, char **splitted_str, int quant);
+void ft_additional_for_creat_joined_first(int *i, int *k, char *string, char *joined_after_change);
+void ft_additional_for_creat_joined_second(int *j, int *k, char **splitted_str, char *joined_after_change);
 
 //syntax_error
 int ft_syntax_error(t_token_list **list);
