@@ -26,7 +26,7 @@ int main(int argc, char *argv[], char *envp[])
             ft_program(token_list, envp_list);
         free(input_str);
         ft_list_free_for_token(&token_list->next);
-        system("leaks minishell");
+        //system("leaks minishell");
     }
     exit(EXIT_SUCCESS);
 }
