@@ -8,10 +8,10 @@ char	**ft_prog_names_join(char	**path_arr, char	*prog_name)
 	char	**prog_paths;
 
 	i = 0;
+	if (path_arr == NULL)
+		return (NULL);
 	while (path_arr[i] != NULL)
-	{
 		i++;
-	}
 	str_backslash = (char **)malloc(sizeof(char *) * (i + 1));
 	prog_paths = (char **)malloc(sizeof(char *) * (i + 1));
 	str_backslash[i] = NULL;

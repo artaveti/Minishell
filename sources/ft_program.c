@@ -6,51 +6,57 @@ int	**ft_make_and_open_pipes(int fd_quant);
 char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant);
 t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
 void ft_is_token_redir_for_execve(t_token_list *token_list, t_token_list *redir_list);
-int ft_creat_heredoc(t_token_list *token_list);
+void ft_creat_heredoc(t_token_list *token_list);
+
+
+void ft_creat_for_execve(t_for_prog *prog, t_token_list *token_list, t_environment_list *envp_list)
+{
+    prog->envp_for_execve = ft_creat_envp_for_execve(envp_list);
+    prog->path_arr = ft_creat_path_argv_for_execve(prog->envp_for_execve);
+    prog->fd_quant = ft_fd_quant(token_list);
+    prog->fd_arr = ft_make_and_open_pipes(prog->fd_quant);
+    prog->redir_list = ft_creat_redir_list_for_execve(token_list);
+    prog->argv_for_execve = ft_creat_argv_for_execve(token_list, prog->fd_quant);
+    prog->pid_arr = (int *)malloc(sizeof(int) * (prog->fd_quant + 1));
+    return ;
+}
+
 
 void ft_program(t_token_list *token_list, t_environment_list *envp_list)
 {
-    char **envp_for_execve;
-    char **path_arr;
-    int fd_quant;
-    int **fd_arr;
-    t_token_list *redir_list;
-    char ***argv_for_execve;
-    int heredoc_quant;
-    int *pid_arr;
+    t_for_prog prog;
+
+    // t_token_list *redir_list;
+    // char **envp_for_execve;
+    // char **path_arr;
+    // char ***argv_for_execve;
+    // int fd_quant;
+    // int **fd_arr;
+    // int *pid_arr;
+
     int i;
     int status;
 
-    envp_for_execve = ft_creat_envp_for_execve(envp_list);
-    //ft_printf_double_arr(path_arr);
-    path_arr = ft_make_path_argv_for_execve(envp_for_execve);
-    //ft_printf_double_arr(path_arr);
-    fd_quant = ft_fd_quant(token_list);
-    fd_arr = ft_make_and_open_pipes(fd_quant);
-    heredoc_quant = ft_creat_heredoc(token_list);
-    redir_list = ft_creat_redir_list_for_execve(token_list);
-    //ft_list_iter_printf_token(redir_list, printf);
-    argv_for_execve = ft_creat_argv_for_execve(token_list, fd_quant);
-    //ft_printf_triple_arr(argv_for_execve);
-    pid_arr = (int *)malloc(sizeof(int) * (fd_quant + 1));
-    ft_running_with_pipes(path_arr, fd_arr, fd_quant, argv_for_execve, redir_list, envp_for_execve, envp_list, pid_arr);
+ft_creat_heredoc(token_list);
+ft_creat_for_execve(&prog, token_list, envp_list);
+ft_running_with_pipes(&prog, envp_list);
     i = 0;
-    ft_fd_close(fd_arr, fd_quant);
-    while (i < fd_quant + 1)
+    ft_close_fd(prog.fd_arr, prog.fd_quant);
+    while (i < prog.fd_quant + 1)
     {
         //printf("pid_arr[I][%d](%d)\n", i, pid_arr[i]);
-        waitpid(pid_arr[i], &status, 0);
+        waitpid(prog.pid_arr[i], &status, 0);
         WIFEXITED(status);
-		exit_status = WEXITSTATUS(status);
+		exit_status_msh = WEXITSTATUS(status);
         i++;
     }
-    ft_free_double_pointer_array(&envp_for_execve);
-    ft_free_double_pointer_array(&path_arr);
-    ft_free_double_pointer_int(&fd_arr, fd_quant);
-    free(pid_arr);
-    ft_free_triple_pointer_array(&argv_for_execve);
-    ft_list_free_for_token(&redir_list);
-    // system("leaks minishell");
+    ft_free_double_pointer_array(&prog.envp_for_execve);
+    ft_free_double_pointer_array(&prog.path_arr);
+    ft_free_double_pointer_int(&prog.fd_arr, prog.fd_quant);
+    free(prog.pid_arr);
+    ft_free_triple_pointer_array(&prog.argv_for_execve);
+    ft_list_free_for_token(&prog.redir_list);
+    //system("leaks minishell");
     return ;
 }
 
@@ -218,7 +224,7 @@ void ft_is_token_redir_for_execve(t_token_list *token_list, t_token_list *redir_
 
 
 
-void	ft_fd_close(int **fd, int fd_quant)
+void	ft_close_fd(int **fd, int fd_quant)
 {
 	int	i;
 
@@ -234,7 +240,7 @@ void	ft_fd_close(int **fd, int fd_quant)
 
 
 
-int ft_creat_heredoc(t_token_list *token_list)
+void ft_creat_heredoc(t_token_list *token_list)
 {
   char *heredoc_line;
   char *num;
@@ -261,6 +267,8 @@ int ft_creat_heredoc(t_token_list *token_list)
       }
       free(heredoc_line);
       heredoc_line = NULL;
+      free(token_list->value);
+      token_list->value = NULL;
       token_list->value = ft_strdup(filename);
       free(num);
       num = NULL;
@@ -271,7 +279,7 @@ int ft_creat_heredoc(t_token_list *token_list)
     }
     token_list = token_list->next;
   }
-  return (i);
+  return ;
 }
 
 

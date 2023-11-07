@@ -5,20 +5,15 @@ int ft_syntax_error_first_token(t_token_list **list);
 int ft_syntax_error_second_redirect_pipe(t_token_list **list);
 int ft_printf_for_syntax_error_redirect(t_token_list *tmp);
 
-int ft_syntax_error(t_token_list **list)
+void ft_syntax_error(t_token_list **list, int *error_num)
 {
-    int error_num;
-
-    error_num = 0;
     if (*list == NULL)
-        return (error_num);
-    error_num = ft_syntax_error_first_token(list);
-    if (error_num > 0)
-        return (error_num);
-    error_num = ft_syntax_error_second_redirect_pipe(list);
-    if (error_num > 0)
-        return (error_num);
-    return (error_num);
+        return ;
+    *error_num = ft_syntax_error_first_token(list);
+    if (*error_num > 0)
+        return ;
+    *error_num = ft_syntax_error_second_redirect_pipe(list);
+    return ;
 }
 
 

@@ -3,18 +3,16 @@
 
 char *ft_readline(void)
 {
-    char *whitespaces;
     char *str;
     int i;
 
-    whitespaces = " \t\r\n\v";
     str = readline("minishell>");
     i = 0;
     if (str == NULL)
         return(NULL);
     while(str[i] != '\0')
     {
-        if(ft_strchr(WHITESPACES, str[i]))
+        if(ft_strchr(WHITESPACES_RL, str[i]))
             i++;
         else
             break;

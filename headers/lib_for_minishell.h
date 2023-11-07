@@ -12,14 +12,17 @@
 
 # define START 100
 # define WHITESPACES " \t\r\n\v"
+# define WHITESPACES_RL "\t\r\n\v"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
+# define EXIT_ERROR_NO_F_OR_D 1
+# define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_SYNTAX 258
-# define ERROR_FOR_REDIR "minishell"
+# define ERROR_REDIR "minishell"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
-# define ERROR_COMMAND "minishell: %s: command not found\n"
+# define ERROR_CMD_NOT_FOUND "minishell: %s: command not found\n"
 
-int exit_status;
+int exit_status_msh;
 
 typedef enum s_type_of_token
 {
@@ -50,6 +53,21 @@ typedef struct s_token_list
     char *value;
     struct s_token_list *next;
 } t_token_list;
+
+typedef struct s_for_prog
+{
+    t_token_list *redir_list;
+    char **envp_for_execve;
+    char **path_arr;
+    char ***argv_for_execve;
+    int fd_quant;
+    int **fd_arr;
+    int *pid_arr;
+} t_for_prog;
+
+
+
+
 
 //libft
 void	*ft_memmove(void	*dst, const void	*src, size_t	len); /////
@@ -115,7 +133,7 @@ char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int 
 void ft_creat_before_after_strings(int i, char **tmp_str, char **before_end_symb, char **after_end_symb);
 char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **name_and_value, int num_for_last, int *result);
 char *ft_creat_last_part_of_word(char *string, char *symbols);
-void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_str, int *result);
+void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_msh_str, int *result);
 
 //change dollar in qdoub
 char *ft_change_dollar_sign_in_qdoub(char *string, t_environment_list *envp_list);
@@ -127,17 +145,16 @@ void ft_additional_for_creat_joined_first(int *i, int *k, char *string, char *jo
 void ft_additional_for_creat_joined_second(int *j, int *k, char **splitted_str, char *joined_after_change);
 
 //syntax_error
-int ft_syntax_error(t_token_list **list);
+void ft_syntax_error(t_token_list **list, int *error_num);
 
 //execve
 char	**ft_prog_names_join(char	**path_arr, char	*prog_name);
 char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
 void    ft_program(t_token_list *token_list, t_environment_list *envp_list);
-char	**ft_make_path_argv_for_execve(char	**envp);
+char	**ft_creat_path_argv_for_execve(char	**envp);
 int     ft_fd_quant(t_token_list *token_list);
-void	ft_fd_close(int **fd, int fd_quant);
-void    ft_running_with_pipes(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve, t_token_list *redir_list, char **envp_for_execve, t_environment_list *envp_list, int *pid);
-
+void	ft_close_fd(int **fd, int fd_quant);
+void ft_running_with_pipes(t_for_prog *prog, t_environment_list *envp_list);
 //free
 void ft_free_double_pointer_array(char ***array);
 void ft_free_double_pointer_int(int ***array, int fd_quant);

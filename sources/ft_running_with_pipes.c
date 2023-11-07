@@ -1,12 +1,10 @@
 
 #include "lib_for_minishell.h"
 
-void ft_creat_pipe_fd(int **fd_arr, int fd_quant, int i);
-void ft_creat_redir_fd(t_token_list *redir_list, int *fd_redir);
-//void ft_unlink(int heredoc_quant);
+void ft_open_pipe_fd(int **fd_arr, int fd_quant, int i);
+void ft_open_redir_fd(t_token_list *redir_list, int *fd_redir);
 
-void ft_running_with_pipes(char **path_arr, int **fd_arr, int fd_quant, char ***argv_for_execve,
-              t_token_list *redir_list, char **envp_for_execve, t_environment_list *envp_list, int *pid_arr)
+void ft_running_with_pipes(t_for_prog *prog, t_environment_list *envp_list)
 {
     int     i;
     int     j;
@@ -14,58 +12,57 @@ void ft_running_with_pipes(char **path_arr, int **fd_arr, int fd_quant, char ***
     pid_t   pid;
     char    **prog_paths;
     int     *fd_redir;
+    t_token_list *tmp_redir_list;
 
     (void)envp_list;
+    tmp_redir_list = prog->redir_list;
     i = 0;
     fd_redir = (int *)malloc(sizeof(int) * 4);
-    while (argv_for_execve[i] != NULL)
+    while (prog->argv_for_execve[i] != NULL)
     {
-      // arajiny steghcuma heredocnery heredoc-i jamanak stdouty talisa pipein u tpacy chi erevum, petqa arandzin sarqel jamanakavor pokhel
-      // heto syntax errornery bolor depqeri hamar, ete ayn ka uremn exit
       // ete voreve forki mej chi gtnum inputi hamar faily uremn exita linum miayn ayd forky
       // kami( || ) jamanak, ete arajiny skhala(orinak` "Command not found" kam "No such file or directory"), cuyca talis u sharunakuma
       // andi ( && ) jamanak, ete arajiny skhala, el chi sharunakum
-      // "bash: syntax error near unexpected token `&'" echo $? 258
       // "bash: sss: No such file or directory" echo $? 1
       // "bash: wcl: command not found" echo $? 127
       // ete grvuma "bash: (komandy, vory chka kam fayly, vory chka): u heto inchvor ban" , apa ayd jamanak cragiry ashkhatuma, hajord qaylin ancnuma"
       // isk ete grvuma "bash: miangamic patchary u symboly", apa cragiry vochmiban chi anum ev miangamic exita linum
-        while (redir_list != NULL)
+        while (tmp_redir_list != NULL)
         {
-          if (redir_list->type == START)
+          if (tmp_redir_list->type == START)
             break;
-          redir_list = redir_list->next;
+          tmp_redir_list = tmp_redir_list->next;
         }
         pid = fork();
         if (pid == 0)
         {
           fd_out = dup(STDOUT_FILENO);
-          ft_creat_pipe_fd(fd_arr, fd_quant, i);
-          ft_creat_redir_fd(redir_list, fd_redir);
-          ft_fd_close(fd_arr, fd_quant);
-          if (argv_for_execve[i][0] == NULL)
+          ft_open_pipe_fd(prog->fd_arr, prog->fd_quant, i);
+          ft_open_redir_fd(tmp_redir_list, fd_redir);
+          ft_close_fd(prog->fd_arr, prog->fd_quant);
+          if (prog->argv_for_execve[i][0] == NULL)
             exit(0);
-	        else if (argv_for_execve[i][0][0] == '/' && (access(argv_for_execve[i][0], F_OK)) == 0)
-            execve(argv_for_execve[i][0], argv_for_execve[i], envp_for_execve);
+	        else if (prog->argv_for_execve[i][0][0] == '/' && (access(prog->argv_for_execve[i][0], F_OK)) == 0)
+            execve(prog->argv_for_execve[i][0], prog->argv_for_execve[i], prog->envp_for_execve);
 	        else
 	        {
-            prog_paths = ft_prog_names_join(path_arr, argv_for_execve[i][0]);
+            prog_paths = ft_prog_names_join(prog->path_arr, prog->argv_for_execve[i][0]);
             j = 0;
-            while (prog_paths[j] != NULL)
+            while (prog_paths != NULL && prog_paths[j] != NULL)
 		        {
               if ((access(prog_paths[j], F_OK) == 0))
-                execve(prog_paths[j], argv_for_execve[i], envp_for_execve);
+                execve(prog_paths[j], prog->argv_for_execve[i], prog->envp_for_execve);
               j++;
 		        }
 	        }
           dup2(fd_out, STDOUT_FILENO);
-          printf(ERROR_COMMAND, argv_for_execve[i][0]);
-	        exit(127);
+          printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);
+	        exit(EXIT_ERROR_CMD_NOT_FOUND);
         }
-        pid_arr[i] = pid;
-        //printf("pid(%d)\n", pid);
-        if (redir_list != NULL && redir_list->type == START)
-          redir_list = redir_list->next;
+        prog->pid_arr[i] = pid;
+        if (tmp_redir_list != NULL && tmp_redir_list->type == START)
+          tmp_redir_list = tmp_redir_list->next;
+//system("leaks minishell");
         i++;
     }
     free(fd_redir);
@@ -74,7 +71,7 @@ void ft_running_with_pipes(char **path_arr, int **fd_arr, int fd_quant, char ***
 
 
 
-void ft_creat_pipe_fd(int **fd_arr, int fd_quant, int i)
+void ft_open_pipe_fd(int **fd_arr, int fd_quant, int i)
 {
   int i_mid;
 
@@ -95,7 +92,7 @@ void ft_creat_pipe_fd(int **fd_arr, int fd_quant, int i)
 
 
 
-void ft_creat_redir_fd(t_token_list *redir_list, int *fd_redir)
+void ft_open_redir_fd(t_token_list *redir_list, int *fd_redir)
 {
   int   i;
   char *error_str;
@@ -116,8 +113,8 @@ void ft_creat_redir_fd(t_token_list *redir_list, int *fd_redir)
         error_str = ft_strjoin("minishell: ", redir_list->value);
         perror(error_str);
         free(error_str);
-        exit_status = 1;
-        exit(1);
+        exit_status_msh = 1;
+        exit(EXIT_ERROR_NO_F_OR_D);
       }
       dup2(fd_redir[0], STDIN_FILENO);
       close(fd_redir[0]);
@@ -145,44 +142,3 @@ void ft_creat_redir_fd(t_token_list *redir_list, int *fd_redir)
   }
   return ;
 }
-
-
-
-// void ft_unlink(int heredoc_quant)
-// {
-//   int i;
-//   char *num;
-//   char *filename;
-
-//   i = 0;
-//   while(i < heredoc_quant)
-//   {
-//     num = ft_itoa(i);
-//     filename = ft_strjoin("heredoc_minishell_", num);
-//     unlink(filename);
-//     free(num);
-//     num = NULL;
-//     free(filename);
-//     filename = NULL;
-//     i++;
-//   }
-//   return ;
-// }
-
-
-
-    // else if (redir_list->type == HEREDOC)
-    // {
-    //   num = ft_itoa(i);
-    //   filename = ft_strjoin("heredoc_minishell_", num);
-    //   fd_redir[3] = open(filename, O_RDONLY, 0644);
-    //   dup2(fd_redir[3], STDIN_FILENO);
-    //   close(fd_redir[3]);
-    //   free(num);
-    //   num = NULL;
-    //   free(filename);
-    //   filename = NULL;
-    //   i++;
-    // }
-
-

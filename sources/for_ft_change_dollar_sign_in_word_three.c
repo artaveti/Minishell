@@ -60,7 +60,7 @@ char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **na
 {
     char *tmp_str;
     char *str_for_dup;
-    char *exit_status_str;
+    char *exit_status_msh_str;
 
     tmp_str = *before_end_symb;
     *result = 0;
@@ -70,7 +70,7 @@ char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **na
         *result = 1;
     }
     else if (ft_strchr("?0123456789", tmp_str[1]) && tmp_str[1] != '\0')
-        ft_additional_for_else_if(&str_for_dup, &tmp_str, &exit_status_str, result);
+        ft_additional_for_else_if(&str_for_dup, &tmp_str, &exit_status_msh_str, result);
     else if (!ft_memcmp(&tmp_str[1], name_and_value[0], ft_strlen(&tmp_str[1]) + 1))
     {
         tmp_str = ft_strdup(name_and_value[1]);
@@ -108,14 +108,14 @@ char *ft_creat_last_part_of_word(char *string, char *symbols)
 
 
 
-void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_str, int *result)
+void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_msh_str, int *result)
 {
         *str_for_dup = ft_strdup(&tmp_str[0][2]);
         if (tmp_str[0][1] == '?')
         {
-            *exit_status_str = ft_itoa(exit_status);
-            *tmp_str = ft_strjoin(*exit_status_str, *str_for_dup);
-            free(*exit_status_str);
+            *exit_status_msh_str = ft_itoa(exit_status_msh);
+            *tmp_str = ft_strjoin(*exit_status_msh_str, *str_for_dup);
+            free(*exit_status_msh_str);
         }
         else if (tmp_str[0][1] == '0')
             *tmp_str = ft_strjoin("minishell", *str_for_dup);
