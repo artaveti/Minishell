@@ -158,9 +158,14 @@ void ft_waitpid_for_prog(t_for_prog *prog);
 void ft_free_for_prog(t_for_prog *prog);
 
 
+
 //execve
-void ft_running_with_pipes(t_for_prog *prog, t_environment_list *envp_list);
-char	**ft_prog_names_join(char	**path_arr, char	*prog_name);
+void ft_running_program(t_for_prog *prog, t_environment_list *envp_list);
+void ft_open_pipe_fd(int **fd_arr, int fd_quant, int i);
+void ft_open_redir_fd(t_token_list *redir_list, int *fd_redir);
+char **ft_prog_names_join(char	**path_arr, char	*prog_name);
+
+
 
 //free
 void ft_free_double_pointer_array(char ***array);
