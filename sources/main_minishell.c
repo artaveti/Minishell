@@ -27,18 +27,18 @@ int main(int argc, char *argv[], char *envp[])
     {
         input_str = ft_readline(); //if input_str == NULL, must go to while
         ft_lexer(input_str, token_list);
-        ft_list_iter_printf_token(token_list, printf);
+        // ft_list_iter_printf_token(token_list, printf);
         ft_parser(&token_list, envp_list);
         ft_syntax_error(&token_list->next, &error_num);
-        printf("\n\n\n");
-        ft_list_iter_printf_token(token_list, printf);
+        // printf("\n\n\n");
+        // ft_list_iter_printf_token(token_list, printf);
         if (error_num != EXIT_ERROR_SYNTAX && token_list->next != NULL) //&& input_str[0])
             ft_program(token_list, envp_list);
         if (error_num == EXIT_ERROR_SYNTAX)
             exit_status_msh = EXIT_ERROR_SYNTAX;
         free(input_str);
         ft_list_free_for_token(&token_list->next);
-        system("leaks minishell");
+        // system("leaks minishell");
     }
     exit(EXIT_SUCCESS);
 }

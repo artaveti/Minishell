@@ -36,6 +36,8 @@ void ft_running_with_pipes(t_for_prog *prog, t_environment_list *envp_list)
         pid = fork();
         if (pid == 0)
         {
+          //ft_list_iter_printf_token(tmp_redir_list, printf);
+
           fd_out = dup(STDOUT_FILENO);
           ft_open_pipe_fd(prog->fd_arr, prog->fd_quant, i);
           ft_open_redir_fd(tmp_redir_list, fd_redir);
@@ -81,7 +83,7 @@ void ft_open_pipe_fd(int **fd_arr, int fd_quant, int i)
   if (i == 0)
     dup2(fd_arr[i][1], STDOUT_FILENO);
   else if (i == fd_quant)
-    dup2(fd_arr[i_mid][0], STDIN_FILENO);
+    dup2(fd_arr[i - 1][0], STDIN_FILENO);
   else
   {
     dup2(fd_arr[i_mid][0], STDIN_FILENO);

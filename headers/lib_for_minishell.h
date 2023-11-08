@@ -65,10 +65,6 @@ typedef struct s_for_prog
     int *pid_arr;
 } t_for_prog;
 
-
-
-
-
 //libft
 void	*ft_memmove(void	*dst, const void	*src, size_t	len); /////
 int     ft_memcmp(const void	*s1, const void	*s2, size_t	n); /////
@@ -147,14 +143,25 @@ void ft_additional_for_creat_joined_second(int *j, int *k, char **splitted_str, 
 //syntax_error
 void ft_syntax_error(t_token_list **list, int *error_num);
 
+//program
+void ft_program(t_token_list *token_list, t_environment_list *envp_list);
+void ft_creat_heredoc(t_token_list *token_list);
+void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environment_list *envp_list);
+char **ft_creat_envp_for_execve(t_environment_list *envp_list);
+char **ft_creat_path_argv_for_execve(char	**envp);
+int ft_fd_quant(t_token_list *token_list);
+int	**ft_make_and_open_pipes(int fd_quant);
+t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
+char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant);
+void ft_close_fd(int **fd, int fd_quant);
+void ft_waitpid_for_prog(t_for_prog *prog);
+void ft_free_for_prog(t_for_prog *prog);
+
+
 //execve
-char	**ft_prog_names_join(char	**path_arr, char	*prog_name);
-char    **ft_creat_envp_for_execve(t_environment_list *envp_list);
-void    ft_program(t_token_list *token_list, t_environment_list *envp_list);
-char	**ft_creat_path_argv_for_execve(char	**envp);
-int     ft_fd_quant(t_token_list *token_list);
-void	ft_close_fd(int **fd, int fd_quant);
 void ft_running_with_pipes(t_for_prog *prog, t_environment_list *envp_list);
+char	**ft_prog_names_join(char	**path_arr, char	*prog_name);
+
 //free
 void ft_free_double_pointer_array(char ***array);
 void ft_free_double_pointer_int(int ***array, int fd_quant);
