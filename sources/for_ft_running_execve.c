@@ -111,7 +111,7 @@ char	**ft_prog_names_join(char	**path_arr, char	*prog_name)
 	while (path_arr[i] != NULL)
 	{
 		str_backslash[i] = ft_strjoin(path_arr[i], "/");
-		prog_paths[i] = ft_strjoin_space(str_backslash[i], prog_name);
+		prog_paths[i] = ft_strjoin(str_backslash[i], prog_name);
 		free(str_backslash[i]);
 		i++;
 	}

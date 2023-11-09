@@ -15,7 +15,7 @@ void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environm
 
 
 
-void	ft_close_fd(int **fd, int fd_quant)
+void	ft_close_pipe_fd(int **fd, int fd_quant)
 {
 	int	i;
 

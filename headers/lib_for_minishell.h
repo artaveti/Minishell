@@ -11,10 +11,10 @@
 # include <fcntl.h> // open();
 
 # define START 100
-# define WHITESPACES " \t\r\n\v"
-# define WHITESPACES_RL "\t\r\n\v"
+# define WHITESPACES " \t\r\n\v\f"
+# define WHITESPACES_RL "\t\r\n\v\f"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
-# define NOT_WORD_CHARS " \t\r\n\v\'\"<>|"
+# define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define EXIT_ERROR_NO_F_OR_D 1
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_SYNTAX 258
@@ -65,20 +65,31 @@ typedef struct s_for_prog
     int *pid_arr;
 } t_for_prog;
 
+typedef struct s_for_fork
+{
+    pid_t   pid;
+    int     fd_out;
+    int     fd_redir[4];
+    char    **prog_paths;
+} t_for_fork;
+
 //libft
 void	*ft_memmove(void	*dst, const void	*src, size_t	len); /////
 int     ft_memcmp(const void	*s1, const void	*s2, size_t	n); /////
 size_t	ft_strlen(const	char *s); /////
 size_t	ft_strncmp(const char	*s1, const char	*s2, size_t	n); /////
-size_t	ft_strl_spc(const	char *s); /////
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize); /////
 char	**ft_split(char const	*s, char c); /////
 char	*ft_strchr(const char	*s, int c); /////
 char	*ft_strjoin(char const	*s1, char const	*s2); /////
+int     ft_isdigit(int c); /////
+int	    ft_atoi(const char	*str); /////
+long long	ft_longlong_atoi_for_pushswap(const char *str); /////
 char	*ft_itoa(int n); /////
-char	*ft_strjoin_space(char const	*s1, char const	*s2); /////
 char	*ft_strdup(const char	*s1); /////
 char    *ft_strdup_quant(const char	*str, size_t quant);
+//size_t	ft_strl_spc(const	char *s); /////
+//char	*ft_strjoin_space(char const	*s1, char const	*s2); /////
 
 //readline
 char *ft_readline(void);
@@ -153,7 +164,7 @@ int ft_fd_quant(t_token_list *token_list);
 int	**ft_make_and_open_pipes(int fd_quant);
 t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
 char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant);
-void ft_close_fd(int **fd, int fd_quant);
+void ft_close_pipe_fd(int **fd, int fd_quant);
 void ft_waitpid_for_prog(t_for_prog *prog);
 void ft_free_for_prog(t_for_prog *prog);
 
