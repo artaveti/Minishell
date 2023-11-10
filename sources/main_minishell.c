@@ -28,6 +28,7 @@ int main(int argc, char *argv[], char *envp[])
 
     (void)argc;
     (void)argv;
+    ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
     //ft_list_iter_printf_environment(envp_list, printf);
     token_list = ft_list_creat_token();
@@ -48,7 +49,7 @@ int main(int argc, char *argv[], char *envp[])
             exit_status_msh = EXIT_ERROR_SYNTAX;
         free(input_str);
         ft_list_free_for_token(&token_list->next);
-        // system("leaks minishell");
+        system("leaks minishell");
     }
     exit(EXIT_SUCCESS);
 }

@@ -5,10 +5,13 @@ int ft_count_envp_len(char *envp[]);
 t_environment_list	*ft_list_new_for_environment(char *string_from_envp);
 void ft_change_oldpwd_of_environment(t_environment_list **start_of_list);
 void ft_change_shlvl_of_environment(t_environment_list **start_of_list);
-int ft_change_shlvl_to_zero(t_environment_list *tmp_list, long long long_long_num);
-int ft_change_shlvl_to_num_or_null(t_environment_list *tmp_list, long long long_long_num);
+int ft_change_shlvl_to_zero(t_environment_list **list, long long long_long_num);
+int ft_change_shlvl_to_num_or_null(t_environment_list **list, long long long_long_num);
 int	ft_check_is_num_minus(const char *str);
 long long	ft_longlong_atoi_for_minishell(const char *str);
+void ft_list_creat_shlvl_for_environment(t_environment_list **list);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 t_environment_list   *ft_list_creat_environment(char *envp[])
 {
@@ -18,7 +21,10 @@ t_environment_list   *ft_list_creat_environment(char *envp[])
     int i;
 
     start_of_list = (t_environment_list *)malloc(sizeof(t_environment_list));
-    start_of_list->name_and_value = ft_split(envp[0], '=');
+    start_of_list->name_and_value = (char **)malloc(sizeof(char *) * 3);
+    start_of_list->name_and_value[0] = ft_creat_first_part_of_word(envp[0], "=");
+    start_of_list->name_and_value[1] = ft_strdup(ft_strchr(envp[0], '=') + 1);
+    start_of_list->name_and_value[2] = NULL;
     start_of_list->next = NULL;
 
     envp_len = ft_count_envp_len(envp);
@@ -29,9 +35,9 @@ t_environment_list   *ft_list_creat_environment(char *envp[])
         ft_list_add_back_for_environment(&start_of_list, tmp);
         i++;
     }
+    // ft_change_shlvl_of_environment(&start_of_list);
     ft_change_oldpwd_of_environment(&start_of_list);
-    ft_change_shlvl_of_environment(&start_of_list);
-    return   (start_of_list);
+    return (start_of_list);
 }
 
 
@@ -61,15 +67,14 @@ t_environment_list	*ft_list_new_for_environment(char *string_from_envp)
 	    result->name_and_value[0] = ft_strdup(string_from_envp);
         result->name_and_value[1] = NULL;
         result->name_and_value[2] = NULL;
-        return (result);
     }
     else
     {
         result->name_and_value[0] = ft_creat_first_part_of_word(string_from_envp, "=");
         result->name_and_value[1] = ft_strdup(ft_strchr(string_from_envp, '=') + 1);
         result->name_and_value[2] = NULL;
-        result->next = NULL;
     }
+    result->next = NULL;
 	return (result);
 }
 
@@ -95,7 +100,6 @@ void ft_change_oldpwd_of_environment(t_environment_list **start_of_list)
 
 
 
-
 void ft_change_shlvl_of_environment(t_environment_list **start_of_list)
 {
     t_environment_list *tmp_list;
@@ -107,20 +111,41 @@ void ft_change_shlvl_of_environment(t_environment_list **start_of_list)
         if (!ft_strncmp(tmp_list->name_and_value[0], "SHLVL", 6))
         {
             long_long_num = ft_longlong_atoi_for_minishell(tmp_list->name_and_value[1]);
-            if (ft_change_shlvl_to_zero(tmp_list, long_long_num))
+            if (ft_change_shlvl_to_zero(&tmp_list, long_long_num))
                 return ;
-            if (ft_change_shlvl_to_num_or_null(tmp_list, long_long_num))
+            else if (ft_change_shlvl_to_num_or_null(&tmp_list, long_long_num))
                 return ;
         }
         tmp_list = tmp_list->next;
     }
+    ft_list_creat_shlvl_for_environment(&tmp_list);
     return;
 }
 
 
 
-int ft_change_shlvl_to_zero(t_environment_list *tmp_list, long long long_long_num)
+void ft_list_creat_shlvl_for_environment(t_environment_list **list)
 {
+    t_environment_list *shlvl;
+
+    shlvl = (t_environment_list *)malloc(sizeof(t_environment_list));
+    shlvl->name_and_value = (char **)malloc(sizeof(char *) * 3);
+	shlvl->name_and_value[0] = ft_strdup("SHLVL");
+    shlvl->name_and_value[1] = ft_strdup("1");;
+    shlvl->name_and_value[2] = NULL;
+    shlvl->next = NULL;
+
+    list[0] = shlvl;
+    return ;
+}
+
+
+
+int ft_change_shlvl_to_zero(t_environment_list **list, long long long_long_num)
+{
+    t_environment_list *tmp_list;
+
+    tmp_list = *list;
     if (ft_check_is_num_minus(tmp_list->name_and_value[1])
         || (long_long_num >= 2147483647 || long_long_num <= -2147483648))
         {
@@ -133,10 +158,12 @@ int ft_change_shlvl_to_zero(t_environment_list *tmp_list, long long long_long_nu
 
 
 
-int ft_change_shlvl_to_num_or_null(t_environment_list *tmp_list, long long long_long_num)
+int ft_change_shlvl_to_num_or_null(t_environment_list **list, long long long_long_num)
 {
+    t_environment_list *tmp_list;
     char *alp_num;
 
+    tmp_list = *list;
     if (long_long_num < 2147483647 && long_long_num > -2147483648)
     {
         if (long_long_num == 999)
@@ -161,28 +188,6 @@ int ft_change_shlvl_to_num_or_null(t_environment_list *tmp_list, long long long_
     }
     return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
