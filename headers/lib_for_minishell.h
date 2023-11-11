@@ -16,11 +16,13 @@
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define EXIT_ERROR_NO_F_OR_D 1
+# define EXIT_ERROR_ARG 2
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_SYNTAX 258
 # define ERROR_REDIR "minishell"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_CMD_NOT_FOUND "minishell: %s: command not found\n"
+# define ERROR_ENV "env: Too many arguments\n"
 
 int exit_status_msh;
 
@@ -43,6 +45,7 @@ typedef enum s_type_of_token
 
 typedef struct s_environment_list
 {
+    int envp_flag;
     char **name_and_value;
     struct s_environment_list *next;
 } t_environment_list;
@@ -84,7 +87,7 @@ char	*ft_strchr(const char	*s, int c); /////
 char	*ft_strjoin(char const	*s1, char const	*s2); /////
 int     ft_isdigit(int c); /////
 int	    ft_atoi(const char	*str); /////
-long long	ft_longlong_atoi_for_pushswap(const char *str); /////
+long long	ft_longlong_atoi_for_minishell(const char *str); /////
 char	*ft_itoa(int n); /////
 char	*ft_strdup(const char	*s1); /////
 char    *ft_strdup_quant(const char	*str, size_t quant);
@@ -99,6 +102,7 @@ t_environment_list   *ft_list_creat_environment(char *envp[]); /////
 t_environment_list	*ft_list_last_for_environment(t_environment_list	*list); /////
 void	             ft_list_add_back_for_environment(t_environment_list	**list, t_environment_list	*list_for_add); /////
 int                  ft_list_length_for_environment(t_environment_list *list);
+void                 ft_change_shlvl_of_environment(t_environment_list **start_of_list);
 
 //token list
 t_token_list        *ft_list_creat_token(void); /////
@@ -188,5 +192,12 @@ void ft_list_iter_printf_token(t_token_list	*list,	int (f)(const char *, ...));
 void ft_list_iter_printf_environment(t_environment_list	*list, int (f)(const char *, ...));
 void ft_printf_double_arr(char **double_arr);
 void ft_printf_triple_arr(char ***triple_arr);
+
+//builtin
+int ft_env(char **str, t_environment_list *envp, int fd_out);
+int ft_export(char **str, t_environment_list **envp);
+int ft_unset(char **str, t_environment_list **envp);
+size_t streq(char *s1, char *s2);
+int wrong_name(char *str, char *name);
 
 #endif

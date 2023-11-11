@@ -17,7 +17,10 @@ char    **ft_creat_envp_for_execve(t_environment_list *envp_list)
     {
         envp_for_execve[i] = ft_strjoin(envp_list->name_and_value[0], "=");
         tmp_str = envp_for_execve[i];
-        envp_for_execve[i] = ft_strjoin(envp_for_execve[i], envp_list->name_and_value[1]);
+		if (envp_list->name_and_value[1] == NULL)
+			envp_for_execve[i] = ft_strjoin(envp_for_execve[i], "");
+		else
+			envp_for_execve[i] = ft_strjoin(envp_for_execve[i], envp_list->name_and_value[1]);
         free(tmp_str);
         envp_list = envp_list->next;
         i++;

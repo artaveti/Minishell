@@ -37,6 +37,7 @@ void	ft_list_iter_printf_environment(t_environment_list	*list, int (f)(const cha
 		f("ENVP_INDEX[%d]\n", i);
 		f("ENVP_NAME_AND_VALUE[0]:::%s\n", tmp->name_and_value[0]);
 		f("ENVP_NAME_AND_VALUE[1]:::%s\n", tmp->name_and_value[1]);
+		f("ENVP_FLAG:::%d\n", tmp->envp_flag);
 		tmp = tmp->next;
 		i++;
 	}

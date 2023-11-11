@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-long long	ft_longlong_atoi_for_pushswap(const char *str)
+long long	ft_longlong_atoi_for_minishell(const char *str)
 {
 	long long	num;
 	long long	minus;
