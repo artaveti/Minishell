@@ -7,8 +7,9 @@ int ft_env(char **str, t_environment_list *envp, int fd_out)
     {
         dup2(fd_out, STDOUT_FILENO);
         printf(ERROR_ENV);
-        exit(EXIT_ERROR_ARG);
+        //exit(EXIT_ERROR_ARG);
     }
+        printf("I am here\n");
     while (envp != NULL)
     {
         if (envp->envp_flag == 1)

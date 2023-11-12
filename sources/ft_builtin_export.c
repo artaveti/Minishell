@@ -1,17 +1,13 @@
+
 #include "lib_for_minishell.h"
-
-
 
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 void extractNameAndValue(char *String, char **name, char **value);
-int	ft_isalpha(int ch);
 void print_export(t_environment_list *envp, int assigned_val);
-int	ft_isalnum(int c);
 size_t get_index_of_char(const char *str, char c);
 int findEqualChar(const char *text);
 int check_order(char *str);
 void extract_2(char *String, char **name, char **value);
-int wrong_name(char *str, char *name);
 t_environment_list *set_last_node(t_environment_list **envp, int flag);  //setting flag
 int hasPlusEqual(char *str);
 t_environment_list *ft_list_new_for_export(char *string_from_envp);
@@ -43,7 +39,7 @@ int ft_export(char **str, t_environment_list **envp)
              extract_2(str[i], &name, &value);  // avelacnuma nami ev valui mej
         else
              extractNameAndValue(str[i], &name, &value);   // avelacnuma nami ev valui mej
-        if (wrong_name(str[i], name))   //CHECKING NAME 
+        if (ft_wrong_name(str[i]))   //CHECKING NAME 
         {
             if (str[i + 1])  //NOT LAST SKIP
                  i++;
@@ -234,59 +230,6 @@ void extractNameAndValue(char *String, char **name, char **value)   // avelacnum
 
 
 
-int wrong_name(char *str, char *name)  //CHECKING NAME 
-{
-    //(void)str;
-
-    //printf("%s\n", name);
-  
-    if (!(name[0] == '_' ||  ft_isalpha(name[0])) || !name || !(*name))
-    {
-       // printf("HERE\n");
-             printf("minishell: export: `%s': not a valid identifier\n", str);
-        return 1;
-    }
-    int len = ft_strlen(name);
-    int i = 0;
-
-    while (i < len)
-    {
-        if (!(ft_isalnum(name[i]) || name[i] == '_')) 
-        {
-            //printf("ERROR\n");
-            printf("minishell: export: `%s': not a valid identifier\n", name);
-            return 1;
-        }
-        i++;
-    }
-
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //add_new_node at the_end of_list
 t_environment_list *ft_list_new_for_export(char *string_from_envp)
 {
@@ -377,20 +320,6 @@ int plus_before_eq(char* str)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 t_environment_list *set_last_node(t_environment_list **envp, int flag)  //setting flag
 {
     if (*envp == NULL) 
@@ -422,20 +351,6 @@ int hasPlusEqual(char *str)
     }
     return 0; 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -510,33 +425,6 @@ char	*ft_strncpy(char *dest, char *src, unsigned int n)
 	}
 	return (dest);
 }
-
-
-
-
-
-int	ft_isalpha(int ch)
-{
-	if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') )
-		return (1);
-	return (0);
-}
-
-
-
-
-
-
-
-int	ft_isalnum(int c)
-{
-	if ((c >= '0' && c <= '9')
-		|| (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
-
-
 
 
 size_t get_index_of_char(const char *str, char c)

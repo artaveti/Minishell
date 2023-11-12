@@ -3,6 +3,7 @@
 
 void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environment_list *envp_list)
 {
+    ft_list_iter_printf_environment(envp_list, printf);
     prog->envp_for_execve = ft_creat_envp_for_execve(envp_list);
     prog->path_arr = ft_creat_path_argv_for_execve(prog->envp_for_execve);
     prog->fd_quant = ft_fd_quant(token_list);

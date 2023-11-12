@@ -196,8 +196,8 @@ void ft_printf_triple_arr(char ***triple_arr);
 //builtin
 int ft_env(char **str, t_environment_list *envp, int fd_out);
 int ft_export(char **str, t_environment_list **envp);
-int ft_unset(char **str, t_environment_list **envp);
+int ft_unset(char **array_of_strings, t_environment_list **envp);
 size_t streq(char *s1, char *s2);
-int wrong_name(char *str, char *name);
+int ft_wrong_name(char *str);
 
 #endif

@@ -19,6 +19,7 @@ t_environment_list   *ft_list_creat_environment(char *envp[])
     if (!envp || !envp[0] || envp == NULL || envp[0] == NULL)
         return (NULL);
     start_of_list = (t_environment_list *)malloc(sizeof(t_environment_list));
+    start_of_list->envp_flag = 1;
     start_of_list->name_and_value = (char **)malloc(sizeof(char *) * 3);
     start_of_list->name_and_value[0] = ft_creat_first_part_of_word(envp[0], "=");
     start_of_list->name_and_value[1] = ft_strdup(ft_strchr(envp[0], '=') + 1);

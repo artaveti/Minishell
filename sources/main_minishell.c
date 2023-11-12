@@ -18,6 +18,7 @@
 // isk ete grvuma "bash: miangamic patchary u symboly", apa cragiry vochmiban chi anum ev miangamic exita linum
 // heredoc buffer
 // maximum quant of heredoc is 16
+// petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
 
 
@@ -30,7 +31,7 @@ int main(int argc, char *argv[], char *envp[])
 
     (void)argc;
     (void)argv;
-    //ft_printf_double_arr(envp);
+    ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
     //ft_list_iter_printf_environment(envp_list, printf);
     token_list = ft_list_creat_token();
