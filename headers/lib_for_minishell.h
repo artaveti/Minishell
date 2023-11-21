@@ -11,18 +11,23 @@
 # include <fcntl.h> // open();
 
 # define START 100
+# define BUILTIN_EXIT 0
+# define BUILTIN_RETURN 1
 # define WHITESPACES " \t\r\n\v\f"
 # define WHITESPACES_RL "\t\r\n\v\f"
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define EXIT_ERROR_NO_F_OR_D 1
 # define EXIT_ERROR_ARG 2
+# define EXIT_ERROR_HEREDOC_QUANT 2
 # define EXIT_ERROR_CMD_NOT_FOUND 127
+# define EXIT_ERROR_ENV 127
 # define EXIT_ERROR_SYNTAX 258
 # define ERROR_REDIR "minishell"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_CMD_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_ENV "env: Too many arguments\n"
+# define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  //(exit amboghj bashic)
 
 int exit_status_msh;
 
@@ -155,13 +160,14 @@ char *ft_creat_joined_after_change(char *string, char **splitted_str, int quant)
 void ft_additional_for_creat_joined_first(int *i, int *k, char *string, char *joined_after_change);
 void ft_additional_for_creat_joined_second(int *j, int *k, char **splitted_str, char *joined_after_change);
 
-//syntax_error
+//syntax_error; heredoc_error
 void ft_syntax_error(t_token_list **list, int *error_num);
+void ft_heredoc_quant_error(t_token_list **list);
 
 //program
-void ft_program(t_token_list *token_list, t_environment_list *envp_list);
+void ft_program(t_token_list *token_list, t_environment_list **envp_list);
 void ft_creat_heredoc(t_token_list *token_list);
-void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environment_list *envp_list);
+void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environment_list **envp_list);
 char **ft_creat_envp_for_execve(t_environment_list *envp_list);
 char **ft_creat_path_argv_for_execve(char	**envp);
 int ft_fd_quant(t_token_list *token_list);
@@ -175,7 +181,7 @@ void ft_free_for_prog(t_for_prog *prog);
 
 
 //execve
-void ft_running_program(t_for_prog *prog, t_environment_list *envp_list);
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list);
 void ft_open_pipe_fd(int **fd_arr, int fd_quant, int i);
 void ft_open_redir_fd(t_token_list *redir_list, int *fd_redir);
 char **ft_prog_names_join(char	**path_arr, char	*prog_name);
@@ -194,9 +200,9 @@ void ft_printf_double_arr(char **double_arr);
 void ft_printf_triple_arr(char ***triple_arr);
 
 //builtin
-int ft_env(char **str, t_environment_list *envp, int fd_out);
-int ft_export(char **str, t_environment_list **envp);
-int ft_unset(char **array_of_strings, t_environment_list **envp);
+int ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num);
+int ft_export(char **str, t_environment_list **envp, int exit_num);
+int ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num);
 size_t streq(char *s1, char *s2);
 int ft_wrong_name(char *str);
 

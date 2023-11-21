@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-void ft_program(t_token_list *token_list, t_environment_list *envp_list)
+void ft_program(t_token_list *token_list, t_environment_list **envp_list)
 {
     t_for_prog prog;
 

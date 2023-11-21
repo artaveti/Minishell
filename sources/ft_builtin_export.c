@@ -17,8 +17,9 @@ char	*ft_strnstr(char *str, char *to_find, size_t len);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-int ft_export(char **str, t_environment_list **envp)
+int ft_export(char **str, t_environment_list **envp, int exit_num)
 {
+    (void)exit_num;
     int i = 0;   //tokenneri vrayov ancnelu hamar
     static int assigned_val; //if assigned, and than set again with no arg, don't remove from env list visibility 
     char *name = NULL;

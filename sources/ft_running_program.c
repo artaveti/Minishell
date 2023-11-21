@@ -1,20 +1,18 @@
 
 #include "lib_for_minishell.h"
 
-void ft_fork(t_token_list *tmp_redir_list, t_environment_list *envp_list, t_for_prog *prog, int i);
+void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i);
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
-void ft_is_command_builtin(char **array, t_environment_list *envp_list, int fd_num); // echo, cd, pwd, exit
+int ft_is_command_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num); // echo, cd, pwd, exit
 
-void ft_running_program(t_for_prog *prog, t_environment_list *envp_list)
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
 {
-
     t_token_list *tmp_redir_list;
+    int     check;
     int     i;
-    int fd_out;
-    fd_out = STDOUT_FILENO;
 
-    //(void)envp_list;
     tmp_redir_list = prog->redir_list;
+    check = 0;
     i = 0;
     while (prog->argv_for_execve[i] != NULL)
     {
@@ -25,8 +23,12 @@ void ft_running_program(t_for_prog *prog, t_environment_list *envp_list)
           tmp_redir_list = tmp_redir_list->next;
         }
         if (i == 0 && prog->argv_for_execve[1] == NULL)
-          ft_is_command_builtin(prog->argv_for_execve[i], envp_list, fd_out);
-        ft_fork(tmp_redir_list, envp_list, prog, i);
+          check = ft_is_command_builtin(prog->argv_for_execve[i], envp_list, STDOUT_FILENO, BUILTIN_RETURN);
+        if (check == 0)
+        {
+          printf("I am here\n");
+          ft_fork(tmp_redir_list, envp_list, prog, i);
+        }
         if (tmp_redir_list != NULL && tmp_redir_list->type == START)
           tmp_redir_list = tmp_redir_list->next;
         i++;
@@ -36,7 +38,7 @@ void ft_running_program(t_for_prog *prog, t_environment_list *envp_list)
 
 
 
-void ft_fork(t_token_list *tmp_redir_list, t_environment_list *envp_list, t_for_prog *prog, int i)
+void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i)
 {
      t_for_fork fk;
      
@@ -48,8 +50,8 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list *envp_list, t_for_
           ft_open_pipe_fd(prog->fd_arr, prog->fd_quant, i);
           ft_open_redir_fd(tmp_redir_list, fk.fd_redir);
           ft_close_pipe_fd(prog->fd_arr, prog->fd_quant);
-          //ft_is_command_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out);
-          //ft_execve(&fk, prog, i);
+          ft_is_command_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
+          ft_execve(&fk, prog, i);
           dup2(fk.fd_out, STDOUT_FILENO);
           printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);
 	        exit(EXIT_ERROR_CMD_NOT_FOUND);
@@ -84,16 +86,16 @@ void ft_execve(t_for_fork *fk, t_for_prog *prog, int i)
 
 
 
-
-
-void ft_is_command_builtin(char **array_of_strings, t_environment_list *envp_list_a, int fd_out) // echo, cd, pwd, unset exit
+int ft_is_command_builtin(char **array_of_strings, t_environment_list **envp_list_a, int fd_out, int exit_num) // echo, cd, pwd, exit
 {
-///// tarer pokracnel
-  if (!ft_strncmp(array_of_strings[0], "unset", 6))
-    ft_unset(array_of_strings, &envp_list_a);
-  else if (!ft_strncmp(array_of_strings[0], "env", 4))
-    ft_env(array_of_strings, envp_list_a, fd_out);
+  int check;
+
+  check = 0;
+  if (!ft_strncmp(array_of_strings[0], "env", 4))
+    check = ft_env(array_of_strings, *envp_list_a, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "export", 7))
-     ft_export(array_of_strings, &envp_list_a);
-  return ;
+     check = ft_export(array_of_strings, envp_list_a, exit_num);
+  else if (!ft_strncmp(array_of_strings[0], "unset", 6))
+    check = ft_unset(array_of_strings, envp_list_a, exit_num);
+  return (check);
 }

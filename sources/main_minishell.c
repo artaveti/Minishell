@@ -44,10 +44,11 @@ int main(int argc, char *argv[], char *envp[])
         // ft_list_iter_printf_token(token_list, printf);
         ft_parser(&token_list, envp_list);
         ft_syntax_error(&token_list->next, &error_num);
+        ft_heredoc_quant_error(&token_list->next);
         // printf("\n\n\n");
         // ft_list_iter_printf_token(token_list, printf);
         if (error_num != EXIT_ERROR_SYNTAX && token_list->next != NULL) //&& input_str[0])
-            ft_program(token_list, envp_list);
+            ft_program(token_list, &envp_list);
         if (error_num == EXIT_ERROR_SYNTAX)
             exit_status_msh = EXIT_ERROR_SYNTAX;
         free(input_str);
