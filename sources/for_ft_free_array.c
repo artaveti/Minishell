@@ -6,6 +6,8 @@ void ft_free_double_pointer_array(char ***array)
     int i;
     char **tmp;
 
+    if (!*array || *array == NULL)
+        return ;
     tmp = *array;
     i = 0;
     while (tmp[i] != NULL)
@@ -21,14 +23,14 @@ void ft_free_double_pointer_array(char ***array)
 
 
 
-void ft_free_double_pointer_int(int ***array, int fd_quant)
+void ft_free_double_pointer_int(int ***array, int fd_quant_pipe)
 {
     int i;
     int **tmp;
 
     tmp = *array;
     i = 0;
-    while (i < fd_quant)
+    while (i < fd_quant_pipe)
     {
         free(tmp[i]);
         tmp[i] = NULL;

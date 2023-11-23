@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-void ft_parser_third_change_q_to_w(t_token_list **list, t_environment_list *envp_list)
+void ft_parser_third_change_quotes_to_word(t_token_list **list, t_environment_list *envp_list)
 {
     t_token_list *tmp;
 

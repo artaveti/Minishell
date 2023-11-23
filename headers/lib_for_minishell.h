@@ -7,18 +7,17 @@
 #include <readline/readline.h>// readline();
 #include <readline/history.h> // readline();
 #include <unistd.h> // execve();
-#include <termios.h>
+#include <termios.h> // ?
 # include <fcntl.h> // open();
 
 # define START 100
-# define BUILTIN_EXIT 0
-# define BUILTIN_RETURN 1
 # define WHITESPACES " \t\r\n\v\f"
-# define WHITESPACES_RL "\t\r\n\v\f"
+# define WHITESPACES_RL "\t\r\n\v\f" // without space
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
-# define EXIT_ERROR_NO_F_OR_D 1
-# define EXIT_ERROR_ARG 2
+# define BUILTIN_EXIT 0
+# define BUILTIN_RETURN 1
+# define EXIT_ERROR_NO_FILE_OR_DIRECTORY 1
 # define EXIT_ERROR_HEREDOC_QUANT 2
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_ENV 127
@@ -68,8 +67,10 @@ typedef struct s_for_prog
     char **envp_for_execve;
     char **path_arr;
     char ***argv_for_execve;
-    int fd_quant;
-    int **fd_arr;
+    int fd_quant_heredoc;
+    int fd_quant_pipe;
+    int **fd_arr_pipe;
+    int **fd_arr_heredoc;
     int *pid_arr;
 } t_for_prog;
 
@@ -77,43 +78,43 @@ typedef struct s_for_fork
 {
     pid_t   pid;
     int     fd_out;
-    int     fd_redir[4];
+    int     fd_redir[3];
     char    **prog_paths;
 } t_for_fork;
 
 //libft
-void	*ft_memmove(void	*dst, const void	*src, size_t	len); /////
-int     ft_memcmp(const void	*s1, const void	*s2, size_t	n); /////
-size_t	ft_strlen(const	char *s); /////
-size_t	ft_strncmp(const char	*s1, const char	*s2, size_t	n); /////
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize); /////
-char	**ft_split(char const	*s, char c); /////
-char	*ft_strchr(const char	*s, int c); /////
-char	*ft_strjoin(char const	*s1, char const	*s2); /////
-int     ft_isdigit(int c); /////
-int	    ft_atoi(const char	*str); /////
-long long	ft_longlong_atoi_for_minishell(const char *str); /////
-char	*ft_itoa(int n); /////
-char	*ft_strdup(const char	*s1); /////
+void	*ft_memmove(void	*dst, const void	*src, size_t	len);
+int     ft_memcmp(const void	*s1, const void	*s2, size_t	n);
+size_t	ft_strlen(const	char *s);
+size_t	ft_strncmp(const char	*s1, const char	*s2, size_t	n);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char	**ft_split(char const	*s, char c);
+char	*ft_strchr(const char	*s, int c);
+char	*ft_strjoin(char const	*s1, char const	*s2);
+int     ft_isdigit(int c);
+int	    ft_atoi(const char	*str);
+long long	ft_longlong_atoi_for_minishell(const char *str);
+char	*ft_itoa(int n);
+char	*ft_strdup(const char	*s1);
 char    *ft_strdup_quant(const char	*str, size_t quant);
-//size_t	ft_strl_spc(const	char *s); /////
-//char	*ft_strjoin_space(char const	*s1, char const	*s2); /////
+//size_t	ft_strl_spc(const	char *s);
+//char	*ft_strjoin_space(char const	*s1, char const	*s2);
 
 //readline
 char *ft_readline(void);
 
 //environment list
-t_environment_list   *ft_list_creat_environment(char *envp[]); /////
-t_environment_list	*ft_list_last_for_environment(t_environment_list	*list); /////
-void	             ft_list_add_back_for_environment(t_environment_list	**list, t_environment_list	*list_for_add); /////
+t_environment_list   *ft_list_creat_environment(char *envp[]);
+t_environment_list	*ft_list_last_for_environment(t_environment_list	*list);
+void	             ft_list_add_back_for_environment(t_environment_list	**list, t_environment_list	*list_for_add);
 int                  ft_list_length_for_environment(t_environment_list *list);
 void                 ft_change_shlvl_of_environment(t_environment_list **start_of_list);
 
 //token list
-t_token_list        *ft_list_creat_token(void); /////
-t_token_list	    *ft_list_last_for_token(t_token_list	*list); /////
-void	            ft_list_add_back_for_token(t_token_list	**list, t_token_list	*new_list); /////
-void                ft_list_free_for_token(t_token_list **list); /////
+t_token_list        *ft_list_creat_token(void);
+t_token_list	    *ft_list_last_for_token(t_token_list	*list);
+void	            ft_list_add_back_for_token(t_token_list	**list, t_token_list	*new_list);
+void                ft_list_free_for_token(t_token_list **list);
 int                 ft_list_length_for_token(t_token_list *list);
 
 //lexer
@@ -130,7 +131,7 @@ void ft_is_token_word(int *i, char *input_str, t_token_list *token_list);
 void ft_parser(t_token_list **token_list, t_environment_list *envp_list);
 void ft_parser_first_change_dollar(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_second_change_dollar(t_token_list **list, t_environment_list *envp_list);
-void ft_parser_third_change_q_to_w(t_token_list **list, t_environment_list *envp_list);
+void ft_parser_third_change_quotes_to_word(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fourth_join_w(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_remove_sep_from_list(t_token_list **list, t_environment_list *envp_list);
@@ -166,31 +167,28 @@ void ft_heredoc_quant_error(t_token_list **list);
 
 //program
 void ft_program(t_token_list *token_list, t_environment_list **envp_list);
-void ft_creat_heredoc(t_token_list *token_list);
 void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environment_list **envp_list);
 char **ft_creat_envp_for_execve(t_environment_list *envp_list);
 char **ft_creat_path_argv_for_execve(char	**envp);
-int ft_fd_quant(t_token_list *token_list);
-int	**ft_make_and_open_pipes(int fd_quant);
 t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
-char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant);
-void ft_close_pipe_fd(int **fd, int fd_quant);
+char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant_pipe);
 void ft_waitpid_for_prog(t_for_prog *prog);
 void ft_free_for_prog(t_for_prog *prog);
 
-
+//pipe
+int ft_fd_quant(t_token_list *token_list, int type);
+int	**ft_creat_and_open_pipes(int fd_quant_pipe);
+void ft_input_to_heredoc(t_token_list *token_list, int **fd_arr_heredoc);
+void ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 
 //execve
 void ft_running_program(t_for_prog *prog, t_environment_list **envp_list);
-void ft_open_pipe_fd(int **fd_arr, int fd_quant, int i);
-void ft_open_redir_fd(t_token_list *redir_list, int *fd_redir);
-char **ft_prog_names_join(char	**path_arr, char	*prog_name);
-
-
+void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i);
+void ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe);
 
 //free
 void ft_free_double_pointer_array(char ***array);
-void ft_free_double_pointer_int(int ***array, int fd_quant);
+void ft_free_double_pointer_int(int ***array, int fd_quant_pipe);
 void ft_free_triple_pointer_array(char ****array);
 
 //printf

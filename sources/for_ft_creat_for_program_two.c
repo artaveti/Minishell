@@ -52,11 +52,11 @@ void ft_creat_token_for_redir(t_token_list *redir_list, char *string, int type)
 
 
 
-char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant)
+char ***ft_creat_argv_for_execve(t_token_list *token_list, int fd_quant_pipe)
 {   
     char ***argv_for_execve;
     
-    argv_for_execve = (char ***)malloc(sizeof(char **) * (fd_quant + 2));
+    argv_for_execve = (char ***)malloc(sizeof(char **) * (fd_quant_pipe + 2));
     ft_assign_word_to_argv(token_list, argv_for_execve);
     ft_assign_string_to_word_of_argv(token_list, argv_for_execve);
     return (argv_for_execve);

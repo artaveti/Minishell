@@ -27,13 +27,3 @@ void	*ft_memmove(void	*dst, const void	*src, size_t	len)
 		return (dst);
 	}
 }
-
-/*int	main(void)
-{
-	char	dst[] = "11111111111";
-	char	src[] = "abcdef";
-
-  ft_memmove(dst, src, 3);
-	//memmove(dst, src, 2);
-	printf("%s\n%s\n", dst, src);
-}*/
