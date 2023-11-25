@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-int ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num)
+void ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num)
 {
     if (str[1] != NULL)
     {
@@ -12,7 +12,7 @@ int ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num)
         else
         {
             exit_status_msh = EXIT_ERROR_ENV;
-            return (BUILTIN_RETURN);
+            return ;
         }
     }
     while (envp != NULL)
@@ -26,6 +26,6 @@ int ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num)
     else
     {
         exit_status_msh = 0;
-        return (BUILTIN_RETURN);
+        return ;
     }
 }

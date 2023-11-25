@@ -3,7 +3,7 @@
 
 void unset(t_environment_list **head, const char *name);
 
-int ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num)
+void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num)
 {
     int i = 1;
     while (array_of_strings[i] != NULL)
@@ -18,7 +18,7 @@ int ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num)
     else
     {
         exit_status_msh = 0;
-        return (BUILTIN_RETURN);
+        return ;
     }
 }
 

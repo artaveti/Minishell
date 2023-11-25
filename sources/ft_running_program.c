@@ -4,9 +4,7 @@
 void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i);
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
 char **ft_prog_names_join(char	**path_arr, char	*prog_name);
-int ft_is_command_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num); // echo, cd, pwd, exit
 
-void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check, int i);
 
 void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
 {
@@ -25,7 +23,8 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
             break;
           tmp_redir_list = tmp_redir_list->next;
         }
-        ft_if_only_one_builtin(tmp_redir_list, envp_list, prog, &check, i);
+        if (i == 0 && prog->argv_for_execve[1] == NULL)
+          ft_if_only_one_builtin(tmp_redir_list, envp_list, prog, &check);
         if (check == 0)
           ft_fork(tmp_redir_list, envp_list, prog, i);
         if (tmp_redir_list != NULL && tmp_redir_list->type == START)
@@ -49,7 +48,7 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc);
       ft_close_pipe_fd(prog->fd_arr_pipe, prog->fd_quant_pipe);
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
-      ft_is_command_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
+      ft_running_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
       ft_execve(&fk, prog, i);
       dup2(fk.fd_out, STDOUT_FILENO);
       printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);
@@ -57,27 +56,6 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
     }
     prog->pid_arr[i] = fk.pid;
     return ;
-}
-
-
-
-void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check, int i)
-{
-  int fd_redir[3];
-
-  if (i == 0 && prog->argv_for_execve[1] == NULL)
-  {
-      if (!ft_strncmp(prog->argv_for_execve[i][0], "env", 4)
-        || !ft_strncmp(prog->argv_for_execve[i][0], "export", 7)
-        || !ft_strncmp(prog->argv_for_execve[i][0], "unset", 6))
-        *check = BUILTIN_RETURN;
-      else
-        return ;
-  }
-  ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_redir, prog->fd_arr_heredoc);
-  ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
-  ft_is_command_builtin(prog->argv_for_execve[0], envp_list, STDOUT_FILENO, BUILTIN_RETURN);
-  return ;
 }
 
 
@@ -102,22 +80,6 @@ void ft_execve(t_for_fork *fk, t_for_prog *prog, int i)
     }
   }
   return ;
-}
-
-
-
-int ft_is_command_builtin(char **array_of_strings, t_environment_list **envp_list_a, int fd_out, int exit_num) // echo, cd, pwd, exit
-{
-  int check;
-
-  check = 0;
-  if (!ft_strncmp(array_of_strings[0], "env", 4))
-    check = ft_env(array_of_strings, *envp_list_a, fd_out, exit_num);
-  else if (!ft_strncmp(array_of_strings[0], "export", 7))
-     check = ft_export(array_of_strings, envp_list_a, exit_num);
-  else if (!ft_strncmp(array_of_strings[0], "unset", 6))
-    check = ft_unset(array_of_strings, envp_list_a, exit_num);
-  return (check);
 }
 
 

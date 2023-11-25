@@ -19,6 +19,7 @@ char	*ft_strnstr(char *str, char *to_find, size_t len);
 
 int ft_export(char **str, t_environment_list **envp, int exit_num)
 {
+    printf("I am in EXPORT\n");
     (void)exit_num;
     int i = 0;   //tokenneri vrayov ancnelu hamar
     static int assigned_val; //if assigned, and than set again with no arg, don't remove from env list visibility 
@@ -40,13 +41,13 @@ int ft_export(char **str, t_environment_list **envp, int exit_num)
              extract_2(str[i], &name, &value);  // avelacnuma nami ev valui mej
         else
              extractNameAndValue(str[i], &name, &value);   // avelacnuma nami ev valui mej
-        if (ft_wrong_name(str[i]))   //CHECKING NAME 
-        {
-            if (str[i + 1])  //NOT LAST SKIP
-                 i++;
-                else
-                    break;  //IF LAST ONE STOP
-        }
+        // if (ft_wrong_name(str[i]))   //CHECKING NAME 
+        // {
+        //     if (str[i + 1])  //NOT LAST SKIP
+        //          i++;
+        //         else
+        //             break;  //IF LAST ONE STOP
+        // }
 
 
 

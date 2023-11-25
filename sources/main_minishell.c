@@ -1,6 +1,7 @@
 
 #include "lib_for_minishell.h"
 
+// chakertneri qanaki error !!!
 // configur exit_status_msh
 // ctrl + C must change exit_status_msh to 1
 // skzbic mana galis heredocery, ete ka bacuma, ete tesnum syntax error gruma dra masin ev stopa talis, aysinqn heredocery chi bacum
@@ -23,12 +24,16 @@ int main(int argc, char *argv[], char *envp[])
     char *input_str;
     int error_num;
 
+// char *e[1];
+// e[0] = NULL;
+// (void)envp;
+
     (void)argc;
     (void)argv;
-    ft_printf_double_arr(envp); ///////////
+    //ft_printf_double_arr(envp); ///////////
     envp_list = ft_list_creat_environment(envp);
     //ft_list_iter_printf_environment(envp_list, printf);
-    //envp_list = NULL;
+    // envp_list = NULL;
     token_list = ft_list_creat_token();
     exit_status_msh = 0;
     while(1)

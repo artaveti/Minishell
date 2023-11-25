@@ -30,8 +30,8 @@ void ft_waitpid_for_prog(t_for_prog *prog)
     if (prog->fd_quant_pipe == 0 && prog->argv_for_execve[1] == NULL)
     {
         if (!ft_strncmp(prog->argv_for_execve[0][0], "env", 4)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
          || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6))
+        //  || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
         return ;
     }
     while (i < prog->fd_quant_pipe + 1)
