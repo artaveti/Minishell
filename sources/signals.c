@@ -2,6 +2,15 @@
 // #include <termios.h>
 // #include <stdlib.h> //exit();
 
+// void	inthandle(int sig);
+// void	handleterm(int sig);
+
+// void	ft_signal(int handle)
+// {
+// 	handleterm(handle);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, inthandle);
+// }
 // void	inthandle(int sig)
 // {
 // 	(void)sig;
@@ -21,13 +30,6 @@
 // 		term.c_lflag &= ~ECHOCTL;
 // 		tcsetattr(0, TCSANOW, &term);
 // 	}
-// }
-
-// void	ft_signal(int handle)
-// {
-// 	handleterm(handle);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGINT, inthandle);
 // }
 
 

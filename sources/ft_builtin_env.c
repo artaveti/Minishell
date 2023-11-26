@@ -8,10 +8,10 @@ void ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num)
         dup2(fd_out, STDOUT_FILENO);
         printf(ERROR_ENV);
         if (exit_num == BUILTIN_EXIT)
-            exit(EXIT_ERROR_ENV);
+            exit(EXIT_FAILURE);
         else
         {
-            exit_status_msh = EXIT_ERROR_ENV;
+            exit_status_msh = EXIT_FAILURE;
             return ;
         }
     }

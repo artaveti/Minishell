@@ -1,6 +1,7 @@
 
 #include "lib_for_minishell.h"
 
+// argumentneri qanaki error !!!
 // chakertneri qanaki error !!!
 // configur exit_status_msh
 // ctrl + C must change exit_status_msh to 1

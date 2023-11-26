@@ -40,7 +40,7 @@ char	**ft_creat_path_argv_for_execve(char	**envp)
 	i = 0;
 	j = 0;
 	path_arr = NULL;
-	if (!envp)
+	if (!envp || envp == NULL)
 		return (path_arr);
 	while (envp[i] != NULL)
 	{

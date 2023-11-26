@@ -23,7 +23,8 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
             break;
           tmp_redir_list = tmp_redir_list->next;
         }
-        if (i == 0 && prog->argv_for_execve[1] == NULL)
+        if (i == 0 && prog->argv_for_execve[0][0] != NULL
+            && prog->argv_for_execve[1] == NULL)
           ft_if_only_one_builtin(tmp_redir_list, envp_list, prog, &check);
         if (check == 0)
           ft_fork(tmp_redir_list, envp_list, prog, i);

@@ -7,7 +7,7 @@
 #include <readline/readline.h>// readline();
 #include <readline/history.h> // readline();
 #include <unistd.h> // execve();
-#include <termios.h> // ?
+#include <termios.h> // for signals ???
 # include <fcntl.h> // open();
 
 # define START 100
@@ -20,7 +20,6 @@
 # define EXIT_ERROR_NO_FILE_OR_DIRECTORY 1
 # define EXIT_ERROR_HEREDOC_QUANT 2
 # define EXIT_ERROR_CMD_NOT_FOUND 127
-# define EXIT_ERROR_ENV 127
 # define EXIT_ERROR_SYNTAX 258
 # define ERROR_REDIR "minishell"
 # define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
