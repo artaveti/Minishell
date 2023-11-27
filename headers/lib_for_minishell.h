@@ -17,6 +17,7 @@
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define BUILTIN_EXIT 0
 # define BUILTIN_RETURN 1
+# define ONLY_ONE_BUILTIN 1
 # define EXIT_ERROR_NO_FILE_OR_DIRECTORY 1
 # define EXIT_ERROR_HEREDOC_QUANT 2
 # define EXIT_ERROR_CMD_NOT_FOUND 127
@@ -184,7 +185,7 @@ void ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 //execve
 void ft_running_program(t_for_prog *prog, t_environment_list **envp_list);
 void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i);
-void ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe);
+int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtint);
 
 //free
 void ft_free_double_pointer_array(char ***array);

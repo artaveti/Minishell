@@ -38,14 +38,26 @@ void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **e
 
 void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check)
 {
+  int fd_in;
+  int fd_out;
   int fd_redir[3];
-  
+
+  fd_in = dup(STDIN_FILENO);
+  fd_out = dup(STDOUT_FILENO);
   *check = BUILTIN_RETURN;
-  ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_redir,
-    prog->fd_arr_heredoc);
+  if (ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_redir,
+    prog->fd_arr_heredoc, ONLY_ONE_BUILTIN) == EXIT_ERROR_NO_FILE_OR_DIRECTORY)
+    {
+      ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
+      dup2(fd_in, STDIN_FILENO);
+      dup2(fd_out, STDOUT_FILENO);
+      return ;
+    }
   ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
   ft_running_builtin(prog->argv_for_execve[0], envp_list,
-      STDOUT_FILENO, BUILTIN_RETURN);
+      fd_out, BUILTIN_RETURN);
+  dup2(fd_in, STDIN_FILENO);
+  dup2(fd_out, STDOUT_FILENO);
   return ;
 }
 

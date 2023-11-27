@@ -1,8 +1,8 @@
 
 #include "lib_for_minishell.h"
 
-void ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe);
-void ft_dup2_stdout(t_token_list *redir_list, int *fd_redir);
+int ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtin);
+int ft_dup2_stdout(t_token_list *redir_list, int *fd_redir);
 
 void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i)
 {
@@ -25,29 +25,32 @@ void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i)
 
 
 
-void ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe)
+int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtint)
 {
+  int return_num;
+
+  return_num = 0;
   if (redir_list == NULL)
-    return;
+    return (return_num);
   if (redir_list->type == START)
     redir_list = redir_list->next;
   while(redir_list != NULL && redir_list->type != START)
   {
-    ft_dup2_stdin(redir_list, fd_redir, heredoc_pipe);
+    return_num = ft_dup2_stdin(redir_list, fd_redir, heredoc_pipe,
+      only_one_builtint);
     ft_dup2_stdout(redir_list, fd_redir);
     redir_list = redir_list->next;
   }
-  return ;
+  return (return_num);
 }
 
 
 
-void ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe)
+int ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtin)
 {
     char *error_str;
     int num;
     
-    error_str = NULL;
     if (redir_list->type == REDIR_INT)
     {
       fd_redir[0] = open(redir_list->value, O_RDONLY, 0644);
@@ -56,8 +59,10 @@ void ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe)
         error_str = ft_strjoin("minishell: ", redir_list->value);
         perror(error_str);
         free(error_str);
+        if (only_one_builtin != ONLY_ONE_BUILTIN)
+          exit(EXIT_ERROR_NO_FILE_OR_DIRECTORY);
         exit_status_msh = 1;
-        exit(EXIT_ERROR_NO_FILE_OR_DIRECTORY);
+        return (EXIT_ERROR_NO_FILE_OR_DIRECTORY);
       }
       dup2(fd_redir[0], STDIN_FILENO);
       close(fd_redir[0]);
@@ -67,12 +72,12 @@ void ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe)
       num = ft_atoi(redir_list->value);
       dup2(heredoc_pipe[num][0], STDIN_FILENO);
     }
-return ;
+return (0);
 }
 
 
 
-void ft_dup2_stdout(t_token_list *redir_list, int *fd_redir)
+int ft_dup2_stdout(t_token_list *redir_list, int *fd_redir)
 {
     if (redir_list->type == REDIR_OUT)
     {
@@ -86,5 +91,5 @@ void ft_dup2_stdout(t_token_list *redir_list, int *fd_redir)
       dup2(fd_redir[2], STDOUT_FILENO);
       close(fd_redir[2]);
     }
-return ;
+return (0);
 }

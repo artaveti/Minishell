@@ -3,7 +3,9 @@
 
 // argumentneri qanaki error !!!
 // chakertneri qanaki error !!!
+// tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
 // configur exit_status_msh
+// in unset->wrong_name change for working export and unset functions names
 // ctrl + C must change exit_status_msh to 1
 // skzbic mana galis heredocery, ete ka bacuma, ete tesnum syntax error gruma dra masin ev stopa talis, aysinqn heredocery chi bacum
 // maximum quant of heredoc is 16
@@ -31,7 +33,7 @@ int main(int argc, char *argv[], char *envp[])
 
     (void)argc;
     (void)argv;
-    //ft_printf_double_arr(envp); ///////////
+    ft_printf_double_arr(envp); ///////////
     envp_list = ft_list_creat_environment(envp);
     //ft_list_iter_printf_environment(envp_list, printf);
     // envp_list = NULL;

@@ -46,7 +46,7 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
      {
       fk.fd_out = dup(STDOUT_FILENO);
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
-      ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc);
+      ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);
       ft_close_pipe_fd(prog->fd_arr_pipe, prog->fd_quant_pipe);
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
       ft_running_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
