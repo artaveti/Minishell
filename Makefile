@@ -17,7 +17,7 @@ AR 		= ar rcs
 RM 		= rm -rf
 MK 		= mkdir -p
 
-all: $(OBJECTS_DIR) $(NAME)
+all: $(OBJECTS_DIR) $(NAME) #petke avelacnel "readline" bary "all:"-ic heto
 
 $(OBJECTS_DIR): $(HEADERS_DIR) $(SOURCES_DIR)
 	$(MK) $(OBJECTS_DIR)

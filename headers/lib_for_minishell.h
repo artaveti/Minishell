@@ -101,6 +101,9 @@ void	ft_str_to_lowercase(char *str);
 //size_t	ft_strl_spc(const	char *s);
 //char	*ft_strjoin_space(char const	*s1, char const	*s2);
 
+//for_main
+void   ft_loop(t_token_list *token_list, t_environment_list *envp_list);
+
 //readline
 char *ft_readline(void);
 
