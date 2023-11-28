@@ -41,6 +41,9 @@ typedef enum s_type_of_token
     HEREDOC, //6
     PIPE, //7
     WORD, //8
+    HEREDOC_W, //9
+    HEREDOC_Q_S, //10
+    HEREDOC_Q_D, //11
     // AND,
     // OR,
     // PAR_LEFT,
@@ -102,7 +105,7 @@ void	ft_str_to_lowercase(char *str);
 //char	*ft_strjoin_space(char const	*s1, char const	*s2);
 
 //for_main
-void   ft_loop(t_token_list *token_list, t_environment_list *envp_list);
+void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list);
 
 //readline
 char *ft_readline(void);
@@ -209,5 +212,8 @@ size_t streq(char *s1, char *s2);
 int ft_wrong_name(char *str);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
+
+//heredoc
+void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
 
 #endif

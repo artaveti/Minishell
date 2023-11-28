@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-void   ft_loop(t_token_list *token_list, t_environment_list *envp_list)
+void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list)
 {
     char *input_str;
     int error_num;
@@ -14,6 +14,8 @@ void   ft_loop(t_token_list *token_list, t_environment_list *envp_list)
         ft_parser(&token_list, envp_list);
         ft_syntax_error(&token_list->next, &error_num);
         ft_heredoc_quant_error(&token_list->next);
+        ft_creat_token_for_heredoc(input_str, heredoc_list, envp_list);
+        // ft_list_iter_printf_token(heredoc_list, printf);
         if (error_num != EXIT_ERROR_SYNTAX
             && token_list->next != NULL)
             ft_program(token_list, &envp_list);
@@ -21,7 +23,8 @@ void   ft_loop(t_token_list *token_list, t_environment_list *envp_list)
             exit_status_msh = EXIT_ERROR_SYNTAX;
         free(input_str);
         ft_list_free_for_token(&token_list->next);
-        // system("leaks minishell");
+        ft_list_free_for_token(&heredoc_list->next);
+        system("leaks minishell");
     }
     return ;
 }

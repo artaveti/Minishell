@@ -9,7 +9,8 @@ void ft_parser_third_change_quotes_to_word(t_token_list **list, t_environment_li
     tmp = *list;
     while (tmp != NULL)
     {
-        if (tmp->type == Q_SINGLE || tmp->type == Q_DOUBLE)
+        if (tmp->type == Q_SINGLE
+            || tmp->type == Q_DOUBLE)
             tmp->type = WORD;
         tmp = tmp->next;
     }
@@ -27,7 +28,9 @@ void ft_parser_fourth_join_w(t_token_list **list, t_environment_list *envp_list)
     tmp = *list;
     while (tmp != NULL)
     {
-        if (tmp->type == WORD && tmp->next != NULL && tmp->next->type == WORD)
+        if (tmp->type == WORD
+            && tmp->next != NULL
+            && tmp->next->type == WORD)
         {
             tmp_string = tmp->next->value;
             tmp->next->value = ft_strjoin(tmp->value, tmp->next->value);
@@ -51,14 +54,17 @@ void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list 
     tmp = *list;
     while (tmp != NULL)
     {
-        if ((tmp->type == REDIR_INT || tmp->type == REDIR_OUT
-            || tmp->type == REDIR_APPEND || tmp->type == HEREDOC)
-            && tmp->next != NULL && tmp->next->type == WORD)
+        if ((tmp->type == REDIR_INT
+            || tmp->type == REDIR_OUT
+            || tmp->type == REDIR_APPEND
+            || tmp->type == HEREDOC)
+            && tmp->next != NULL
+            && tmp->next->type == WORD)
         {
             tmp->value = ft_strdup(tmp->next->value);
             free(tmp->next->value);
-            tmp->next->value = NULL;
             tmp->next->type = SEP;
+            tmp->next->value = NULL;
         }
         tmp = tmp->next;
     }

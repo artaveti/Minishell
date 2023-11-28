@@ -24,6 +24,7 @@ int main(int argc, char *argv[], char *envp[])
 {
     t_environment_list *envp_list;
     t_token_list *token_list;
+    t_token_list *heredoc_list;
 
 // char *e[1];
 // e[0] = NULL;
@@ -36,7 +37,8 @@ int main(int argc, char *argv[], char *envp[])
     //ft_list_iter_printf_environment(envp_list, printf);
     // envp_list = NULL;
     token_list = ft_list_creat_token();
+    heredoc_list = ft_list_creat_token();
     exit_status_msh = 0;
-    ft_loop(token_list, envp_list);
+    ft_loop(token_list, heredoc_list, envp_list);
     exit(EXIT_SUCCESS);
 }

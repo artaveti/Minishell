@@ -40,7 +40,8 @@ void ft_parser_second_change_dollar(t_token_list **list, t_environment_list *env
     tmp = *list;
     while (tmp != NULL)
     {
-        if (tmp->type == WORD && tmp->next != NULL
+        if (tmp->type == WORD
+            && tmp->next != NULL
             && (tmp->next->type == Q_SINGLE || tmp->next->type == Q_DOUBLE))
             {
                 tmp_string = ft_change_char_from_the_last(tmp->value, '$');

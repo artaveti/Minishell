@@ -64,6 +64,12 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i)
 {
   int j;
+
+  // char **tmp_argv;
+  // tmp_argv = (char **)malloc(sizeof(char *) * 3);
+  // tmp_argv[0] = "pwd";
+  // tmp_argv[1] = "EOF";
+  // tmp_argv[2] = NULL;
   
   if (prog->argv_for_execve[i][0] == NULL)
     exit(EXIT_SUCCESS);
@@ -76,7 +82,10 @@ void ft_execve(t_for_fork *fk, t_for_prog *prog, int i)
     while (fk->prog_paths != NULL && fk->prog_paths[j] != NULL)
     {
       if ((access(fk->prog_paths[j], F_OK) == 0))
-        execve(fk->prog_paths[j], prog->argv_for_execve[i], prog->envp_for_execve);
+      {
+        // printf("(%s)\n", prog->argv_for_execve[i][2]);
+        execve(fk->prog_paths[j], prog->argv_for_execve[i], prog->envp_for_execve); //prog->argv_for_execve[i]
+      }
       j++;
     }
   }
