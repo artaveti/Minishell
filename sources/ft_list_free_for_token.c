@@ -12,18 +12,20 @@ void    ft_list_free_for_token(t_token_list **list)
     while(tmp != NULL)
     {
         next = tmp->next;
-        if (tmp->type == WORD
-            || tmp->type == REDIR_INT
-            || tmp->type == REDIR_OUT
-            || tmp->type == REDIR_APPEND
-            || tmp->type == HEREDOC
-            || tmp->type == HEREDOC_W
-            || tmp->type == HEREDOC_Q_S
-            || tmp->type == HEREDOC_Q_D)
-                free(tmp->value);
+        free(tmp->value);
         free(tmp);
         tmp = next;
     }
     *list = NULL;
     return ;
 }
+
+        // if (tmp->type == WORD
+        //     || tmp->type == REDIR_INT
+        //     || tmp->type == REDIR_OUT
+        //     || tmp->type == REDIR_APPEND
+        //     || tmp->type == HEREDOC
+        //     || tmp->type == HEREDOC_W
+        //     || tmp->type == HEREDOC_Q_S
+        //     || tmp->type == HEREDOC_Q_D)
+        //         free(tmp->value);

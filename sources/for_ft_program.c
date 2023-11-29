@@ -29,9 +29,13 @@ void ft_waitpid_for_prog(t_for_prog *prog)
     i = 0;
     if (prog->fd_quant_pipe == 0 && prog->argv_for_execve[1] == NULL)
     {
-        if (!ft_strncmp(prog->argv_for_execve[0][0], "env", 4)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6))
-        //  || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
+        if (!ft_strncmp(prog->argv_for_execve[0][0], "echo", 5)
+         || !ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
+         || !ft_strncmp(prog->argv_for_execve[0][0], "pwd", 4)
+         || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
+         || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
+         || !ft_strncmp(prog->argv_for_execve[0][0], "env", 4)
+         || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
         return ;
     }
     while (i < prog->fd_quant_pipe + 1)

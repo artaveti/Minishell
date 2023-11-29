@@ -56,8 +56,8 @@ void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list 
     {
         if ((tmp->type == REDIR_INT
             || tmp->type == REDIR_OUT
-            || tmp->type == REDIR_APPEND
-            || tmp->type == HEREDOC)
+            || tmp->type == REDIR_APPEND)
+            // || tmp->type == HEREDOC)
             && tmp->next != NULL
             && tmp->next->type == WORD)
         {

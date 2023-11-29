@@ -186,7 +186,6 @@ void ft_free_for_prog(t_for_prog *prog);
 //pipe
 int ft_fd_quant(t_token_list *token_list, int type);
 int	**ft_creat_and_open_pipes(int fd_quant_pipe);
-void ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
 void ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 
 //execve
@@ -216,5 +215,8 @@ void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num
 
 //heredoc
 void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
+void    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
+void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
+void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 #endif
