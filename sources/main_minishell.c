@@ -8,6 +8,7 @@
 // in unset->wrong_name change for working export and unset functions names
 // ctrl + C must change exit_status_msh to 1
 // skzbic mana galis heredocery, ete ka bacuma, ete tesnuma syntax error gruma dra masin ev stopa talis, aysinqn heredocery chi bacum
+// heredoc documentation [COMMAND] <<[-] 'DELIMITER'
 // maximum quant of heredoc is 16
 // ete syntax error ka, petq e chsharunakel
 // "bash: syntax error near unexpected token `&'" echo $? 258
@@ -34,7 +35,7 @@ int main(int argc, char *argv[], char *envp[])
     (void)argv;
     // ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
-    //ft_list_iter_printf_environment(envp_list, printf);
+    // ft_list_iter_printf_environment(envp_list, printf);
     // envp_list = NULL;
     token_list = ft_list_creat_token();
     heredoc_list = ft_list_creat_token();

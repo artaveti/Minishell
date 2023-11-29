@@ -13,7 +13,7 @@
 # define START 100
 # define WHITESPACES " \t\r\n\v\f"
 # define WHITESPACES_RL "\t\r\n\v\f" // without space
-# define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'?"
+# define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'\"?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define BUILTIN_EXIT 0
 # define BUILTIN_RETURN 1
@@ -141,6 +141,7 @@ void ft_parser_second_change_dollar(t_token_list **list, t_environment_list *env
 void ft_parser_third_change_quotes_to_word(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fourth_join_w(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list *envp_list);
+void ft_parser_sixth_change_heredoc_value(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_remove_sep_from_list(t_token_list **list, t_environment_list *envp_list);
 
 //change dollar in word
@@ -173,8 +174,8 @@ void ft_syntax_error(t_token_list **list, int *error_num);
 void ft_heredoc_quant_error(t_token_list **list);
 
 //program
-void ft_program(t_token_list *token_list, t_environment_list **envp_list);
-void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_environment_list **envp_list);
+void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
+void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
 char **ft_creat_envp_for_execve(t_environment_list *envp_list);
 char **ft_creat_path_argv_for_execve(char	**envp);
 t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
@@ -185,7 +186,7 @@ void ft_free_for_prog(t_for_prog *prog);
 //pipe
 int ft_fd_quant(t_token_list *token_list, int type);
 int	**ft_creat_and_open_pipes(int fd_quant_pipe);
-void ft_input_to_heredoc(t_token_list *token_list, int **fd_arr_heredoc);
+void ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
 void ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 
 //execve

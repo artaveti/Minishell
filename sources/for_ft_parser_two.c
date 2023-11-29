@@ -73,6 +73,36 @@ void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list 
 
 
 
+void ft_parser_sixth_change_heredoc_value(t_token_list **list, t_environment_list *envp_list)
+{
+    t_token_list *tmp;
+    int i;
+    char *num_str;
+
+    (void)envp_list;
+    tmp = *list;
+    i = 0;
+    while (tmp != NULL)
+    {
+        if (tmp->type == HEREDOC
+            && tmp->next != NULL
+            && tmp->next->type == WORD)
+        {
+            num_str = ft_itoa(i);
+            tmp->value = ft_strdup(num_str);
+            free(tmp->next->value);
+            tmp->next->type = SEP;
+            tmp->next->value = NULL;
+            free(num_str);
+            i++;
+        }
+        tmp = tmp->next;
+    }
+    return ;
+}
+
+
+
 void ft_parser_remove_sep_from_list(t_token_list **list, t_environment_list *envp_list)
 {
     t_token_list *previous;
