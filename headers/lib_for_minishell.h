@@ -23,7 +23,8 @@
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_SYNTAX 258
 # define ERROR_REDIR "minishell"
-# define ERROR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
+# define ERROR_SYNTAX_QUOTES "minishell: syntax error unclosed quotes\n"
+# define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_CMD_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_ENV "env: Too many arguments\n"
 # define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  //(exit amboghj bashic)
@@ -144,7 +145,7 @@ void ft_parser_fifth_change_redir_value(t_token_list **list, t_environment_list 
 void ft_parser_sixth_change_heredoc_value(t_token_list **list, t_environment_list *envp_list);
 void ft_parser_remove_sep_from_list(t_token_list **list, t_environment_list *envp_list);
 
-//change dollar in word
+//change dollar sign in word
 char *ft_change_dollar_sign_in_word(char *string, t_environment_list *envp_list);
 int  ft_char_find(char c, char const	*string);
 char **ft_creat_splitted_dollar(char *string);
@@ -160,7 +161,7 @@ char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **na
 char *ft_creat_last_part_of_word(char *string, char *symbols);
 void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_msh_str, int *result);
 
-//change dollar in qdoub
+//change dollar sign in qdoub
 char *ft_change_dollar_sign_in_qdoub(char *string, t_environment_list *envp_list);
 void ft_change_dollar_in_splitted_qdoub(char ***splitted_str, t_environment_list *envp_list);
 int  ft_count_spaces_for_joined_after_change(char *string);
@@ -170,8 +171,15 @@ void ft_additional_for_creat_joined_first(int *i, int *k, char *string, char *jo
 void ft_additional_for_creat_joined_second(int *j, int *k, char **splitted_str, char *joined_after_change);
 
 //syntax_error; heredoc_error
+int ft_syntax_error_quotes_quant(char *input_str);
 void ft_syntax_error(t_token_list **list, int *error_num);
-void ft_heredoc_quant_error(t_token_list **list);
+void ft_heredoc_quant_error(t_token_list **list, int *error_num);
+
+//heredoc
+void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
+void    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
+void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
+void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 //program
 void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
@@ -205,18 +213,12 @@ void ft_printf_double_arr(char **double_arr);
 void ft_printf_triple_arr(char ***triple_arr);
 
 //builtin
-void ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num);
+void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num);
 int ft_export(char **str, t_environment_list **envp, int exit_num);
 void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num);
 size_t streq(char *s1, char *s2);
 int ft_wrong_name(char *str);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
-
-//heredoc
-void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
-void    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
-void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
-void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 #endif

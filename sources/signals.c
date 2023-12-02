@@ -33,7 +33,7 @@
 // }
 
 
-    //ft_signal(0);
+//     ft_signal(0);
 
-    // if (!input_str[0])
-    //     exit(0);
+//     if (!input_str[0])
+//         exit(0);

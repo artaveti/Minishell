@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-void ft_env(char **str, t_environment_list *envp, int fd_out, int exit_num)
+void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num)
 {
     if (str[1] != NULL)
     {
