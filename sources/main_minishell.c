@@ -51,3 +51,20 @@ int main(int argc, char *argv[], char *envp[])
     ft_loop(token_list, heredoc_list, envp_list);
     exit(EXIT_SUCCESS);
 }
+
+
+// int main (void)
+// {
+//     // //char str[2];
+//     // char *tmp;
+//     // // tmp = NULL;
+
+//     // //tmp = getcwd(NULL, 0);
+//     // tmp = getcwd(NULL, 0);
+//     // perror("+++++++++");
+//     // printf("(%s)\n", tmp);
+//     // system("leaks minishell");
+//     opendir("/bin");
+//     perror("opendir:");
+//     return (0);
+// }

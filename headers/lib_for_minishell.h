@@ -9,6 +9,7 @@
 #include <unistd.h> // execve();
 #include <termios.h> // for signals ???
 # include <fcntl.h> // open();
+#include <dirent.h> // opendir();
 
 # define START 100
 # define WHITESPACES " \t\r\n\v\f"
@@ -20,7 +21,10 @@
 # define ONLY_ONE_BUILTIN 1
 # define EXIT_ERROR_NO_FILE_OR_DIRECTORY 1
 # define EXIT_ERROR_HEREDOC_QUANT 2
+# define EXIT_ERROR_IS_DIR 126
+# define EXIT_ERROR_PERM_DEN 126
 # define EXIT_ERROR_CMD_NOT_FOUND 127
+# define EXIT_ERROR_NO_FILE_OR_DIR 127
 # define EXIT_ERROR_SYNTAX 258
 # define ERROR_REDIR "minishell"
 # define ERROR_SYNTAX_QUOTES "minishell: syntax error unclosed quotes\n"
@@ -28,6 +32,9 @@
 # define ERROR_CMD_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_ENV "env: Too many arguments\n"
 # define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  //(exit amboghj bashic)
+# define ERROR_IS_DIR "minishell: %s: is a directory\n" // exit 126 (exit miayn forkic)
+# define ERROR_NO_FILE_OR_DIR "minishell: %s: No such file or directory\n" // exit 127 (exit miayn forkic)
+# define ERROR_PERM_DEN "minishell: %s: Permission denied\n" // exit 126 (exit miayn forkic)
 
 int exit_status_msh;
 

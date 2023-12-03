@@ -3,7 +3,9 @@
 
 void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i);
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
+char *ft_check_string_for_getcwd(char *str);
 char **ft_prog_names_join(char	**path_arr, char	*prog_name);
+void ft_check_is_string_path(t_for_fork *fk, t_for_prog *prog, int i);
 
 
 void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
@@ -44,11 +46,14 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
      fk.pid = fork();
      if (fk.pid == 0)
      {
+      if (prog->argv_for_execve[i][0] == NULL)
+        exit(EXIT_SUCCESS);
       fk.fd_out = dup(STDOUT_FILENO);
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
       ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);
       ft_close_pipe_fd(prog->fd_arr_pipe, prog->fd_quant_pipe);
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
+      ft_check_is_string_path(&fk, prog, i);
       ft_running_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
       ft_execve(&fk, prog, i);
       dup2(fk.fd_out, STDOUT_FILENO);
@@ -64,11 +69,20 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i)
 {
   int j;
+  char *str_cwd;
   
-  if (prog->argv_for_execve[i][0] == NULL)
-    exit(EXIT_SUCCESS);
-  else if (prog->argv_for_execve[i][0][0] == '/' && (access(prog->argv_for_execve[i][0], F_OK)) == 0)
+  if (access(prog->argv_for_execve[i][0], F_OK) == 0)
     execve(prog->argv_for_execve[i][0], prog->argv_for_execve[i], prog->envp_for_execve);
+  else if (prog->argv_for_execve[i][0][0] == '.')
+  {
+    str_cwd = ft_check_string_for_getcwd(prog->argv_for_execve[i][0]);
+    printf("(access:::%d)\n", access(prog->argv_for_execve[i][0], X_OK));
+    printf("(%s)\n", str_cwd);
+    if (str_cwd == NULL)
+      return ;
+    execve(str_cwd, prog->argv_for_execve[i], prog->envp_for_execve);
+    return ;
+  }
   else 
   {
     fk->prog_paths = ft_prog_names_join(prog->path_arr, prog->argv_for_execve[i][0]);
@@ -110,4 +124,59 @@ char	**ft_prog_names_join(char	**path_arr, char	*prog_name)
 	}
 	free(str_backslash);
 	return (prog_paths);
+}
+
+
+
+char *ft_check_string_for_getcwd(char *str)
+{
+  int i;
+  char *str_cwd;
+
+  if (str == NULL || str[0] == '\0' || str[0] != '.' || (str[0] == '.' && str[1] != '/'))
+    return (NULL);
+  str_cwd = NULL;
+  i = 0;
+  while(str[i] == '.')
+  {
+    if (str[i] == '.')
+      i++;
+    if (str[i] == '.')
+      return (NULL);
+    while(str[i] == '/')
+      i++;
+  }
+  str_cwd = ft_strdup(&str[i]);
+  return (str_cwd);
+}
+
+
+
+void ft_check_is_string_path(t_for_fork *fk, t_for_prog *prog, int i)
+{
+  DIR *tmp_dir;
+
+  if(!ft_char_find('/', prog->argv_for_execve[i][0]))
+    return ;
+  tmp_dir = opendir(prog->argv_for_execve[i][0]);
+  if (tmp_dir == NULL)
+  {
+    if (access(prog->argv_for_execve[i][0], F_OK) == -1)
+    {
+      dup2(fk->fd_out, STDOUT_FILENO);
+      printf(ERROR_NO_FILE_OR_DIR, prog->argv_for_execve[i][0]);
+      exit(EXIT_ERROR_NO_FILE_OR_DIR);
+    }
+    else if(access(prog->argv_for_execve[i][0], X_OK) == -1) //Permission denied ???
+    {
+      dup2(fk->fd_out, STDOUT_FILENO);
+      printf(ERROR_PERM_DEN, prog->argv_for_execve[i][0]);
+      exit(EXIT_ERROR_PERM_DEN);
+    }
+    return ;
+  }
+  closedir(tmp_dir);
+  dup2(fk->fd_out, STDOUT_FILENO);
+  printf(ERROR_IS_DIR, prog->argv_for_execve[i][0]);
+  exit(EXIT_ERROR_IS_DIR);
 }
