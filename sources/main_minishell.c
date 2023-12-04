@@ -8,7 +8,6 @@
 // printf("(%p)\n", (void *)1) return 0x1;  printf("(%p)\n", (void *)42) return 0x2a; printf("(%p)\n", (void *)"a") return 0x109ceec20;
 // printf("(%p)\n(%p)\n(%p)\n", (void *)55, (void *)'7', (void *)"7") return 0x37 0x37 0x104d36c20;
 // argumentneri qanaki error !!!
-// chakertneri qanaki error !!!
 // tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
 // configur exit_status_msh
 // in unset->wrong_name change for working export and unset functions names

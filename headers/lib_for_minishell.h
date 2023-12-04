@@ -10,6 +10,8 @@
 #include <termios.h> // for signals ???
 # include <fcntl.h> // open();
 #include <dirent.h> // opendir();
+#include <limits.h>// for builtin exit ???
+#include <errno.h> // errno; //////
 
 # define START 100
 # define WHITESPACES " \t\r\n\v\f"
@@ -220,9 +222,10 @@ void ft_printf_double_arr(char **double_arr);
 void ft_printf_triple_arr(char ***triple_arr);
 
 //builtin
-void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num);
 int ft_export(char **str, t_environment_list **envp, int exit_num);
 void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num);
+void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num);
+void ft_exit(char **str, t_environment_list **envp, int exit_num);
 size_t streq(char *s1, char *s2);
 int ft_wrong_name(char *str);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
