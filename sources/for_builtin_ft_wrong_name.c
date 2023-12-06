@@ -4,14 +4,14 @@
 int	ft_isalpha(int ch);
 int	ft_isalnum(int c);
 
-int ft_wrong_name(char *name)
+int ft_wrong_name(char *name, char *command)
 {
     int len;
     int i;
 
     if (!(name[0] == '_' ||  ft_isalpha(name[0])) || !name || !(*name))
     {
-        printf("minishell: export: `%s': not a valid identifier\n", name);
+        printf("minishell: %s: `%s': not a valid identifier\n", command, name);
         return (1);
     }
     len = ft_strlen(name);
@@ -20,7 +20,7 @@ int ft_wrong_name(char *name)
     {
         if (!(ft_isalnum(name[i]) || name[i] == '_')) 
         {
-            printf("minishell: export: `%s': not a valid identifier\n", name);
+            printf("minishell: %s: `%s': not a valid identifier\n", command, name);
             return (1);
         }
         i++;

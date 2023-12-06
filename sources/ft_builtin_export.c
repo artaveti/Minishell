@@ -1,35 +1,63 @@
 
-// #include "lib_for_minishell.h"
-
-// char	*ft_strncpy(char *dest, char *src, unsigned int n);
-// void extractNameAndValue(char *String, char **name, char **value);
-// void print_export(t_environment_list *envp, int assigned_val);
-// size_t get_index_of_char(const char *str, char c);
-// int findEqualChar(const char *text);
-// int check_order(char *str);
-// void extract_2(char *String, char **name, char **value);
-// t_environment_list *set_last_node(t_environment_list **envp, int flag);  //setting flag
-// int hasPlusEqual(char *str);
-// t_environment_list *ft_list_new_for_export(char *name, char *value);
-// char	*ft_strnstr(char *str, char *to_find, size_t len);
+#include "lib_for_minishell.h"
 
 
+void ft_print_for_export(t_environment_list *envp);
 
-// int ft_export(char **str, t_environment_list **envp, int exit_num)
-// {
-//     printf("I am in EXPORT\n");
-//     (void)exit_num;
 
-//     int i = 1;   //exporti argumentnery mekic skselu hamar
-//     static int assigned_val; //if assigned, and than set again with no arg, don't remove from env list visibility 
-//     char *name = NULL;
-//     char *value = NULL;
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
+void extractNameAndValue(char *String, char **name, char **value);
+size_t get_index_of_char(const char *str, char c);
+int findEqualChar(const char *text);
+int check_order(char *str);
+void extract_2(char *String, char **name, char **value);
+t_environment_list *set_last_node(t_environment_list **envp, int flag);  //setting flag
+int hasPlusEqual(char *str);
+t_environment_list *ft_list_new_for_export(char *name, char *value);
+char	*ft_strnstr(char *str, char *to_find, size_t len);
 
-//         if (!str[1]) //ete arg chka mena export grac
-//         {
-//             print_export(*envp, assigned_val);   //no arg only export (PRINTING EXPORT LIST)
-//             return 0;
-//         }
+
+int ft_export(char **str, t_environment_list **envp, int exit_num)
+{
+    (void)exit_num;
+
+    t_environment_list *tmp;
+    int i;
+
+    i = 1;
+    if (str[i] == NULL) //ete arg chka menak export-a grac
+    {
+        ft_print_for_export(*envp);
+        return (0);
+    }
+    while(str[i] != NULL)
+    {
+        tmp = ft_list_new_for_environment(str[i]);
+        ft_list_add_back_for_environment(envp, tmp);
+        i++;
+    }
+    return (0);
+}
+
+
+
+void ft_print_for_export(t_environment_list *envp)
+{
+    t_environment_list *tmp;
+
+    tmp = envp;
+    while(tmp != NULL)
+    {
+        if (tmp->envp_flag == 0)
+            printf("declare -x %s\n", tmp->name_and_value[0]);
+        else
+            printf("declare -x %s=\"%s\"\n", tmp->name_and_value[0], tmp->name_and_value[1]);
+        tmp = tmp->next;
+    }
+    return ;
+}
+
+
 //     while (str[i])     //argumentneri vrayov ancnuma
 //     {
 //         if (check_order(str[i])) // stuguma += (1), te miayn = a(0)
@@ -335,57 +363,6 @@
 
 
 
-// void print_export(t_environment_list *envp, int assigned_val)  //no arg only export (PRINTING EXPORT LIST)
-// {
-//     t_environment_list *env = envp;
-
-//     int count = 0;
-//     t_environment_list *current = env;
-//     while (current != NULL)
-//     {
-//         count++;
-//         current = current->next;
-//     } 
-//     t_environment_list **nodes = (t_environment_list **)malloc(count * sizeof(t_environment_list *));
-//     if (nodes == NULL)
-//         return;
-//     current = env;
-//     int index = 0;
-//     while (current != NULL)
-//      {
-//         nodes[index++] = current;
-//         current = current->next;
-//     }
-
-    
-//     for (int i = 0; i < count - 1; i++)
-//      {
-//         int min_idx = i;
-//         for (int j = i + 1; j < count; j++)
-//          {
-//             if (strcmp(nodes[j]->name_and_value[0], nodes[min_idx]->name_and_value[0]) < 0) 
-//                 min_idx = j;
-//         }
-//         if (min_idx != i) 
-//         {
-//             t_environment_list *temp = nodes[i];
-//             nodes[i] = nodes[min_idx];
-//             nodes[min_idx] = temp;
-//         }
-//     }
-//     for (int i = 0; i < count; i++)
-//      {
-//         if (nodes[i]->envp_flag == 1 || assigned_val) 
-//                 printf("declare -x %s=\"%s\"\n", nodes[i]->name_and_value[0], nodes[i]->name_and_value[1]);
-//         else if (nodes[i]->envp_flag == 0)
-//             printf("declare -x %s\n", nodes[i]->name_and_value[0]);
-//     }
-//     free(nodes);
-// }
-
-
-
-
 // char	*ft_strncpy(char *dest, char *src, unsigned int n)
 // {
 // 	unsigned int	i = 0;
@@ -429,6 +406,3 @@
 //     }
 //     return 0;
 // }
-
-
-

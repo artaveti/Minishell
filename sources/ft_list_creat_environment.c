@@ -5,7 +5,7 @@
 // ete ka inchvor tar, kam erku hat plyus, kam erku hat minus == 1
 
 int ft_count_envp_len(char *envp[]);
-t_environment_list	*ft_list_new_for_environment(char *string_from_envp);
+// t_environment_list	*ft_list_new_for_environment(char *string_from_envp); //// in libft
 void ft_change_shlvl_of_environment(t_environment_list **start_of_list);
 void ft_change_oldpwd_of_environment(t_environment_list **start_of_list);
 

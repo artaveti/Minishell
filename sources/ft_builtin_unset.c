@@ -9,7 +9,7 @@ void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num)
     int i = 1;
     while (array_of_strings[i] != NULL)
     {
-        if (ft_wrong_name(array_of_strings[i]))
+        if (ft_wrong_name(array_of_strings[i], WRONG_NAME_UNSET))
         {
             if (exit_num == BUILTIN_EXIT)
                 exit(EXIT_FAILURE);

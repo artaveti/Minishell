@@ -18,6 +18,8 @@
 # define WHITESPACES_RL "\t\r\n\v\f" // without space
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'\"?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
+# define WRONG_NAME_EXPORT "export"
+# define WRONG_NAME_UNSET "unset"
 # define BUILTIN_EXIT 0
 # define BUILTIN_RETURN 1
 # define ONLY_ONE_BUILTIN 1
@@ -125,6 +127,7 @@ char *ft_readline(void);
 
 //environment list
 t_environment_list   *ft_list_creat_environment(char *envp[]);
+t_environment_list	*ft_list_new_for_environment(char *string_from_envp);
 t_environment_list	*ft_list_last_for_environment(t_environment_list	*list);
 void	             ft_list_add_back_for_environment(t_environment_list	**list, t_environment_list	*list_for_add);
 int                  ft_list_length_for_environment(t_environment_list *list);
@@ -230,7 +233,7 @@ void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num);
 void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num);
 void ft_exit(char **str, int fd_out, int exit_num);
 size_t streq(char *s1, char *s2);
-int ft_wrong_name(char *str);
+int ft_wrong_name(char *name, char *command);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
 
