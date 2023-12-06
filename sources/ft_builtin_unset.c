@@ -21,7 +21,7 @@ void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num)
     }
     if (exit_num == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
-    exit_status_msh = 0;
+    exit_status_msh = EXIT_SUCCESS;
     return ;
 }
 

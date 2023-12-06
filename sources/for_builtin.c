@@ -74,6 +74,6 @@ void ft_running_builtin(char **array_of_strings, t_environment_list **envp_list,
   else if (!ft_strncmp(array_of_strings[0], "env", 4))
     ft_env(*envp_list, array_of_strings, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "exit", 5))
-    ft_exit(array_of_strings, envp_list, exit_num);
+    ft_exit(array_of_strings, fd_out, exit_num);
   return ;
 }

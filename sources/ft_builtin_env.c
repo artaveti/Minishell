@@ -20,6 +20,6 @@ void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num)
     }
     if (exit_num == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
-    exit_status_msh = 0;
+    exit_status_msh = EXIT_SUCCESS;
     return ;
 }

@@ -28,6 +28,9 @@
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_NO_FILE_OR_DIR 127
 # define EXIT_ERROR_SYNTAX 258
+# define PRINT_EXIT "exit\n"
+# define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
+# define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 # define ERROR_REDIR "minishell"
 # define ERROR_SYNTAX_QUOTES "minishell: syntax error unclosed quotes\n"
 # define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `%s'\n"
@@ -225,7 +228,7 @@ void ft_printf_triple_arr(char ***triple_arr);
 int ft_export(char **str, t_environment_list **envp, int exit_num);
 void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num);
 void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num);
-void ft_exit(char **str, t_environment_list **envp, int exit_num);
+void ft_exit(char **str, int fd_out, int exit_num);
 size_t streq(char *s1, char *s2);
 int ft_wrong_name(char *str);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);

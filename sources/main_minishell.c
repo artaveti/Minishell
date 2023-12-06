@@ -57,13 +57,14 @@ int main(int argc, char *argv[], char *envp[])
 //     // //char str[2];
 //     // char *tmp;
 //     // // tmp = NULL;
-
+//     int num = 100;
 //     // //tmp = getcwd(NULL, 0);
 //     // tmp = getcwd(NULL, 0);
 //     // perror("+++++++++");
 //     // printf("(%s)\n", tmp);
 //     // system("leaks minishell");
-//     opendir("/bin");
-//     perror("opendir:");
+//     printf("%d", -100 == -num);
+//     // opendir("/bin");
+//     // perror("opendir:");
 //     return (0);
 // }
