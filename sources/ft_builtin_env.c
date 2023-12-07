@@ -1,9 +1,9 @@
 
 #include "lib_for_minishell.h"
 
-void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num)
+void ft_env(t_environment_list *envp, char **array_of_strings, int fd_out, int exit_num)
 {
-    if (str[1] != NULL)
+    if (array_of_strings[1] != NULL)
     {
         dup2(fd_out, STDOUT_FILENO);
         printf(ERROR_ENV);

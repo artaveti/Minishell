@@ -1,9 +1,6 @@
 
 #include "lib_for_minishell.h"
 
-int	ft_isalpha(int ch);
-int	ft_isalnum(int c);
-
 int ft_wrong_name(char *name, char *command)
 {
     int len;
@@ -26,23 +23,4 @@ int ft_wrong_name(char *name, char *command)
         i++;
     }
     return (0);
-}
-
-
-
-int	ft_isalpha(int ch)
-{
-	if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') )
-		return (1);
-	return (0);
-}
-
-
-
-int	ft_isalnum(int c)
-{
-	if ((c >= '0' && c <= '9')
-		|| (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
 }

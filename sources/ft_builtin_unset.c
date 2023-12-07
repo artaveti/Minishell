@@ -4,8 +4,9 @@
 void for_ft_unset(t_environment_list **head, const char *name);
 int ft_unset_head_of_envp_list(t_environment_list **head, const char *name);
 
-void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num)
+void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num)
 {
+    dup2(fd_out, STDOUT_FILENO);
     int i = 1;
     while (array_of_strings[i] != NULL)
     {

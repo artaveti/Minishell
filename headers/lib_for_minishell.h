@@ -18,6 +18,9 @@
 # define WHITESPACES_RL "\t\r\n\v\f" // without space
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'\"?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
+
+# define WRONG_SIGN_EXPORT "~!@#%%^*-+[]{}:,./\'\"?"
+
 # define WRONG_NAME_EXPORT "export"
 # define WRONG_NAME_UNSET "unset"
 # define BUILTIN_EXIT 0
@@ -42,6 +45,7 @@
 # define ERROR_IS_DIR "minishell: %s: is a directory\n" // exit 126 (exit miayn forkic)
 # define ERROR_NO_FILE_OR_DIR "minishell: %s: No such file or directory\n" // exit 127 (exit miayn forkic)
 # define ERROR_PERM_DEN "minishell: %s: Permission denied\n" // exit 126 (exit miayn forkic)
+# define ERROR_FOR_EXPORT "minishell: export: `%s': not a valid identifier\n" // export
 
 int exit_status_msh;
 
@@ -116,6 +120,9 @@ char	*ft_itoa(int n);
 char	*ft_strdup(const char	*s1);
 char    *ft_strdup_quant(const char	*str, size_t quant);
 void	ft_str_to_lowercase(char *str);
+int	    ft_isalpha(int symbol);
+int     ft_isnum(int symbol);
+int     ft_isalnum(int symbol);
 //size_t	ft_strl_spc(const	char *s);
 //char	*ft_strjoin_space(char const	*s1, char const	*s2);
 
@@ -228,10 +235,10 @@ void ft_printf_double_arr(char **double_arr);
 void ft_printf_triple_arr(char ***triple_arr);
 
 //builtin
-int ft_export(char **str, t_environment_list **envp, int exit_num);
-void ft_unset(char **array_of_strings, t_environment_list **envp, int exit_num);
-void ft_env(t_environment_list *envp, char **str, int fd_out, int exit_num);
-void ft_exit(char **str, int fd_out, int exit_num);
+void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
+void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
+void ft_env(t_environment_list *envp, char **array_of_strings, int fd_out, int exit_num);
+void ft_exit(char **array_of_strings, int fd_out, int exit_num);
 size_t streq(char *s1, char *s2);
 int ft_wrong_name(char *name, char *command);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
