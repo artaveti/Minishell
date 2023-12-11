@@ -61,18 +61,18 @@ void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment
 
 void ft_running_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num)
 {
-//   else if (!ft_strncmp(array_of_strings[0], "echo", 5));
-//     ft_echo();
+  if (!ft_strncmp(array_of_strings[0], "echo", 5))
+    ft_echo(envp_list, array_of_strings, fd_out, exit_num);
 //   else if (!ft_strncmp(array_of_strings[0], "cd", 3))
 //     ft_cd();
 //   else if (!ft_strncmp(array_of_strings[0], "pwd", 4))
 //     ft_pwd();
-  if (!ft_strncmp(array_of_strings[0], "export", 7))
+  else if (!ft_strncmp(array_of_strings[0], "export", 7))
     ft_export(envp_list, array_of_strings, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "unset", 6))
     ft_unset(envp_list, array_of_strings, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "env", 4))
-    ft_env(*envp_list, array_of_strings, fd_out, exit_num);
+    ft_env(envp_list, array_of_strings, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "exit", 5))
     ft_exit(array_of_strings, fd_out, exit_num);
   return ;
