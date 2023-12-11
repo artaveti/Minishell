@@ -78,7 +78,10 @@ t_environment_list	*ft_list_new_for_environment(char *string_from_envp)
     else
     {
         result->envp_flag = 1;
-        result->name_and_value[0] = ft_creat_first_part_of_word(string_from_envp, "=");
+        if (*(ft_strchr(string_from_envp, '=') - 1) == '+')
+            result->name_and_value[0] = ft_creat_first_part_of_word(string_from_envp, "+");
+        else
+            result->name_and_value[0] = ft_creat_first_part_of_word(string_from_envp, "=");
         result->name_and_value[1] = ft_strdup(ft_strchr(string_from_envp, '=') + 1);
     }
     result->name_and_value[2] = NULL;

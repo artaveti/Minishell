@@ -26,12 +26,11 @@ char	*ft_strnstr(char *str, char *to_find, size_t len);
 
 void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num)
 {
-    // t_environment_list *tmp;
     int i;
     
     exit_status_msh = EXIT_SUCCESS;
     i = 1;
-    if (array_of_strings[i] == NULL) //// ete arg chka menak export-a grac
+    if (array_of_strings[i] == NULL)
     {
         ft_print_for_export(*envp);
         if (exit_num == BUILTIN_EXIT)
@@ -41,7 +40,7 @@ void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, i
     while(array_of_strings[i] != NULL)
     {
         dup2(fd_out, STDOUT_FILENO);
-        if (ft_check_name_for_export(array_of_strings[i]))
+        if (ft_check_name_for_export(array_of_strings[i]) == 1)
         {
             exit_status_msh = EXIT_FAILURE;
             i++;
@@ -49,8 +48,6 @@ void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, i
         else
         {
             ft_check_and_add_to_environment(envp, array_of_strings[i]);
-            // tmp = ft_list_new_for_environment(array_of_strings[i]);
-            // ft_list_add_back_for_environment(envp, tmp);
             i++;
         }
     }
@@ -106,13 +103,13 @@ int ft_check_name_for_export(char *str)
 }
 
 
-
 void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
 {
     t_environment_list *tmp;
     t_environment_list *tmp_new;
     char *before_equal;
     char *after_equal;
+    char *tmp_str;
     int flag_for_equal;
     int flag_for_plus;
 
@@ -133,12 +130,20 @@ void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
     }
     else
         before_equal = ft_strdup(str);
-    // printf("(equal:%d)   plus:(%d)\n", flag_for_equal, flag_for_plus); ////////////////////
     while (tmp != NULL)
     {
         if (!ft_strncmp(tmp->name_and_value[0], before_equal, ft_strlen(before_equal) + 1))
         {
-            if (flag_for_equal == 1)
+            if (flag_for_equal == 1 && flag_for_plus == 1)
+            {   
+                tmp_str = tmp->name_and_value[1];
+                tmp->name_and_value[1] = ft_strjoin(tmp->name_and_value[1], after_equal);
+                free(tmp_str);
+                free(before_equal);
+                free(after_equal);
+                return ;
+            }
+            else if (flag_for_equal == 1 && flag_for_plus == 0)
             {
                 free(tmp->name_and_value[1]);
                 tmp->name_and_value[1] = ft_strdup(after_equal);

@@ -83,7 +83,7 @@ int ft_change_shlvl_to_num_or_null(t_environment_list **list, long long long_lon
         }
         else
         {
-            printf("bash: warning: shell level (%lld) too high, resetting to 1\n", long_long_num + 1);
+            printf(ERROR_SHLVL, long_long_num + 1);
             free(tmp_list->name_and_value[1]);
             tmp_list->name_and_value[1] = ft_strdup("1");
         }

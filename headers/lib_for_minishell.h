@@ -46,6 +46,7 @@
 # define ERROR_NO_FILE_OR_DIR "minishell: %s: No such file or directory\n" // exit 127 (exit miayn forkic)
 # define ERROR_PERM_DEN "minishell: %s: Permission denied\n" // exit 126 (exit miayn forkic)
 # define ERROR_FOR_EXPORT "minishell: export: `%s': not a valid identifier\n" // export
+# define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, resetting to 1\n"
 
 int exit_status_msh;
 
