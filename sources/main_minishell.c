@@ -1,6 +1,7 @@
 
 #include "lib_for_minishell.h"
 
+// stugel redirectionnery naev builtinneri het !!!
 // ete syntax error ka, inchua bashy skzbic pahanjum heredocneri mutqy heto cuyc talis syntax errory ev durs galis
 // start_of_list->name_and_value[1] = ft_strdup(ft_strchr(envp[0], '=') + 1); khndiry nranum er, vor compilyatory i skzbane chgiti ardyunqy NULL e linelu, te urish ban
 // octal 00, hexadecimal 0

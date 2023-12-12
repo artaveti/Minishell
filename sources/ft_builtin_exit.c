@@ -3,13 +3,12 @@
 
 int ft_atoi_for_long_long(char *str, long long *result);
 
-void ft_exit(char **array_of_strings, int fd_out, int exit_num)
+void ft_exit(char **array_of_strings, int fd_out)
 {
     long long exit_atoi;
     int atoi_res;
     int i;
 
-    (void)exit_num;
     dup2(fd_out, STDOUT_FILENO);
     i = 1;
     if (array_of_strings[i] == NULL)
