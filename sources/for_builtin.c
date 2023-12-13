@@ -6,7 +6,6 @@ void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check)
 {
   char *tmp_str;
-  
   if (!ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
       || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
       || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
@@ -54,6 +53,34 @@ void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment
       fd_out, BUILTIN_RETURN);
   dup2(fd_in, STDIN_FILENO);
   dup2(fd_out, STDOUT_FILENO);
+  return ;
+}
+
+
+
+void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num)
+{
+  char *tmp_str;
+  if (!ft_strncmp(array_of_strings[0], "cd", 3)
+      || !ft_strncmp(array_of_strings[0], "export", 7)
+      || !ft_strncmp(array_of_strings[0], "unset", 6)
+      || !ft_strncmp(array_of_strings[0], "exit", 5))
+  {
+    ft_running_builtin(array_of_strings, envp_list, fd_out, exit_num);
+    return ;
+  }
+  tmp_str = ft_strdup(array_of_strings[0]);
+  ft_str_to_lowercase(tmp_str);
+  if (!ft_strncmp(tmp_str, "echo", 5)
+      || !ft_strncmp(tmp_str, "pwd", 4)
+      || !ft_strncmp(tmp_str, "env", 4))
+  {
+    free(tmp_str);
+    ft_str_to_lowercase(array_of_strings[0]);
+    ft_running_builtin(array_of_strings, envp_list, fd_out, exit_num);
+    return ;
+  }
+  free(tmp_str);
   return ;
 }
 
