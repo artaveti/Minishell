@@ -54,7 +54,7 @@ void ft_print_for_export(t_environment_list *envp)
     {
         if (tmp->envp_flag == 0)
             printf("declare -x %s\n", tmp->name_and_value[0]);
-        else
+        else if (tmp->envp_flag == 1)
             printf("declare -x %s=\"%s\"\n", tmp->name_and_value[0], tmp->name_and_value[1]);
         tmp = tmp->next;
     }
@@ -126,6 +126,7 @@ void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
             {   
                 tmp_str = tmp->name_and_value[1];
                 tmp->name_and_value[1] = ft_strjoin(tmp->name_and_value[1], after_equal);
+                tmp->envp_flag = 1;
                 free(tmp_str);
                 free(before_equal);
                 free(after_equal);
@@ -135,12 +136,15 @@ void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
             {
                 free(tmp->name_and_value[1]);
                 tmp->name_and_value[1] = ft_strdup(after_equal);
+                tmp->envp_flag = 1;
                 free(before_equal);
                 free(after_equal);
                 return ;
             }
             else
             {
+                if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7) || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
+                    tmp->envp_flag = 1;
                 free(before_equal);
                 return ;
             }

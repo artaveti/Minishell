@@ -239,11 +239,13 @@ void ft_printf_triple_arr(char ***triple_arr);
 
 //builtin
 void ft_echo(char **array_of_strings, int exit_num);
+void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
+void ft_pwd(t_environment_list **envp, char **str, int exit_num);
 void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
 void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
 void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
 void ft_exit(char **array_of_strings, int fd_out);
-int ft_wrong_name(char *name, char *command);
+int  ft_wrong_name(char *name, char *command);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
 void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);

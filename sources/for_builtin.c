@@ -90,10 +90,10 @@ void ft_running_builtin(char **array_of_strings, t_environment_list **envp_list,
 {
   if (!ft_strncmp(array_of_strings[0], "echo", 5))
     ft_echo(array_of_strings, exit_num);
-//   else if (!ft_strncmp(array_of_strings[0], "cd", 3))
-//     ft_cd();
-//   else if (!ft_strncmp(array_of_strings[0], "pwd", 4))
-//     ft_pwd();
+  else if (!ft_strncmp(array_of_strings[0], "cd", 3))
+    ft_cd(envp_list, array_of_strings,fd_out, exit_num);
+  else if (!ft_strncmp(array_of_strings[0], "pwd", 4))
+    ft_pwd(envp_list, array_of_strings, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "export", 7))
     ft_export(envp_list, array_of_strings, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "unset", 6))
@@ -102,5 +102,6 @@ void ft_running_builtin(char **array_of_strings, t_environment_list **envp_list,
     ft_env(envp_list, array_of_strings, fd_out, exit_num);
   else if (!ft_strncmp(array_of_strings[0], "exit", 5))
     ft_exit(array_of_strings, fd_out);
+  // system("leaks minishell");
   return ;
 }
