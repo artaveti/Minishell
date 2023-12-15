@@ -143,7 +143,8 @@ void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
             }
             else
             {
-                if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7) || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
+                if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                    || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
                     tmp->envp_flag = 1;
                 free(before_equal);
                 return ;

@@ -38,7 +38,7 @@ void for_ft_unset(t_environment_list **head, const char *name)
     current = *head;
     prev = NULL;
     while (current != NULL)
-     {
+    {
         if (ft_strncmp(current->name_and_value[0], name, ft_strlen((*head)->name_and_value[0]) + 1) == 0)
         {
             if (!ft_strncmp(name, "OLDPWD", 7) || !ft_strncmp(name, "PWD", 4))

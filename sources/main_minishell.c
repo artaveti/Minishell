@@ -2,7 +2,6 @@
 #include "lib_for_minishell.h"
 
 // printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
-// ete mihat builtin chi petqa shtkel mecatareri ev poqratareri pahy
 // stugel redirectionnery naev builtinneri het !!!
 // ete syntax error ka, inchua bashy skzbic pahanjum heredocneri mutqy heto cuyc talis syntax errory ev durs galis
 // start_of_list->name_and_value[1] = ft_strdup(ft_strchr(envp[0], '=') + 1); khndiry nranum er, vor compilyatory i skzbane chgiti ardyunqy NULL e linelu, te urish ban

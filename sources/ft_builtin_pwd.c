@@ -5,26 +5,28 @@ int    get_env(t_environment_list *envp);
 void    ft_pwd(t_environment_list **envp, char **str, int exit_num)
 {
     (void)exit_num;
-    printf("Hi PWD\n");
     char    *path_name;
     (void)str;
     (void)envp;
     path_name = getcwd(NULL, 0); 
-    if (!path_name) //ete chka
+    if (!path_name)
     {
         if (getenv("PWD") == 0) //error code 127? //cannot get env  u env path chka
         {
             perror("pwd"); //pwd error berum
-           // exit_status_msh =
+            if (exit_num == BUILTIN_EXIT)
+                exit(EXIT_FAILURE);
+            exit_status_msh = EXIT_FAILURE;
             return ;
         }
-        return ;
     }
     else
     {
-        printf("%s\n",  path_name); //tpuma path_name
-        free(path_name); //free anum
-         exit_status_msh = 0;
+        printf("%s\n",  path_name);
+        free(path_name);
+        if (exit_num == BUILTIN_EXIT)
+            exit(EXIT_FAILURE);
+        exit_status_msh = EXIT_FAILURE;
         return ;
     }
 }

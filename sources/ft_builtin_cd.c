@@ -22,7 +22,7 @@ void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int e
     pwd = NULL;
     old_pwd = NULL;
     i = 1;
-    if (array_of_strings[i] == NULL) //cd with no arguments
+    if (array_of_strings[i] == NULL)
     {
         path = "HOME";
         home_node = find_node_by_name(*envp, path);
@@ -36,14 +36,12 @@ void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int e
         else
             path = ft_strdup(home_node->name_and_value[1]);
     }
-    else // cd with arguments
+    else
         path = ft_strdup(array_of_strings[i]);
-    old_pwd = getcwd(NULL, 0); //vercnuma current working dir path
-    //// stugel depqy erb getcwd-n kveradardzni NULL
-    printf("(%s)\n", old_pwd);
-    if (chdir(path) != 0) //changes directory or if true(invalid dir name) prints error
+    old_pwd = getcwd(NULL, 0);
+    if (chdir(path) != 0)
     {
-        printf("minishell: cd: %s: No such file or directory\n", path); //invalid directory error
+        printf("minishell: cd: %s: No such file or directory\n", path);
         free(path);
         free(old_pwd);
         if (exit_num == BUILTIN_EXIT)
@@ -52,8 +50,8 @@ void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int e
         return ;
     }
     pwd = getcwd(NULL, 0);
-    change_node_by_name(envp,  "OLDPWD", old_pwd); // changes OLDPWD if prog reaches here
-    change_node_by_name(envp,  "PWD", pwd); // changes OLDPWD if prog reaches here
+    change_node_by_name(envp,  "OLDPWD", old_pwd);
+    change_node_by_name(envp,  "PWD", pwd);
     free(path);
     free(pwd);
     free(old_pwd);
@@ -100,7 +98,7 @@ void change_node_by_name(t_environment_list **envp, char *name, char *value)
 
 
 
-int streq(char *s1, char *s2)  //ete datarka kam export chi (IF NOT EXPORT DO NOTHING)
+int streq(char *s1, char *s2)
 {
     int i = 0;
     if ((!s1 || !(*s1) || !s2 || !(*s2)) || (ft_strlen(s1) != ft_strlen(s2)))
