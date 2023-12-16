@@ -35,13 +35,21 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
     return ;
 }
 
+void new_handler(int sig)
+{
+  (void)sig;
+  write(1, "^C\n", 3);
+ // exit(0);
+}
 
+void	ft_signal(int handle);
 
 void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i)
 {
      t_for_fork fk;
-
+   signal(SIGINT, new_handler);
      fk.pid = fork();
+  
      if (fk.pid == 0)
      {
       if (prog->argv_for_execve[i][0] == NULL)
@@ -59,6 +67,7 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);
       exit(EXIT_ERROR_CMD_NOT_FOUND);
     }
+     ft_signal(0);
     prog->pid_arr[i] = fk.pid;
     return ;
 }

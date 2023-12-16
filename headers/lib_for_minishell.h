@@ -8,6 +8,7 @@
 #include <readline/history.h> // readline();
 #include <unistd.h> // execve();
 #include <termios.h> // for signals ???
+#include <signal.h> // readline();
 # include <fcntl.h> // open();
 #include <dirent.h> // opendir();
 #include <limits.h>// for builtin exit ???

@@ -28,19 +28,31 @@
 // ete grvuma "bash: miangamic patchary u symboly", apa petq e chsharunakel
 // petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
+void	handleterm(int sig)
+{
+	struct termios	term;
+
+	tcgetattr(0, &term);
+	if (sig == 0)
+	{
+		term.c_lflag &= ~ECHOCTL;
+		tcsetattr(0, TCSANOW, &term);
+	}
+}
+
+
+void    ft_sigint(int sig_num);
+void	ft_signal(int handle);
+
 int main(int argc, char *argv[], char *envp[])
 {
     t_environment_list *envp_list;
     t_token_list *token_list;
     t_token_list *heredoc_list;
 
-// (void)envp;
-// char *e[2];
-// e[0] = "abc";
-// e[1] = NULL;
-// envp_list = ft_list_creat_environment(e);
-// envp_list = NULL;
-
+    handleterm(0);
+    signal(SIGQUIT, SIG_IGN);
+    ft_signal(0);
     (void)argc;
     (void)argv;
 // ft_printf_double_arr(envp);
@@ -52,6 +64,31 @@ int main(int argc, char *argv[], char *envp[])
     ft_loop(token_list, heredoc_list, envp_list);
     exit(EXIT_SUCCESS);
 }
+
+void    ft_sigint(int sig_num)
+{
+	(void)sig_num;
+	rl_on_new_line();
+	write(1, "\n", 1);
+    rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	ft_signal(int handle)
+{
+    (void)handle;
+    signal(SIGINT, ft_sigint);
+}
+
+
+
+// (void)envp;
+// char *e[2];
+// e[0] = "abc";
+// e[1] = NULL;
+// envp_list = ft_list_creat_environment(e);
+// envp_list = NULL;
+
 
 
 // int main (void)
