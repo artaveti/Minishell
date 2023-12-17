@@ -14,6 +14,8 @@
 #include <limits.h>// for builtin exit ???
 #include <errno.h> // errno; //////
 
+ #include <sys/ioctl.h>////
+
 # define START 100
 # define WHITESPACES " \t\r\n\v\f"
 # define WHITESPACES_RL "\t\r\n\v\f" // without space
@@ -250,5 +252,12 @@ int  ft_wrong_name(char *name, char *command);
 void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
 void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
+
+
+void	handleterm(int sig);////
+void	ft_signal(int handle);////
+void	inthandle(int sig);////
+
+
 
 #endif

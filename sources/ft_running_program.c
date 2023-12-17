@@ -35,23 +35,18 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
     return ;
 }
 
-void new_handler(int sig)
-{
-  (void)sig;
-  write(1, "^C\n", 3);
- // exit(0);
-}
 
-void	ft_signal(int handle);
 
 void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i)
 {
      t_for_fork fk;
-   signal(SIGINT, new_handler);
      fk.pid = fork();
   
      if (fk.pid == 0)
      {
+
+      signal(SIGINT, SIG_DFL);////
+		  signal(SIGQUIT, SIG_DFL);////
       if (prog->argv_for_execve[i][0] == NULL)
         exit(EXIT_SUCCESS);
       fk.fd_out = dup(STDOUT_FILENO);
@@ -61,14 +56,14 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
       ft_check_is_string_dir_or_file(&fk, prog, i);
       ft_if_not_only_one_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
-      //ft_running_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
+      // ft_running_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT); //// must delete
       ft_execve(&fk, prog, i);
       dup2(fk.fd_out, STDOUT_FILENO);
       printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);
       exit(EXIT_ERROR_CMD_NOT_FOUND);
     }
-     ft_signal(0);
     prog->pid_arr[i] = fk.pid;
+    // ft_signal(0);////
     return ;
 }
 
