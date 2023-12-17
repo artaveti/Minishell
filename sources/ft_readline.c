@@ -8,7 +8,7 @@ char *ft_readline(void)
 
     str = readline("minishell> ");
     i = 0;
-    if (str == NULL) //// this if for ctrl + D (null)
+    if (str == NULL) //// this "if" for "ctrl + D"(null)
     {
         printf("minishell> exit\n");
         exit(EXIT_SUCCESS);

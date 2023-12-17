@@ -28,8 +28,7 @@
 // ete grvuma "bash: miangamic patchary u symboly", apa petq e chsharunakel
 // petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
-// void    ft_sigint(int sig_num);
-// void	ft_signal(int handle);
+
 
 int main(int argc, char *argv[], char *envp[])
 {

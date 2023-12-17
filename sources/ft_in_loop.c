@@ -7,8 +7,8 @@ void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environme
     int error_num;
 
     error_num = 0;
-    signal(SIGINT, inthandle);////
     signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, inthandle);////
     while(1)
     {
 //ft_list_iter_printf_environment(envp_list, printf);

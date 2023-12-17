@@ -205,13 +205,13 @@ void ft_heredoc_quant_error(t_token_list **list, int *error_num);
 
 //heredoc
 void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
-void    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
+int    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
 void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
 void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 //program
 void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
-void ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
+int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
 char **ft_creat_envp_for_execve(t_environment_list *envp_list);
 char **ft_creat_path_argv_for_execve(char	**envp);
 t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list);
@@ -254,9 +254,10 @@ void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **en
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
 
 
+void	inthandle(int sig);////
 void	handleterm(int sig);////
 void	ft_signal(int handle);////
-void	inthandle(int sig);////
+void	heredoc_sig(int sig);////
 
 
 

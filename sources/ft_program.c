@@ -5,7 +5,11 @@ void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environm
 {
     t_for_prog prog;
 
-    ft_creat_for_program(&prog, token_list, heredoc_list, envp_list);
+    if (ft_creat_for_program(&prog, token_list, heredoc_list, envp_list) == 1)
+    {
+        exit_status_msh = 1;
+        return ;
+    }
     ft_running_program(&prog, envp_list);
     ft_close_pipe_fd(prog.fd_arr_pipe, prog.fd_quant_pipe);
     ft_close_pipe_fd(prog.fd_arr_heredoc, prog.fd_quant_heredoc);

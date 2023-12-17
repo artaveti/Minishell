@@ -1,15 +1,6 @@
 
 #include "lib_for_minishell.h"
 
-void	inthandle(int sig);
-void	handleterm(int sig);
-
-void	ft_signal(int handle)
-{
-	handleterm(handle);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, inthandle);
-}
 void	inthandle(int sig)
 {
 	(void)sig;
@@ -18,6 +9,8 @@ void	inthandle(int sig)
     rl_replace_line("", 0);
 	rl_redisplay();
 }
+
+
 
 void	handleterm(int sig)
 {
@@ -32,7 +25,21 @@ void	handleterm(int sig)
 }
 
 
-//     ft_signal(0);
 
-//     if (!input_str[0])
-//         exit(0);
+void	ft_signal(int handle)
+{
+	handleterm(handle);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, inthandle);
+}
+
+
+
+void	heredoc_sig(int sig)////
+{
+  	(void)sig;
+	printf("IN_HEREDOC: sig:(%d)\n", sig);
+	// ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	// rl_replace_line("", 0);
+	// rl_on_new_line();
+}
