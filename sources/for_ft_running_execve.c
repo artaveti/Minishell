@@ -61,7 +61,7 @@ int ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, i
         free(error_str);
         if (only_one_builtin != ONLY_ONE_BUILTIN)
           exit(EXIT_ERROR_NO_FILE_OR_DIRECTORY);
-        exit_status_msh = 1;
+        g_exit_status_msh = 1;
         return (EXIT_ERROR_NO_FILE_OR_DIRECTORY);
       }
       dup2(fd_redir[0], STDIN_FILENO);

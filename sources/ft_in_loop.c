@@ -7,10 +7,10 @@ void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environme
     int error_num;
 
     error_num = 0;
-    signal(SIGQUIT, SIG_IGN);
-    signal(SIGINT, inthandle);////
     while(1)
     {
+        signal(SIGQUIT, SIG_IGN);
+        signal(SIGINT, ft_sig_int_new_line);
 //ft_list_iter_printf_environment(envp_list, printf);
         input_str = ft_readline();
         error_num = ft_syntax_error_quotes_quant(input_str);
@@ -24,7 +24,7 @@ void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environme
             && token_list->next != NULL)
             ft_program(token_list, heredoc_list, &envp_list);
         if (error_num == EXIT_ERROR_SYNTAX)
-            exit_status_msh = EXIT_ERROR_SYNTAX;
+            g_exit_status_msh = EXIT_ERROR_SYNTAX;
         free(input_str);
         ft_list_free_for_token(&token_list->next);
         ft_list_free_for_token(&heredoc_list->next);

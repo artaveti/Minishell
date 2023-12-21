@@ -5,17 +5,16 @@ void ft_creat_file(t_token_list *redir_list);
 
 int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list)
 {
-    if (ft_input_to_heredoc(heredoc_list, *envp_list, prog->fd_arr_heredoc) == 1)
-    {
-        return (1);
-    }
-    signal(SIGINT, SIG_IGN);////
+    // signal(SIGINT, SIG_IGN);////
     prog->envp_for_execve = ft_creat_envp_for_execve(*envp_list);
     prog->path_arr = ft_creat_path_argv_for_execve(prog->envp_for_execve);
     prog->fd_quant_heredoc = ft_fd_quant(token_list, HEREDOC);
     prog->fd_quant_pipe = ft_fd_quant(token_list, PIPE);
     prog->fd_arr_heredoc = ft_creat_and_open_pipes(prog->fd_quant_heredoc);
-    ////
+    if (ft_input_to_heredoc(heredoc_list, *envp_list, prog->fd_arr_heredoc) == 1)
+    {
+        return (1);
+    }
     prog->fd_arr_pipe = ft_creat_and_open_pipes(prog->fd_quant_pipe);
     prog->redir_list = ft_creat_redir_list_for_execve(token_list);
     ft_creat_file(prog->redir_list);
@@ -47,7 +46,8 @@ void ft_waitpid_for_prog(t_for_prog *prog)
     {
         waitpid(prog->pid_arr[i], &status, 0);
         WIFEXITED(status);
-        exit_status_msh = WEXITSTATUS(status);
+        if (g_exit_status_msh != 131 && g_exit_status_msh != 130)
+            g_exit_status_msh = WEXITSTATUS(status);
         i++;
     }
     return ;
@@ -75,7 +75,12 @@ void ft_creat_file(t_token_list *redir_list)
     
     while(redir_list != NULL)
     {
-        if (redir_list->type == REDIR_OUT || redir_list->type == REDIR_APPEND)
+        if (redir_list->type == REDIR_OUT)
+        {
+            fd_num = open(redir_list->value, O_CREAT | O_TRUNC, 0644);
+            close(fd_num);
+        }
+        else if (redir_list->type == REDIR_APPEND)
         {
             fd_num = open(redir_list->value, O_CREAT, 0644);
             close(fd_num);

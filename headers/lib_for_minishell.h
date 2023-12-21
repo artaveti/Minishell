@@ -53,7 +53,7 @@
 
 
 //extern ???
-int exit_status_msh;
+int g_exit_status_msh;
 
 typedef enum s_type_of_token
 {
@@ -187,7 +187,7 @@ char *ft_change_dollar_sign_in_string(char **string, char **name_and_value, int 
 void ft_creat_before_after_strings(int i, char **tmp_str, char **before_end_symb, char **after_end_symb);
 char *ft_change_dollar_sign_in_before_end_symb(char **before_end_symb, char **name_and_value, int num_for_last, int *result);
 char *ft_creat_last_part_of_word(char *string, char *symbols);
-void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **exit_status_msh_str, int *result);
+void ft_additional_for_else_if(char **str_for_dup, char **tmp_str, char **g_exit_status_msh_str, int *result);
 
 //change dollar sign in qdoub
 char *ft_change_dollar_sign_in_qdoub(char *string, t_environment_list *envp_list);
@@ -206,7 +206,7 @@ void ft_heredoc_quant_error(t_token_list **list, int *error_num);
 //heredoc
 void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
 int    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
-void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
+int    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
 void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 //program
@@ -253,6 +253,10 @@ void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **e
 void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
 
+//signal
+void ft_sig_quit(int sig_num);
+void ft_sig_int_new_line(int sig_num);
+void ft_sig_int(int sig_num);
 
 void	inthandle(int sig);////
 void	handleterm(int sig);////

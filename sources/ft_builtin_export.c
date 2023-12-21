@@ -15,7 +15,7 @@ void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, i
 {
     int i;
     
-    exit_status_msh = EXIT_SUCCESS;
+    g_exit_status_msh = EXIT_SUCCESS;
     i = 1;
     if (array_of_strings[i] == NULL)
     {
@@ -29,7 +29,7 @@ void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, i
         dup2(fd_out, STDOUT_FILENO);
         if (ft_check_name_for_export(array_of_strings[i]) == 1)
         {
-            exit_status_msh = EXIT_FAILURE;
+            g_exit_status_msh = EXIT_FAILURE;
             i++;
         }
         else
@@ -39,7 +39,7 @@ void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, i
         }
     }
     if (exit_num == BUILTIN_EXIT)
-        exit(exit_status_msh);
+        exit(g_exit_status_msh);
     return ;
 }
 

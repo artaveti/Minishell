@@ -46,7 +46,7 @@ void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int e
         free(old_pwd);
         if (exit_num == BUILTIN_EXIT)
             exit(EXIT_FAILURE);
-        exit_status_msh = EXIT_FAILURE;
+        g_exit_status_msh = EXIT_FAILURE;
         return ;
     }
     pwd = getcwd(NULL, 0);
@@ -57,7 +57,7 @@ void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int e
     free(old_pwd);
     if (exit_num == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
-    exit_status_msh = EXIT_SUCCESS;
+    g_exit_status_msh = EXIT_SUCCESS;
     return ;
 }
 

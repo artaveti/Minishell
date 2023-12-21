@@ -30,7 +30,7 @@ void ft_echo(char **array_of_strings, int exit_num)
         }
     }
     ft_exit_for_echo(&suppress_nl, exit_num);
-    exit_status_msh = 0;
+    g_exit_status_msh = 0;
     return ;
 }
 

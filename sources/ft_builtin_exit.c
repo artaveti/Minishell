@@ -14,7 +14,7 @@ void ft_exit(char **array_of_strings, int fd_out)
     if (array_of_strings[i] == NULL)
     {
         printf(PRINT_EXIT);
-        exit(exit_status_msh);
+        exit(g_exit_status_msh);
     }
     exit_atoi = 0;
     atoi_res = ft_atoi_for_long_long(array_of_strings[i], &exit_atoi);
@@ -22,24 +22,24 @@ void ft_exit(char **array_of_strings, int fd_out)
     {
         printf (PRINT_EXIT);
         printf(ERROR_MANY_ARG);
-        exit_status_msh = EXIT_FAILURE;
+        g_exit_status_msh = EXIT_FAILURE;
         return ;
     }
     else if (atoi_res == 0)
     {
         printf (PRINT_EXIT);
         printf(ERROR_NUM_ARG_REQ, array_of_strings[i]);
-        exit_status_msh = 255;
-        exit(exit_status_msh);
+        g_exit_status_msh = 255;
+        exit(g_exit_status_msh);
     }
     else
     {
         printf (PRINT_EXIT);
         if (exit_atoi >= 0)
-            exit_status_msh = exit_atoi % 256;
+            g_exit_status_msh = exit_atoi % 256;
         else
-            exit_status_msh = 256 + exit_atoi % 256;
-        exit(exit_status_msh);
+            g_exit_status_msh = 256 + exit_atoi % 256;
+        exit(g_exit_status_msh);
     }
     return ;
 }

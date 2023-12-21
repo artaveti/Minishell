@@ -12,7 +12,7 @@ void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int 
         printf(ERROR_ENV);
         if (exit_num == BUILTIN_EXIT)
             exit(EXIT_FAILURE);
-        exit_status_msh = EXIT_FAILURE;
+        g_exit_status_msh = EXIT_FAILURE;
         return ;
     }
     while (tmp != NULL)
@@ -23,6 +23,6 @@ void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int 
     }
     if (exit_num == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
-    exit_status_msh = EXIT_SUCCESS;
+    g_exit_status_msh = EXIT_SUCCESS;
     return ;
 }

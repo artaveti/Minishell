@@ -15,10 +15,13 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
     tmp_redir_list = prog->redir_list;
     check = 0;
     i = 0;
+    signal(SIGQUIT, ft_sig_quit);
     while (prog->argv_for_execve[i] != NULL)
     {
+        //printf("[%d](%s)\n", i, prog->argv_for_execve[i][0]);
         while (tmp_redir_list != NULL)
         {
+          //printf("tmp_redir_list\n");
           if (tmp_redir_list->type == START)
             break;
           tmp_redir_list = tmp_redir_list->next;
@@ -40,15 +43,14 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
 void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i)
 {
      t_for_fork fk;
+
      fk.pid = fork();
-  
      if (fk.pid == 0)
      {
-
-      signal(SIGINT, SIG_DFL);////
-		  signal(SIGQUIT, SIG_DFL);////
-      if (prog->argv_for_execve[i][0] == NULL)
-        exit(EXIT_SUCCESS);
+		 signal(SIGQUIT, SIG_DFL);
+     signal(SIGINT, SIG_DFL);
+      // if (prog->argv_for_execve[i][0] == NULL)
+      //   exit(EXIT_SUCCESS);
       fk.fd_out = dup(STDOUT_FILENO);
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
       ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);
@@ -63,7 +65,6 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       exit(EXIT_ERROR_CMD_NOT_FOUND);
     }
     prog->pid_arr[i] = fk.pid;
-    // ft_signal(0);////
     return ;
 }
 

@@ -16,7 +16,7 @@ void    ft_pwd(t_environment_list **envp, char **str, int exit_num)
             perror("pwd"); //pwd error berum
             if (exit_num == BUILTIN_EXIT)
                 exit(EXIT_FAILURE);
-            exit_status_msh = EXIT_FAILURE;
+            g_exit_status_msh = EXIT_FAILURE;
             return ;
         }
     }
@@ -26,7 +26,7 @@ void    ft_pwd(t_environment_list **envp, char **str, int exit_num)
         free(path_name);
         if (exit_num == BUILTIN_EXIT)
             exit(EXIT_FAILURE);
-        exit_status_msh = EXIT_FAILURE;
+        g_exit_status_msh = EXIT_FAILURE;
         return ;
     }
 }

@@ -1,6 +1,8 @@
 
 #include "lib_for_minishell.h"
 
+// miayn grac linelov > u fayli anuny, ete fayli mej ban ka ayn petka jnjvi
+//void ft_waitpid_for_prog(t_for_prog *prog) ays funkciayi mej stugel builtinneri mecatar poqratar linely ??? !!!
 // printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
 // stugel redirectionnery naev builtinneri het !!!
 // ete syntax error ka, inchua bashy skzbic pahanjum heredocneri mutqy heto cuyc talis syntax errory ev durs galis
@@ -11,9 +13,9 @@
 // printf("(%p)\n(%p)\n(%p)\n", (void *)55, (void *)'7', (void *)"7") return 0x37 0x37 0x104d36c20;
 // argumentneri qanaki error !!!
 // tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
-// configur exit_status_msh
+// configur g_exit_status_msh
 // in unset->wrong_name change for working export and unset functions names
-// ctrl + C must change exit_status_msh to 1
+// ctrl + C must change g_exit_status_msh to 1
 // skzbic mana galis heredocery, ete ka bacuma, ete tesnuma syntax error gruma dra masin ev stopa talis, aysinqn heredocery chi bacum
 // heredoc documentation [COMMAND] <<[-] 'DELIMITER' (der petq chi anel, verjum kereva)
 // maximum quant of heredoc is 16
@@ -38,13 +40,15 @@ int main(int argc, char *argv[], char *envp[])
 
     (void)argc;
     (void)argv;
-    
+    // if (rl_catch_signals)
+    //     rl_catch_signals = 0;
+
 // ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
 // ft_list_iter_printf_environment(envp_list, printf);
     token_list = ft_list_creat_token();
     heredoc_list = ft_list_creat_token();
-    exit_status_msh = 0;
+    g_exit_status_msh = 0;
     ft_loop(token_list, heredoc_list, envp_list);
     exit(EXIT_SUCCESS);
 }

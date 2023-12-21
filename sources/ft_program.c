@@ -7,7 +7,7 @@ void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environm
 
     if (ft_creat_for_program(&prog, token_list, heredoc_list, envp_list) == 1)
     {
-        exit_status_msh = 1;
+        g_exit_status_msh = 1;
         return ;
     }
     ft_running_program(&prog, envp_list);
