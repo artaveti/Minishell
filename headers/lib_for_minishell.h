@@ -52,6 +52,14 @@
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, resetting to 1\n"
 
 
+
+
+unsigned long item;
+struct termios term;
+
+
+
+
 //extern ???
 int g_exit_status_msh;
 
@@ -256,7 +264,7 @@ void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num
 //signal
 void ft_sig_quit(int sig_num);
 void ft_sig_int_new_line(int sig_num);
-void ft_sig_int(int sig_num);
+void ft_sig_int_fork(int sig_num);
 
 void	inthandle(int sig);////
 void	handleterm(int sig);////

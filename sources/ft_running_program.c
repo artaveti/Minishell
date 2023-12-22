@@ -16,6 +16,15 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
     check = 0;
     i = 0;
     signal(SIGQUIT, ft_sig_quit);
+    signal(SIGINT, ft_sig_int_fork);
+
+
+    term.c_lflag = item;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+
+
+
+
     while (prog->argv_for_execve[i] != NULL)
     {
         //printf("[%d](%s)\n", i, prog->argv_for_execve[i][0]);
@@ -49,6 +58,7 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
      {
 		 signal(SIGQUIT, SIG_DFL);
      signal(SIGINT, SIG_DFL);
+     //signal(SIGINT, SIG_DFL);
       // if (prog->argv_for_execve[i][0] == NULL)
       //   exit(EXIT_SUCCESS);
       fk.fd_out = dup(STDOUT_FILENO);

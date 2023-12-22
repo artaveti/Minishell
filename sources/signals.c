@@ -11,58 +11,54 @@ void ft_sig_quit(int sig_num)
 
 void ft_sig_int_new_line(int sig_num)
 {
-	struct termios term;
-
-	tcgetattr(STDIN_FILENO, &term);
-	printf("%lu\n", term.c_lflag);
-	// if (sig_num == 2)
-	// {
-	// 	term.c_lflag &= ~ECHOCTL;
-	// 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	// }
-	printf("%lu\n", term.c_lflag);
-	printf("(%d)\n", sig_num);
+	(void)sig_num;
+	g_exit_status_msh = 1;
+	printf("\n");
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 
 
-void ft_sig_int(int sig_num)
+void ft_sig_int_fork(int sig_num)
 {
 	(void)sig_num;
 	g_exit_status_msh = 130;
 	printf("\n");
+	rl_redisplay();
 }
 
 
 
-
-
-
-
-// void	handleterm(int sig)
+// void ft_sig_int_new_line(int sig_num)
 // {
-// 	struct termios	term;
+// 	(void)sig_num;
+// 	struct termios term;
+// 	static unsigned long i;
+// 	static int flag;
 
-// 	tcgetattr(0, &term);
-// 	if (sig == 0)
+// 	flag = 0;
+// 	if(flag == 0)
+// 	{
+// 		tcgetattr(STDIN_FILENO, &term);
+// 		i = term.c_lflag;
+// 		flag = 1;
+// 	}
+// 	if (sig_num == 2)
 // 	{
 // 		term.c_lflag &= ~ECHOCTL;
 // 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 // 	}
-// }
+// 	term.c_lflag = i;
+// 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 
 
 
-
-
-
-// void	inthandle(int sig)
-// {
-// 	(void)sig;
-// 	// write(1, "\n", 1);
-// 	// rl_on_new_line();
-// 	// rl_redisplay();
-// 	printf("Hello!\n");
+// 	//printf("term.c_lflag:%lu\n", term.c_lflag);
+// 	// printf("~ECHOCTL:%d\n", ~ECHOCTL);
+// 	// printf("ECHOCTL:%d\n", ECHOCTL);
+// 	// printf("term.c_lflag:%lu\n", term.c_lflag);
+// 	// printf("sig_num:%d\n", sig_num);
 // }
 
 

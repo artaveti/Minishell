@@ -1,6 +1,7 @@
 
 #include "lib_for_minishell.h"
 
+// ctrl + C signal for heredoc
 // miayn grac linelov > u fayli anuny, ete fayli mej ban ka ayn petka jnjvi
 //void ft_waitpid_for_prog(t_for_prog *prog) ays funkciayi mej stugel builtinneri mecatar poqratar linely ??? !!!
 // printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
@@ -29,7 +30,6 @@
 // ete grvuma "bash: (komandy, vory chka kam fayly, vory chka): u heto inchvor ban" , apa ayd jamanak cragiry ashkhatuma, hajord qaylina ancnum"
 // ete grvuma "bash: miangamic patchary u symboly", apa petq e chsharunakel
 // petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
-
 
 
 int main(int argc, char *argv[], char *envp[])
