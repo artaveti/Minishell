@@ -3,23 +3,18 @@
 
 void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list)
 {
-	tcgetattr(STDIN_FILENO, &term);
-    item = term.c_lflag;
-
-
+    t_term term;
     char *input_str;
     int error_num;
 
+	tcgetattr(STDIN_FILENO, &(term.termios));
+    term.num = term.termios.c_lflag;
     error_num = 0;
     while(1)
     {
-
-    term.c_lflag &= ~ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-    //printf("start:%lu\n", term.c_lflag);
-
-
-
+        term.termios.c_lflag &= ~ECHOCTL;
+        tcsetattr(STDIN_FILENO, TCSANOW, &(term.termios));
+//printf("start:%lu\n", term.c_lflag);
         signal(SIGQUIT, SIG_IGN);
         signal(SIGINT, ft_sig_int_new_line);
 //ft_list_iter_printf_environment(envp_list, printf);
@@ -33,7 +28,7 @@ void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environme
 // ft_list_iter_printf_token(token_list, printf);
         if (error_num != EXIT_ERROR_SYNTAX
             && token_list->next != NULL)
-            ft_program(token_list, heredoc_list, &envp_list);
+            ft_program(token_list, heredoc_list, &envp_list, &term);
         if (error_num == EXIT_ERROR_SYNTAX)
             g_exit_status_msh = EXIT_ERROR_SYNTAX;
         free(input_str);

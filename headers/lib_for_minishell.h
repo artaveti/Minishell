@@ -51,17 +51,15 @@
 # define ERROR_FOR_EXPORT "minishell: export: `%s': not a valid identifier\n" // export
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, resetting to 1\n"
 
-
-
-
-unsigned long item;
-struct termios term;
-
-
-
-
 //extern ???
+
 int g_exit_status_msh;
+
+typedef struct s_term
+{
+    struct termios termios;
+    unsigned long num;
+} t_term;
 
 typedef enum s_type_of_token
 {
@@ -218,7 +216,7 @@ int    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment
 void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 //program
-void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
+void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list, t_term *term);
 int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
 char **ft_creat_envp_for_execve(t_environment_list *envp_list);
 char **ft_creat_path_argv_for_execve(char	**envp);
@@ -233,7 +231,7 @@ int	**ft_creat_and_open_pipes(int fd_quant_pipe);
 void ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 
 //execve
-void ft_running_program(t_for_prog *prog, t_environment_list **envp_list);
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term *term);
 void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i);
 int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtint);
 
@@ -265,6 +263,8 @@ void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num
 void ft_sig_quit(int sig_num);
 void ft_sig_int_new_line(int sig_num);
 void ft_sig_int_fork(int sig_num);
+
+void ft_sig(int sig_num);
 
 void	inthandle(int sig);////
 void	handleterm(int sig);////

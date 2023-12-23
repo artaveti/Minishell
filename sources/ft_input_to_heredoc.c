@@ -28,7 +28,7 @@ int ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_lis
 
 
 
-int ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list)
+int  ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list)
 {
   char *heredoc_line;
   //int sigint_num;
@@ -53,10 +53,8 @@ int ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_li
             write(fd_num, heredoc_line, ft_strlen(heredoc_line));
             write(fd_num, "\n", 1);
             free(heredoc_line);
-
-
-
             heredoc_line = readline("heredoc_minishell>");
+
   // if (g_exit_status_msh == 300) //signal heredoc stop ////
 	// {
   //   printf("EXIT:300\n");
@@ -64,6 +62,7 @@ int ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_li
   //   heredoc_line = NULL;
   //   return (1);
 	// }
+  
           }
           free(heredoc_line);
           heredoc_line = NULL;

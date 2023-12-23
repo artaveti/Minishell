@@ -42,6 +42,7 @@ void ft_waitpid_for_prog(t_for_prog *prog)
          || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
         return ;
     }
+    //signal(SIGINT, ft_sig);
     while (i < prog->fd_quant_pipe + 1)
     {
         waitpid(prog->pid_arr[i], &status, 0);

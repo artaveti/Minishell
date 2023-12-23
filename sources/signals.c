@@ -14,8 +14,10 @@ void ft_sig_int_new_line(int sig_num)
 	(void)sig_num;
 	g_exit_status_msh = 1;
 	printf("\n");
+	//rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	//write(0, "ls", 2);
 }
 
 
@@ -27,6 +29,17 @@ void ft_sig_int_fork(int sig_num)
 	printf("\n");
 	rl_redisplay();
 }
+
+
+
+// void ft_sig(int sig_num)
+// {
+// 	(void)sig_num;
+// 	g_exit_status_msh = 1;
+// 	//printf("\n");
+// 	rl_on_new_line();
+// 	//rl_redisplay();
+// }
 
 
 

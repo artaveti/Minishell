@@ -6,7 +6,7 @@ void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
 char **ft_prog_names_join(char	**path_arr, char	*prog_name);
 void ft_check_is_string_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
 
-void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term *term)
 {
     t_token_list *tmp_redir_list;
     int     check;
@@ -17,14 +17,8 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list)
     i = 0;
     signal(SIGQUIT, ft_sig_quit);
     signal(SIGINT, ft_sig_int_fork);
-
-
-    term.c_lflag = item;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-
-
-
-
+    term->termios.c_lflag = term->num;
+    tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
     while (prog->argv_for_execve[i] != NULL)
     {
         //printf("[%d](%s)\n", i, prog->argv_for_execve[i][0]);
