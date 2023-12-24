@@ -14,11 +14,10 @@ void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environme
     {
         term.termios.c_lflag &= ~ECHOCTL;
         tcsetattr(STDIN_FILENO, TCSANOW, &(term.termios));
-//printf("start:%lu\n", term.c_lflag);
         signal(SIGQUIT, SIG_IGN);
         signal(SIGINT, ft_sig_int_new_line);
 //ft_list_iter_printf_environment(envp_list, printf);
-        input_str = ft_readline();
+        input_str = ft_readline(&term);
         error_num = ft_syntax_error_quotes_quant(input_str);
         ft_lexer(input_str, token_list);
         ft_parser(&token_list, envp_list);

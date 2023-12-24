@@ -5,7 +5,6 @@ void ft_creat_file(t_token_list *redir_list);
 
 int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list)
 {
-    // signal(SIGINT, SIG_IGN);////
     prog->envp_for_execve = ft_creat_envp_for_execve(*envp_list);
     prog->path_arr = ft_creat_path_argv_for_execve(prog->envp_for_execve);
     prog->fd_quant_heredoc = ft_fd_quant(token_list, HEREDOC);
@@ -42,14 +41,24 @@ void ft_waitpid_for_prog(t_for_prog *prog)
          || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
         return ;
     }
-    //signal(SIGINT, ft_sig);
+    signal(SIGINT, SIG_IGN);
     while (i < prog->fd_quant_pipe + 1)
     {
         waitpid(prog->pid_arr[i], &status, 0);
         WIFEXITED(status);
-        if (g_exit_status_msh != 131 && g_exit_status_msh != 130)
-            g_exit_status_msh = WEXITSTATUS(status);
+        g_exit_status_msh = WEXITSTATUS(status);
         i++;
+    }
+    if(status == 3)
+    {
+        g_exit_status_msh = 131;
+        printf("Quit: 3\n");
+    }
+    else if (status == 2)
+    {
+        g_exit_status_msh = 130;
+        printf("\n");
+	    rl_redisplay();
     }
     return ;
 }

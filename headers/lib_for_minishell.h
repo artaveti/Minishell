@@ -142,7 +142,7 @@ int     ft_isalnum(int symbol);
 void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list);
 
 //readline
-char *ft_readline(void);
+char *ft_readline(t_term *term);
 
 //environment list
 t_environment_list   *ft_list_creat_environment(char *envp[]);
@@ -260,17 +260,9 @@ void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **en
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
 
 //signal
-void ft_sig_quit(int sig_num);
 void ft_sig_int_new_line(int sig_num);
 void ft_sig_int_fork(int sig_num);
-
-void ft_sig(int sig_num);
-
-void	inthandle(int sig);////
-void	handleterm(int sig);////
-void	ft_signal(int handle);////
-void	heredoc_sig(int sig);////
-
-
+//void ft_sig_quit(int sig_num);
+// void ft_kill(t_for_prog *prog);
 
 #endif

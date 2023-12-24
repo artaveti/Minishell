@@ -15,16 +15,12 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term
     tmp_redir_list = prog->redir_list;
     check = 0;
     i = 0;
-    signal(SIGQUIT, ft_sig_quit);
-    signal(SIGINT, ft_sig_int_fork);
     term->termios.c_lflag = term->num;
     tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
     while (prog->argv_for_execve[i] != NULL)
     {
-        //printf("[%d](%s)\n", i, prog->argv_for_execve[i][0]);
         while (tmp_redir_list != NULL)
         {
-          //printf("tmp_redir_list\n");
           if (tmp_redir_list->type == START)
             break;
           tmp_redir_list = tmp_redir_list->next;
@@ -50,11 +46,8 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
      fk.pid = fork();
      if (fk.pid == 0)
      {
-		 signal(SIGQUIT, SIG_DFL);
-     signal(SIGINT, SIG_DFL);
-     //signal(SIGINT, SIG_DFL);
-      // if (prog->argv_for_execve[i][0] == NULL)
-      //   exit(EXIT_SUCCESS);
+		  signal(SIGQUIT, SIG_DFL);
+      signal(SIGINT, SIG_DFL);
       fk.fd_out = dup(STDOUT_FILENO);
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
       ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);
@@ -62,7 +55,6 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
       ft_check_is_string_dir_or_file(&fk, prog, i);
       ft_if_not_only_one_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
-      // ft_running_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT); //// must delete
       ft_execve(&fk, prog, i);
       dup2(fk.fd_out, STDOUT_FILENO);
       printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);

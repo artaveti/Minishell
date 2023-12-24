@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-char *ft_readline(void)
+char *ft_readline(t_term *term)
 {
     char *str;
     int i;
@@ -10,6 +10,8 @@ char *ft_readline(void)
     i = 0;
     if (str == NULL) //// this "if" for "ctrl + D"(null)
     {
+        term->termios.c_lflag = term->num;
+        tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
         printf("minishell> exit\n");
         exit(EXIT_SUCCESS);
     }

@@ -1,7 +1,9 @@
 
 #include "lib_for_minishell.h"
 
+//exit-i jamanak 
 // ctrl + C signal for heredoc
+// sleep 10 | ./minishell cuc chi talis ^C nshany
 // miayn grac linelov > u fayli anuny, ete fayli mej ban ka ayn petka jnjvi
 //void ft_waitpid_for_prog(t_for_prog *prog) ays funkciayi mej stugel builtinneri mecatar poqratar linely ??? !!!
 // printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
@@ -40,9 +42,7 @@ int main(int argc, char *argv[], char *envp[])
 
     (void)argc;
     (void)argv;
-    // if (rl_catch_signals)
-    //     rl_catch_signals = 0;
-
+    //rl_catch_signals = 0;
 // ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
 // ft_list_iter_printf_environment(envp_list, printf);
