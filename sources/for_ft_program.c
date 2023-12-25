@@ -10,6 +10,7 @@ int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_lis
     prog->fd_quant_heredoc = ft_fd_quant(token_list, HEREDOC);
     prog->fd_quant_pipe = ft_fd_quant(token_list, PIPE);
     prog->fd_arr_heredoc = ft_creat_and_open_pipes(prog->fd_quant_heredoc);
+    signal(SIGINT, SIG_IGN);
     if (ft_input_to_heredoc(heredoc_list, *envp_list, prog->fd_arr_heredoc) == 1)
     {
         return (1);

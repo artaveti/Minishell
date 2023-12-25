@@ -5,6 +5,8 @@ int	ft_char_find(char c, char const	*string)
 {
 	size_t	i;
 
+    if (!string || string == NULL)
+        return (0);
 	i = 0;
 	while (string[i] != '\0')
 	{

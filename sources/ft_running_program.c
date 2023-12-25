@@ -48,6 +48,8 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
      {
 		  signal(SIGQUIT, SIG_DFL);
       signal(SIGINT, SIG_DFL);
+      if (prog->argv_for_execve[i][0] == NULL) //// stugel ays pahy inchi hamar ei hanel
+        exit(EXIT_SUCCESS);
       fk.fd_out = dup(STDOUT_FILENO);
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
       ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);

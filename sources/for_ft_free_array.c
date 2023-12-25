@@ -48,6 +48,8 @@ void ft_free_triple_pointer_array(char ****array)
     int i;
     char ***tmp;
 
+    if (!*array || *array == NULL)
+        return ;
     tmp = *array;
     i = 0;
     while (tmp[i] != NULL)

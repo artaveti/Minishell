@@ -30,6 +30,7 @@
 # define BUILTIN_RETURN 1
 # define ONLY_ONE_BUILTIN 1
 # define EXIT_ERROR_NO_FILE_OR_DIRECTORY 1
+# define EXIT_HEREDOC_SIGINT 1
 # define EXIT_ERROR_HEREDOC_QUANT 2
 # define EXIT_ERROR_IS_DIR 126
 # define EXIT_ERROR_PERM_DEN 126
@@ -212,7 +213,7 @@ void ft_heredoc_quant_error(t_token_list **list, int *error_num);
 //heredoc
 void    ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list, t_environment_list *envp_list);
 int    ft_input_to_heredoc(t_token_list *heredoc_list, t_environment_list *envp_list, int **fd_arr_heredoc);
-int    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
+void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environment_list *envp_list);
 void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 //program
@@ -261,6 +262,7 @@ void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num
 
 //signal
 void ft_sig_int_new_line(int sig_num);
+void ft_sig_int_heredoc(int sig_num);
 void ft_sig_int_fork(int sig_num);
 //void ft_sig_quit(int sig_num);
 // void ft_kill(t_for_prog *prog);
