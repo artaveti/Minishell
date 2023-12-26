@@ -9,11 +9,9 @@ void ft_check_is_string_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
 void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term *term)
 {
     t_token_list *tmp_redir_list;
-    int     check;
     int     i;
 
     tmp_redir_list = prog->redir_list;
-    check = 0;
     i = 0;
     term->termios.c_lflag = term->num;
     tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
@@ -27,8 +25,8 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term
         }
         if (i == 0 && prog->argv_for_execve[0][0] != NULL
             && prog->argv_for_execve[1] == NULL)
-          ft_if_only_one_builtin(tmp_redir_list, envp_list, prog, &check);
-        if (check == 0)
+          ft_if_only_one_builtin(tmp_redir_list, envp_list, prog);
+        if (prog->check_builtin == BUILTIN_EXIT)
           ft_fork(tmp_redir_list, envp_list, prog, i);
         if (tmp_redir_list != NULL && tmp_redir_list->type == START)
           tmp_redir_list = tmp_redir_list->next;

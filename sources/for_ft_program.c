@@ -20,6 +20,7 @@ int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_lis
     ft_creat_file(prog->redir_list);
     prog->argv_for_execve = ft_creat_argv_for_execve(token_list, prog->fd_quant_pipe);
     prog->pid_arr = (int *)malloc(sizeof(int) * (prog->fd_quant_pipe + 1));
+    prog->check_builtin = BUILTIN_EXIT;
     return (0);
 }
 
@@ -29,33 +30,30 @@ void ft_waitpid_for_prog(t_for_prog *prog)
 {
     int i;
     int status;
+    int signal_falg;
 
-    i = 0;
-    if (prog->fd_quant_pipe == 0 && prog->argv_for_execve[1] == NULL)
-    {
-        if (!ft_strncmp(prog->argv_for_execve[0][0], "echo", 5)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "pwd", 4)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "env", 4)
-         || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
-        return ;
-    }
+    if (prog->check_builtin == BUILTIN_RETURN)
+        return ;  // this if for right exit number
     signal(SIGINT, SIG_IGN);
+    signal_falg = 0;
+    i = 0;
     while (i < prog->fd_quant_pipe + 1)
     {
         waitpid(prog->pid_arr[i], &status, 0);
         WIFEXITED(status);
         g_exit_status_msh = WEXITSTATUS(status);
+        if(status == SIGQUIT)
+            signal_falg = SIGQUIT;
+        else if (status == SIGINT)
+            signal_falg = SIGINT;
         i++;
     }
-    if(status == 3)
+    if(signal_falg == SIGQUIT)
     {
         g_exit_status_msh = 131;
-        printf("Quit: 3\n");
+        printf("Quit: %d\n", SIGQUIT);
     }
-    else if (status == 2)
+    else if (signal_falg == SIGINT)
     {
         g_exit_status_msh = 130;
         printf("\n");
@@ -100,3 +98,15 @@ void ft_creat_file(t_token_list *redir_list)
     }
     return ;
 }
+
+    // if (prog->fd_quant_pipe == 0 && prog->argv_for_execve[1] == NULL)
+    // {
+    //     if (!ft_strncmp(prog->argv_for_execve[0][0], "echo", 5)
+    //      || !ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
+    //      || !ft_strncmp(prog->argv_for_execve[0][0], "pwd", 4)
+    //      || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
+    //      || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
+    //      || !ft_strncmp(prog->argv_for_execve[0][0], "env", 4)
+    //      || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
+    //     return ;
+    // } // this if for right exit number

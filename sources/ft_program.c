@@ -12,6 +12,7 @@ void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environm
     {
         term->termios.c_lflag = term->num;
         tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
+        ft_close_pipe_fd(prog.fd_arr_pipe, prog.fd_quant_pipe);
         ft_close_pipe_fd(prog.fd_arr_heredoc, prog.fd_quant_heredoc);
         ft_free_for_prog(&prog);
         return ;
@@ -37,5 +38,6 @@ void ft_set_null_for_prog(t_for_prog *prog)
     prog->fd_arr_pipe = NULL;
     prog->fd_arr_heredoc = NULL;
     prog->pid_arr = NULL;
+    prog->check_builtin = 0;
     return ;
 }

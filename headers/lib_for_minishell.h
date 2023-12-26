@@ -7,25 +7,20 @@
 #include <readline/readline.h>// readline();
 #include <readline/history.h> // readline();
 #include <unistd.h> // execve();
-#include <termios.h> // for signals ???
-#include <signal.h> // readline();
-# include <fcntl.h> // open();
+#include <signal.h> // signal();
+#include <fcntl.h> // open();
 #include <dirent.h> // opendir();
-#include <limits.h>// for builtin exit ???
-#include <errno.h> // errno; //////
-
- #include <sys/ioctl.h>////
+#include <limits.h>// builtin exit();
+#include <termios.h> // tcgetattr(); tcsetattr();
+#include <sys/ioctl.h> // ???
+#include <errno.h> // errno;
 
 # define START 100
 # define WHITESPACES " \t\r\n\v\f"
 # define WHITESPACES_RL "\t\r\n\v\f" // without space
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'\"?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
-
 # define WRONG_SIGN_EXPORT "~!@#%%^*-+[]{}:,./\'\"?"
-
-# define WRONG_NAME_EXPORT "export"
-# define WRONG_NAME_UNSET "unset"
 # define BUILTIN_EXIT 0
 # define BUILTIN_RETURN 1
 # define ONLY_ONE_BUILTIN 1
@@ -37,7 +32,10 @@
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_NO_FILE_OR_DIR 127
 # define EXIT_ERROR_SYNTAX 258
+# define WRONG_NAME_EXPORT "export"
+# define WRONG_NAME_UNSET "unset"
 # define PRINT_EXIT "exit\n"
+# define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  // (exit from bash)
 # define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 # define ERROR_REDIR "minishell"
@@ -45,11 +43,10 @@
 # define ERROR_SYNTAX_TOKEN "minishell: syntax error near unexpected token `%s'\n"
 # define ERROR_CMD_NOT_FOUND "minishell: %s: command not found\n"
 # define ERROR_ENV "env: Too many arguments\n"
-# define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  //(exit amboghj bashic)
-# define ERROR_IS_DIR "minishell: %s: is a directory\n" // exit 126 (exit miayn forkic)
-# define ERROR_NO_FILE_OR_DIR "minishell: %s: No such file or directory\n" // exit 127 (exit miayn forkic)
-# define ERROR_PERM_DEN "minishell: %s: Permission denied\n" // exit 126 (exit miayn forkic)
-# define ERROR_FOR_EXPORT "minishell: export: `%s': not a valid identifier\n" // export
+# define ERROR_IS_DIR "minishell: %s: is a directory\n"
+# define ERROR_NO_FILE_OR_DIR "minishell: %s: No such file or directory\n"
+# define ERROR_PERM_DEN "minishell: %s: Permission denied\n"
+# define ERROR_FOR_EXPORT "minishell: export: `%s': not a valid identifier\n"
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, resetting to 1\n"
 
 //extern ???
@@ -107,6 +104,7 @@ typedef struct s_for_prog
     int **fd_arr_pipe;
     int **fd_arr_heredoc;
     int *pid_arr;
+    int check_builtin;
 } t_for_prog;
 
 typedef struct s_for_fork
@@ -256,7 +254,7 @@ void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, in
 void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
 void ft_exit(char **array_of_strings, int fd_out);
 int  ft_wrong_name(char *name, char *command);
-void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
+void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog);
 void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num);
 void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
 

@@ -1,9 +1,9 @@
 
 #include "lib_for_minishell.h"
 
-void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check);
+void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog);
 
-void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check)
+void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog)
 {
   char *tmp_str;
   if (!ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
@@ -11,7 +11,7 @@ void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **e
       || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
       || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
   {
-    ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog, check);
+    ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog);
     return ;
   }
   tmp_str = ft_strdup(prog->argv_for_execve[0][0]);
@@ -21,7 +21,7 @@ void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **e
       || !ft_strncmp(tmp_str, "env", 4))
   {
     ft_str_to_lowercase(prog->argv_for_execve[0][0]);
-    ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog, check);
+    ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog);
     free(tmp_str);
     return ;
   }
@@ -31,7 +31,7 @@ void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **e
 
 
 
-void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int *check)
+void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog)
 {
   int fd_in;
   int fd_out;
@@ -39,7 +39,7 @@ void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment
 
   fd_in = dup(STDIN_FILENO);
   fd_out = dup(STDOUT_FILENO);
-  *check = BUILTIN_RETURN;
+  prog->check_builtin = BUILTIN_RETURN;
   if (ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_redir,
     prog->fd_arr_heredoc, ONLY_ONE_BUILTIN) == EXIT_ERROR_NO_FILE_OR_DIRECTORY)
     {

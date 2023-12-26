@@ -1,24 +1,24 @@
 
 #include "lib_for_minishell.h"
 
-//exit-i jamanak 
-// ctrl + C signal for heredoc
-// sleep 10 | ./minishell cuc chi talis ^C nshany
-// miayn grac linelov > u fayli anuny, ete fayli mej ban ka ayn petka jnjvi
-//void ft_waitpid_for_prog(t_for_prog *prog) ays funkciayi mej stugel builtinneri mecatar poqratar linely ??? !!!
-// printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
-// stugel redirectionnery naev builtinneri het !!!
 // ete syntax error ka, inchua bashy skzbic pahanjum heredocneri mutqy heto cuyc talis syntax errory ev durs galis
 // start_of_list->name_and_value[1] = ft_strdup(ft_strchr(envp[0], '=') + 1); khndiry nranum er, vor compilyatory i skzbane chgiti ardyunqy NULL e linelu, te urish ban
 // octal 00, hexadecimal 0
 // printf("(%p)\n", NULL) return 0x0; printf("(%p)\n", (void *)00000000 return 0x0; printf("(%p)\n", (void *)0) return 0x0;
 // printf("(%p)\n", (void *)1) return 0x1;  printf("(%p)\n", (void *)42) return 0x2a; printf("(%p)\n", (void *)"a") return 0x109ceec20;
 // printf("(%p)\n(%p)\n(%p)\n", (void *)55, (void *)'7', (void *)"7") return 0x37 0x37 0x104d36c20;
+// sleep 10 | ./minishell cuc chi talis ^C nshany
+// printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
+
+// 130, 131 exit_codes; ‘128+n’	Fatal error signal “n”	Process killed by -9 signal will return 128+9 131 as error code
+
+// stugel redirectionnery naev builtinneri het !!!
+// kargavorel signalnerov durs galuc heto tpely , ete pipe-a u verjum skhal commanda kam builtin, bayc bash-y tvyal jamanak SIGQUIT-i depqum chi tpum "Quit:3"
 // argumentneri qanaki error !!!
 // tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
-// configur g_exit_status_msh
-// in unset->wrong_name change for working export and unset functions names
-// ctrl + C must change g_exit_status_msh to 1
+// configur g_exit_status_msh in unset->wrong_name change for working export and unset functions names
+// petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
+// rl_catch_signals = 0;
 // skzbic mana galis heredocery, ete ka bacuma, ete tesnuma syntax error gruma dra masin ev stopa talis, aysinqn heredocery chi bacum
 // heredoc documentation [COMMAND] <<[-] 'DELIMITER' (der petq chi anel, verjum kereva)
 // maximum quant of heredoc is 16
@@ -31,7 +31,6 @@
 // "bash: wcl: command not found" echo $? 127
 // ete grvuma "bash: (komandy, vory chka kam fayly, vory chka): u heto inchvor ban" , apa ayd jamanak cragiry ashkhatuma, hajord qaylina ancnum"
 // ete grvuma "bash: miangamic patchary u symboly", apa petq e chsharunakel
-// petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
 
 int main(int argc, char *argv[], char *envp[])
@@ -42,7 +41,6 @@ int main(int argc, char *argv[], char *envp[])
 
     (void)argc;
     (void)argv;
-    //rl_catch_signals = 0;
 // ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
 // ft_list_iter_printf_environment(envp_list, printf);
