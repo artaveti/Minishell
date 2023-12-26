@@ -18,8 +18,8 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term
     term->termios.c_lflag = term->num;
     tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
     while (prog->argv_for_execve[i] != NULL)
-    {
-        while (tmp_redir_list != NULL)
+    { 
+      while (tmp_redir_list != NULL)
         {
           if (tmp_redir_list->type == START)
             break;
@@ -48,8 +48,6 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
      {
 		  signal(SIGQUIT, SIG_DFL);
       signal(SIGINT, SIG_DFL);
-      if (prog->argv_for_execve[i][0] == NULL) //// stugel ays pahy inchi hamar ei hanel
-        exit(EXIT_SUCCESS);
       fk.fd_out = dup(STDOUT_FILENO);
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
       ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);
@@ -57,6 +55,8 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
       ft_check_is_string_dir_or_file(&fk, prog, i);
       ft_if_not_only_one_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
+      if (prog->argv_for_execve[i][0] == NULL)
+        exit(EXIT_SUCCESS);
       ft_execve(&fk, prog, i);
       dup2(fk.fd_out, STDOUT_FILENO);
       printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);

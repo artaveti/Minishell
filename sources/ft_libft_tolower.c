@@ -5,6 +5,8 @@ void	ft_str_to_lowercase(char *str)
 {
 	int i;
 
+	if (!str || str == NULL)
+		return ;
 	i = 0;
 	while(str[i] != '\0')
 	{
