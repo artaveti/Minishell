@@ -13,22 +13,20 @@ void ft_sig_int_new_line(int sig_num)
 
 
 
-void ft_sig_int_fork(int sig_num)
-{
-	(void)sig_num;
-	g_exit_status_msh = 130;
-	printf("\n");
-	rl_redisplay();
-}
-
-
-
 void ft_sig_int_heredoc(int sig_num)
 {
 	(void)sig_num;
 	printf("\n");
 	exit(1);
 }
+
+// void ft_sig_int_fork(int sig_num)
+// {
+// 	(void)sig_num;
+// 	g_exit_status_msh = 130;
+// 	printf("\n");
+// 	rl_redisplay();
+// }
 
 
 

@@ -4,11 +4,10 @@ int    get_env(t_environment_list *envp);
 
 void    ft_pwd(t_environment_list **envp, char **str, int exit_num)
 {
-    (void)exit_num;
     char    *path_name;
     (void)str;
     (void)envp;
-    path_name = getcwd(NULL, 0); 
+    path_name = getcwd(NULL, 0);
     if (!path_name)
     {
         if (getenv("PWD") == 0) //error code 127? //cannot get env  u env path chka

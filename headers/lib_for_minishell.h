@@ -35,6 +35,7 @@
 # define WRONG_NAME_EXPORT "export"
 # define WRONG_NAME_UNSET "unset"
 # define PRINT_EXIT "exit\n"
+# define ERROR_GETCWD_CANT_ACCESS "shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
 # define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  // (exit from bash)
 # define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"

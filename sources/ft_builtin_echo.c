@@ -1,7 +1,5 @@
 #include "lib_for_minishell.h"
 
-//echo -n not redirect to file ???
-
 int     n_set(char *str, int *suppress_nl);
 void    ft_print_for_echo(char **array_of_strings, int *flag_word, int *i);
 void    ft_exit_for_echo(int *suppress_nl, int exit_num);
@@ -64,12 +62,8 @@ void    ft_print_for_echo(char **array_of_strings, int *flag_word, int *i)
 {
     *flag_word = 1;
     write(STDOUT_FILENO, array_of_strings[*i], ft_strlen(array_of_strings[*i]));
-    // printf("%s", array_of_strings[*i]);
     if (array_of_strings[*i + 1])
-    {
         write(STDOUT_FILENO, " ", 1);
-        // printf(" ");
-    }
     return ;
 }
 
@@ -78,11 +72,7 @@ void    ft_print_for_echo(char **array_of_strings, int *flag_word, int *i)
 void    ft_exit_for_echo(int *suppress_nl, int exit_num)
 {
     if (!*suppress_nl)
-    {
         write(STDOUT_FILENO, "\n", 1);
-        // printf("\n");
-    }
-    // fflush(STDIN_FILENO);
     if (exit_num == BUILTIN_EXIT) 
         exit(EXIT_SUCCESS);
     return ;

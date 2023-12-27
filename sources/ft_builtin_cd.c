@@ -9,7 +9,6 @@ int streq(char *s1, char *s2);
 void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num) 
 {
     dup2(fd_out, STDOUT_FILENO);
-    (void)exit_num;
     printf("Hi cd\n");
 
     t_environment_list *home_node;
@@ -29,10 +28,18 @@ void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int e
         if (home_node == NULL || home_node->name_and_value[1] == NULL)
         {
             printf("minishell: cd: HOME not set\n");
+            if (exit_num == BUILTIN_EXIT) 
+                exit(EXIT_FAILURE);
+            g_exit_status_msh = EXIT_FAILURE;
             return ;
         }
         else if (home_node->name_and_value[1][0] == '\0')
+        {
+            if (exit_num == BUILTIN_EXIT) 
+                exit(EXIT_SUCCESS);
+            g_exit_status_msh = EXIT_SUCCESS;
             return ;
+        }
         else
             path = ft_strdup(home_node->name_and_value[1]);
     }

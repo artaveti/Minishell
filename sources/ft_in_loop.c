@@ -33,7 +33,7 @@ void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environme
         free(input_str);
         ft_list_free_for_token(&token_list->next);
         ft_list_free_for_token(&heredoc_list->next);
-// system("leaks minishell");
+//  system("leaks minishell");
     }
     return ;
 }
