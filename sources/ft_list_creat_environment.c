@@ -95,6 +95,7 @@ t_environment_list	*ft_list_new_for_environment(char *string_from_envp)
 
 void ft_change_pwd_of_environment(t_environment_list **start_of_list)
 {
+    //use getenv in this function
     t_environment_list *tmp_list;
     t_environment_list *tmp_pwd;
     char *working_dir;
@@ -105,7 +106,12 @@ void ft_change_pwd_of_environment(t_environment_list **start_of_list)
     {
         if (!ft_strncmp(tmp_list->name_and_value[0], "PWD", 4))
         {
-            if (working_dir != NULL)
+            if (working_dir == NULL)
+            {
+                printf(ERROR_GETCWD_CANT_ACCESS);
+                return ;
+            }
+            else
             {
                 tmp_list->envp_flag = 1;
                 free(tmp_list->name_and_value[1]);
