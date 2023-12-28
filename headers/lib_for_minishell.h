@@ -21,6 +21,8 @@
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'\"?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define WRONG_SIGN_EXPORT "~!@#%%^*-+[]{}:,./\'\"?"
+# define FIRST_CHECK_PWD 0
+# define NOT_FIRST_CHECK_PWD 1
 # define BUILTIN_EXIT 0
 # define BUILTIN_RETURN 1
 # define ONLY_ONE_BUILTIN 1
@@ -36,7 +38,8 @@
 # define WRONG_NAME_UNSET "unset"
 # define PRINT_EXIT "exit\n"
 # define ERROR_GETCWD_CANT_ACCESS "shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
-# define ERROR_PWD_CANT_ACCESS "pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define ERROR_PWD_CANT_ACCESS_FIRST_CHECK "shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define ERROR_PWD_CANT_ACCESS_SECOND_CHECK "pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
 # define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  // (exit from bash)
 # define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
@@ -250,7 +253,7 @@ void ft_printf_triple_arr(char ***triple_arr);
 //builtin
 void ft_echo(char **array_of_strings, int exit_num);
 void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
-void ft_pwd(t_environment_list **envp, char **str, int exit_num);
+int ft_pwd(t_environment_list **envp, char **array_of_strings, int check_num, int exit_num);
 void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
 void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
 void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);

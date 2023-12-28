@@ -106,11 +106,8 @@ void ft_change_pwd_of_environment(t_environment_list **start_of_list)
     {
         if (!ft_strncmp(tmp_list->name_and_value[0], "PWD", 4))
         {
-            if (working_dir == NULL)
-            {
-                printf(ERROR_GETCWD_CANT_ACCESS);
+            if (ft_pwd(NULL, NULL, FIRST_CHECK_PWD, 0) == 1)
                 return ;
-            }
             else
             {
                 tmp_list->envp_flag = 1;
@@ -122,11 +119,8 @@ void ft_change_pwd_of_environment(t_environment_list **start_of_list)
         }
         tmp_list = tmp_list->next;
     }
-    if (working_dir == NULL)
-    {
-        printf(ERROR_GETCWD_CANT_ACCESS);
+    if (ft_pwd(NULL, NULL, FIRST_CHECK_PWD, 0) == 1)
         return ;
-    }
     tmp_pwd = (t_environment_list *)malloc(sizeof(t_environment_list));
     tmp_pwd->name_and_value = (char **)malloc(sizeof(char *) * 3);
     tmp_pwd->envp_flag = 1;
@@ -137,6 +131,11 @@ void ft_change_pwd_of_environment(t_environment_list **start_of_list)
     ft_list_add_back_for_environment(start_of_list, tmp_pwd);
     free(working_dir);
     return ;
+    // if (working_dir == NULL)
+    // {
+    //     printf(ERROR_GETCWD_CANT_ACCESS);
+    //     return ;
+    // }
 }
 
 
