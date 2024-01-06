@@ -17,7 +17,7 @@ t_environment_list   *ft_list_creat_environment(char *envp[])
     int envp_len;
     int i;
 
-    if (!envp || !envp[0] || envp == NULL || envp[0] == NULL)
+    if (!envp || envp == NULL || !envp[0] || envp[0] == NULL)
         return (NULL);
     start_of_list = (t_environment_list *)malloc(sizeof(t_environment_list));
     start_of_list->name_and_value = (char **)malloc(sizeof(char *) * 3);
@@ -131,7 +131,7 @@ void ft_change_pwd_of_environment(t_environment_list **start_of_list)
     tmp_pwd->name_and_value = (char **)malloc(sizeof(char *) * 3);
     tmp_pwd->envp_flag = 1;
     tmp_pwd->name_and_value[0] = ft_strdup("PWD");
-    tmp_pwd->name_and_value[1] = ft_strdup(working_dir);;
+    tmp_pwd->name_and_value[1] = ft_strdup(working_dir);
     tmp_pwd->name_and_value[2] = NULL;
     tmp_pwd->next = NULL;
     ft_list_add_back_for_environment(start_of_list, tmp_pwd);

@@ -58,6 +58,7 @@
 # define ERROR_PERM_DEN "minishell: %s: Permission denied\n"
 # define ERROR_FOR_EXPORT "minishell: export: `%s': not a valid identifier\n"
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, resetting to 1\n"
+# define ERROR_WRONG_NAME "minishell: %s: `%s': not a valid identifier\n"
 
 //extern ???
 

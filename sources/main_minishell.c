@@ -26,11 +26,9 @@
 // if your current directory unknown, chdir("..") == /Users/tumolabs/.Trash
 // tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
 // rl_catch_signals = 0;
-
-// argumentneri qanaki error
 // ctrl + D for heredoc, print line
+// argumentneri qanaki error
 // stugel redirectionnery naev builtinneri het
-// configur g_exit_status_msh in unset->wrong_name change for working export and unset functions names
 // petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
 int main(int argc, char *argv[], char *envp[])
@@ -49,15 +47,15 @@ int main(int argc, char *argv[], char *envp[])
     g_exit_status_msh = 0;
     ft_loop(token_list, heredoc_list, envp_list);
     ft_list_free_for_envp_list(&envp_list);
-system("leaks minishell");
+//system("leaks minishell");
     exit(g_exit_status_msh);
 }
 
 
 
-// (void)envp;
-// char *e[2];
-// e[0] = "abc";
-// e[1] = NULL;
-// envp_list = ft_list_creat_environment(e);
-// envp_list = NULL;
+//(void)envp;
+//char *e[1];
+//e[0] = NULL;
+//e[1] = NULL;
+//envp_list = ft_list_creat_environment(e);
+//envp_list = NULL;

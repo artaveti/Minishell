@@ -87,9 +87,12 @@ void ft_cd(t_environment_list **envp, t_for_prog *prog, char **array_of_strings,
     if (tmp_node == NULL)
     {
         pwd_of_list = (t_environment_list *)malloc(sizeof(t_environment_list));
-        pwd_of_list->envp_flag = 2;
+        pwd_of_list->name_and_value = (char **)malloc(sizeof(char *) * 3);
+        pwd_of_list->envp_flag = 1;
         pwd_of_list->name_and_value[0] = ft_strdup("PWD");
         pwd_of_list->name_and_value[1] = NULL;
+        pwd_of_list->name_and_value[2] = NULL;
+        pwd_of_list->next = NULL;
         ft_list_add_back_for_environment(envp, pwd_of_list);
     }
     change_node_by_name(envp,  "PWD", prog->pwd_str[0]);

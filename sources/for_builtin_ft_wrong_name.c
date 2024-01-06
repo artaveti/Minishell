@@ -8,7 +8,7 @@ int ft_wrong_name(char *name, char *command)
 
     if (!(name[0] == '_' ||  ft_isalpha(name[0])) || !name || !(*name))
     {
-        printf("minishell: %s: `%s': not a valid identifier\n", command, name);
+        printf(ERROR_WRONG_NAME, command, name);
         return (1);
     }
     len = ft_strlen(name);
@@ -17,7 +17,7 @@ int ft_wrong_name(char *name, char *command)
     {
         if (!(ft_isalnum(name[i]) || name[i] == '_')) 
         {
-            printf("minishell: %s: `%s': not a valid identifier\n", command, name);
+            printf(ERROR_WRONG_NAME, command, name);
             return (1);
         }
         i++;
