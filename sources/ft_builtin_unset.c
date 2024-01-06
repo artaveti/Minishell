@@ -4,7 +4,7 @@
 void for_ft_unset(t_environment_list **head, const char *name);
 int ft_unset_head_of_envp_list(t_environment_list **head, const char *name);
 
-void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num)
+void ft_unset(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
     dup2(fd_out, STDOUT_FILENO);
     int i = 1;
@@ -12,7 +12,7 @@ void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, in
     {
         if (ft_wrong_name(array_of_strings[i], WRONG_NAME_UNSET))
         {
-            if (exit_num == BUILTIN_EXIT)
+            if (prog->check_builtin == BUILTIN_EXIT)
                 exit(EXIT_FAILURE);
             g_exit_status_msh = EXIT_FAILURE;
             return ;
@@ -20,7 +20,7 @@ void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, in
         for_ft_unset(envp, array_of_strings[i]); 
         i++;
     }
-    if (exit_num == BUILTIN_EXIT)
+    if (prog->check_builtin == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
     g_exit_status_msh = EXIT_SUCCESS;
     return ;

@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num)
+void ft_env(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
     t_environment_list *tmp;
     tmp = *envp;
@@ -10,7 +10,7 @@ void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int 
     {
         dup2(fd_out, STDOUT_FILENO);
         printf(ERROR_ENV);
-        if (exit_num == BUILTIN_EXIT)
+        if (prog->check_builtin == BUILTIN_EXIT)
             exit(EXIT_FAILURE);
         g_exit_status_msh = EXIT_FAILURE;
         return ;
@@ -21,7 +21,7 @@ void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int 
             printf("%s=%s\n", tmp->name_and_value[0], tmp->name_and_value[1]);
         tmp = tmp->next;
     }
-    if (exit_num == BUILTIN_EXIT)
+    if (prog->check_builtin == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
     g_exit_status_msh = EXIT_SUCCESS;
     return ;

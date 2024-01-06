@@ -17,7 +17,7 @@
 
 # define START 100
 # define WHITESPACES " \t\r\n\v\f"
-# define WHITESPACES_RL "\t\r\n\v\f" // without space
+# define WHITESPACES_WITHOUT_SPACE_RL "\t\r\n\v\f" // without space
 # define END_OF_DOLLAR_SIGN "~!@#%%^*-=+[]{}:,./\'\"?"
 # define NOT_WORD_CHARS " \t\r\n\v\f\'\"<>|"
 # define WRONG_SIGN_EXPORT "~!@#%%^*-+[]{}:,./\'\"?"
@@ -28,19 +28,24 @@
 # define ONLY_ONE_BUILTIN 1
 # define EXIT_ERROR_NO_FILE_OR_DIRECTORY 1
 # define EXIT_HEREDOC_SIGINT 1
+# define EXIT_ERROR_PERM_DEN 1
 # define EXIT_ERROR_HEREDOC_QUANT 2
-# define EXIT_ERROR_IS_DIR 126
-# define EXIT_ERROR_PERM_DEN 126
+# define EXIT_ERROR_NAME_IS_DIR 126
+# define EXIT_ERROR_PERM_DEN_EXEC_FILE 126
 # define EXIT_ERROR_CMD_NOT_FOUND 127
 # define EXIT_ERROR_NO_FILE_OR_DIR 127
+# define EXIT_ERROR_SIGINT 130
+# define EXIT_ERROR_SIGQUIT 131
 # define EXIT_ERROR_SYNTAX 258
 # define WRONG_NAME_EXPORT "export"
 # define WRONG_NAME_UNSET "unset"
 # define PRINT_EXIT "exit\n"
-# define ERROR_GETCWD_CANT_ACCESS "shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
-# define ERROR_PWD_CANT_ACCESS_FIRST_CHECK "shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
-# define ERROR_PWD_CANT_ACCESS_SECOND_CHECK "pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
-# define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  // (exit from bash)
+# define ERROR_ARGC_QUANT "No arguments should be passed to the program\n"
+# define ERROR_ENVP_GETCWD_CANT_ACCESS "shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define ERROR_JWD_GETCWD_CANT_ACCESS "job-working-directory: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define ERROR_PWD_GETCWD_CANT_ACCESS "pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define ERROR_CD_GETCWD_CANT_ACCESS "chdir: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"
+# define ERROR_HEREDOC_QUANT "minishell: maximum here-document count exceeded\n"  // exit from bash
 # define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
 # define ERROR_NUM_ARG_REQ "minishell: exit: %s: numeric argument required\n"
 # define ERROR_REDIR "minishell"
@@ -58,11 +63,12 @@
 
 int g_exit_status_msh;
 
-typedef struct s_term
+typedef struct s_term_and_work_dir
 {
     struct termios termios;
     unsigned long num;
-} t_term;
+    char *pwd_str_in_term;
+}t_term_and_work_dir;
 
 typedef enum s_type_of_token
 {
@@ -104,19 +110,20 @@ typedef struct s_for_prog
     char **envp_for_execve;
     char **path_arr;
     char ***argv_for_execve;
+    int index;
     int fd_quant_heredoc;
     int fd_quant_pipe;
     int **fd_arr_pipe;
     int **fd_arr_heredoc;
     int *pid_arr;
     int check_builtin;
+    char **pwd_str;
 } t_for_prog;
 
 typedef struct s_for_fork
 {
     pid_t   pid;
     int     fd_out;
-    int     fd_redir[3];
     char    **prog_paths;
 } t_for_fork;
 
@@ -143,10 +150,11 @@ int     ft_isalnum(int symbol);
 //char	*ft_strjoin_space(char const	*s1, char const	*s2);
 
 //for_main
-void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list);
+void ft_check_argc_quant(int argc);
+void ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list);
 
 //readline
-char *ft_readline(t_term *term);
+char *ft_readline(t_term_and_work_dir *term, int *loop_stop_num);
 
 //environment list
 t_environment_list   *ft_list_creat_environment(char *envp[]);
@@ -220,7 +228,7 @@ void    ft_readline_for_heredoc(int type, char *string, int fd_num, t_environmen
 void    ft_change_string_for_heredoc(char **heredoc_line, t_environment_list *envp_list);
 
 //program
-void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list, t_term *term);
+void ft_program(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list,t_term_and_work_dir *term);
 int ft_creat_for_program(t_for_prog *prog, t_token_list *token_list, t_token_list *heredoc_list, t_environment_list **envp_list);
 char **ft_creat_envp_for_execve(t_environment_list *envp_list);
 char **ft_creat_path_argv_for_execve(char	**envp);
@@ -235,14 +243,15 @@ int	**ft_creat_and_open_pipes(int fd_quant_pipe);
 void ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 
 //execve
-void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term *term);
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_and_work_dir *term);
 void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i);
-int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtint);
+int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int fd_out, int **heredoc_pipe, int only_one_builtint);
 
 //free
 void ft_free_double_pointer_array(char ***array);
 void ft_free_double_pointer_int(int ***array, int fd_quant_pipe);
 void ft_free_triple_pointer_array(char ****array);
+void ft_list_free_for_envp_list(t_environment_list **envp_list);
 
 //printf
 void ft_list_iter_printf_token(t_token_list	*list,	int (f)(const char *, ...));
@@ -251,23 +260,22 @@ void ft_printf_double_arr(char **double_arr);
 void ft_printf_triple_arr(char ***triple_arr);
 
 //builtin
-void ft_echo(char **array_of_strings, int exit_num);
-void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
-int ft_pwd(t_environment_list **envp, char **array_of_strings, int check_num, int exit_num);
-void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
-void ft_unset(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
-void ft_env(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num);
-void ft_exit(char **array_of_strings, int fd_out);
+void ft_echo(char **array_of_strings, t_for_prog *prog);
+void ft_cd(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out);
+int ft_pwd(t_for_prog *prog);
+void ft_export(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out);
+void ft_unset(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out);
+void ft_env(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out);
+void ft_exit(t_for_prog *prog, char **array_of_strings, int fd_out);
 int  ft_wrong_name(char *name, char *command);
-void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog);
-void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num);
-void ft_running_builtin(char **array, t_environment_list **envp_list, int fd_num, int exit_num);
+// void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog);
+// void ft_if_not_only_one_builtin(t_environment_list **envp_list, t_for_prog *prog, int fd_out, int exit_num);
+// void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num);
+void ft_check_if_builtin_run(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list, int fd_out);
+void ft_running_builtin(t_environment_list **envp_list, t_for_prog *prog, char **array_of_strings, int fd_out);
 
 //signal
-void ft_sig_int_new_line(int sig_num);
-void ft_sig_int_heredoc(int sig_num);
-void ft_sig_int_fork(int sig_num);
-//void ft_sig_quit(int sig_num);
-// void ft_kill(t_for_prog *prog);
+void ft_sigint_new_line(int sig_num);
+void ft_sigint_heredoc(int sig_num);
 
 #endif

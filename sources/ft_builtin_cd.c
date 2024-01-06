@@ -6,63 +6,96 @@ t_environment_list *find_node_by_name(t_environment_list *envp,  char *name) ;
 void change_node_by_name(t_environment_list **envp, char *name, char *value);
 int streq(char *s1, char *s2);
 
-void ft_cd(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num) 
+void ft_cd(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
-    dup2(fd_out, STDOUT_FILENO);
-    printf("Hi cd\n");
-
-    t_environment_list *home_node;
+    t_environment_list *tmp_node;
+    t_environment_list *pwd_of_list;
     int i;
     char *path;
     char *pwd;
-    char *old_pwd;
 
     path = NULL;
     pwd = NULL;
-    old_pwd = NULL;
     i = 1;
     if (array_of_strings[i] == NULL)
     {
-        path = "HOME";
-        home_node = find_node_by_name(*envp, path);
-        if (home_node == NULL || home_node->name_and_value[1] == NULL)
+        tmp_node = find_node_by_name(*envp, "HOME");
+        if (tmp_node == NULL || tmp_node->name_and_value[1] == NULL)
         {
+            dup2(fd_out, STDOUT_FILENO);
             printf("minishell: cd: HOME not set\n");
-            if (exit_num == BUILTIN_EXIT) 
+            if (prog->check_builtin == BUILTIN_EXIT) 
                 exit(EXIT_FAILURE);
             g_exit_status_msh = EXIT_FAILURE;
             return ;
         }
-        else if (home_node->name_and_value[1][0] == '\0')
+        else if (tmp_node->name_and_value[1][0] == '\0')
         {
-            if (exit_num == BUILTIN_EXIT) 
+            if (prog->pwd_str[0] == NULL)
+            {
+                printf(ERROR_CD_GETCWD_CANT_ACCESS);
+            }
+            if (prog->check_builtin == BUILTIN_EXIT)
                 exit(EXIT_SUCCESS);
             g_exit_status_msh = EXIT_SUCCESS;
             return ;
         }
         else
-            path = ft_strdup(home_node->name_and_value[1]);
+            path = ft_strdup(tmp_node->name_and_value[1]);
     }
     else
         path = ft_strdup(array_of_strings[i]);
-    old_pwd = getcwd(NULL, 0);
-    if (chdir(path) != 0)
+    if ((prog->pwd_str[0] == NULL && !ft_strncmp(path, "..", 3)) || chdir(path) != 0)
     {
+        if (prog->pwd_str[0] == NULL)
+        {
+            printf(ERROR_CD_GETCWD_CANT_ACCESS);
+        }
         printf("minishell: cd: %s: No such file or directory\n", path);
         free(path);
-        free(old_pwd);
-        if (exit_num == BUILTIN_EXIT)
+        if (prog->check_builtin == BUILTIN_EXIT)
             exit(EXIT_FAILURE);
         g_exit_status_msh = EXIT_FAILURE;
         return ;
     }
+    if (prog->pwd_str[0] == NULL)
+    {
+        printf(ERROR_CD_GETCWD_CANT_ACCESS);
+    }
+    // .; ..; /;
     pwd = getcwd(NULL, 0);
-    change_node_by_name(envp,  "OLDPWD", old_pwd);
-    change_node_by_name(envp,  "PWD", pwd);
+    //printf("pwd(before):(%s)\n", prog->pwd_str[0]);
+    free(prog->pwd_str[0]);
+    if (pwd == NULL)
+    {
+        prog->pwd_str[0] = ft_strdup(".");
+    }
+    else
+    {
+        prog->pwd_str[0] = ft_strdup(pwd);
+    }
+    //printf("pwd(after):(%s)\n", pwd);
+    tmp_node = find_node_by_name(*envp, "PWD");
+    if (tmp_node == NULL || tmp_node->name_and_value[1] == NULL)
+    {
+        change_node_by_name(envp,  "OLDPWD", "");
+    }
+    else
+    {
+        change_node_by_name(envp,  "OLDPWD", tmp_node->name_and_value[1]);
+    }
+    if (tmp_node == NULL)
+    {
+        pwd_of_list = (t_environment_list *)malloc(sizeof(t_environment_list));
+        pwd_of_list->envp_flag = 2;
+        pwd_of_list->name_and_value[0] = ft_strdup("PWD");
+        pwd_of_list->name_and_value[1] = NULL;
+        ft_list_add_back_for_environment(envp, pwd_of_list);
+    }
+    change_node_by_name(envp,  "PWD", prog->pwd_str[0]);
     free(path);
     free(pwd);
-    free(old_pwd);
-    if (exit_num == BUILTIN_EXIT)
+    if (prog->check_builtin == BUILTIN_EXIT)
         exit(EXIT_SUCCESS);
     g_exit_status_msh = EXIT_SUCCESS;
     return ;

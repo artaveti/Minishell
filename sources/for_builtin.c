@@ -1,29 +1,49 @@
 
 #include "lib_for_minishell.h"
 
-void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog);
+void ft_running_for_only_one_builtin(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list);
 
-void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog)
+void ft_check_if_builtin_run(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list, int fd_out)
 {
   char *tmp_str;
-  if (!ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
-      || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
-      || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
-      || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
+  if (!ft_strncmp(prog->argv_for_execve[prog->index][0], "cd", 3)
+      || !ft_strncmp(prog->argv_for_execve[prog->index][0], "export", 7)
+      || !ft_strncmp(prog->argv_for_execve[prog->index][0], "unset", 6)
+      || !ft_strncmp(prog->argv_for_execve[prog->index][0], "exit", 5))
   {
-    ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog);
-    return ;
+    if(prog->fd_quant_pipe == 0)
+    {
+      prog->check_builtin = BUILTIN_RETURN;
+      ft_running_for_only_one_builtin(envp_list, prog, tmp_redir_list);
+      return ;
+    }
+    else
+    {
+      ft_running_builtin(envp_list, prog, prog->argv_for_execve[prog->index], fd_out);
+      return ;
+    }
   }
-  tmp_str = ft_strdup(prog->argv_for_execve[0][0]);
+  tmp_str = ft_strdup(prog->argv_for_execve[prog->index][0]);
   ft_str_to_lowercase(tmp_str);
   if (!ft_strncmp(tmp_str, "echo", 5)
       || !ft_strncmp(tmp_str, "pwd", 4)
       || !ft_strncmp(tmp_str, "env", 4))
   {
-    ft_str_to_lowercase(prog->argv_for_execve[0][0]);
-    ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog);
-    free(tmp_str);
-    return ;
+    if(prog->fd_quant_pipe == 0)
+    {
+      prog->check_builtin = BUILTIN_RETURN;
+      free(tmp_str);
+      ft_str_to_lowercase(prog->argv_for_execve[prog->index][0]);
+      ft_running_for_only_one_builtin(envp_list, prog, tmp_redir_list);
+      return ;
+    }
+    else 
+    {
+      free(tmp_str);
+      ft_str_to_lowercase(prog->argv_for_execve[prog->index][0]);
+      ft_running_builtin(envp_list, prog, prog->argv_for_execve[prog->index], fd_out);
+      return ;
+    }
   }
   free(tmp_str);
   return ;
@@ -31,16 +51,14 @@ void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **e
 
 
 
-void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog)
+void ft_running_for_only_one_builtin(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list)
 {
   int fd_in;
   int fd_out;
-  int fd_redir[3];
 
   fd_in = dup(STDIN_FILENO);
   fd_out = dup(STDOUT_FILENO);
-  prog->check_builtin = BUILTIN_RETURN;
-  if (ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_redir,
+  if (ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_out,
     prog->fd_arr_heredoc, ONLY_ONE_BUILTIN) == EXIT_ERROR_NO_FILE_OR_DIRECTORY)
     {
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
@@ -49,8 +67,7 @@ void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment
       return ;
     }
   ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
-  ft_running_builtin(prog->argv_for_execve[0], envp_list,
-      fd_out, BUILTIN_RETURN);
+  ft_running_builtin(envp_list, prog, prog->argv_for_execve[prog->index], fd_out);
   dup2(fd_in, STDIN_FILENO);
   dup2(fd_out, STDOUT_FILENO);
   return ;
@@ -58,49 +75,105 @@ void ft_running_for_only_one_builtin(t_token_list *tmp_redir_list, t_environment
 
 
 
-void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num)
-{
-  char *tmp_str;
-  if (!ft_strncmp(array_of_strings[0], "cd", 3)
-      || !ft_strncmp(array_of_strings[0], "export", 7)
-      || !ft_strncmp(array_of_strings[0], "unset", 6)
-      || !ft_strncmp(array_of_strings[0], "exit", 5))
-  {
-    ft_running_builtin(array_of_strings, envp_list, fd_out, exit_num);
-    return ;
-  }
-  tmp_str = ft_strdup(array_of_strings[0]);
-  ft_str_to_lowercase(tmp_str);
-  if (!ft_strncmp(tmp_str, "echo", 5)
-      || !ft_strncmp(tmp_str, "pwd", 4)
-      || !ft_strncmp(tmp_str, "env", 4))
-  {
-    free(tmp_str);
-    ft_str_to_lowercase(array_of_strings[0]);
-    ft_running_builtin(array_of_strings, envp_list, fd_out, exit_num);
-    return ;
-  }
-  free(tmp_str);
-  return ;
-}
-
-
-
-void ft_running_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num)
+void ft_running_builtin(t_environment_list **envp_list, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
   if (!ft_strncmp(array_of_strings[0], "echo", 5))
-    ft_echo(array_of_strings, exit_num);
+    ft_echo(array_of_strings, prog);
   else if (!ft_strncmp(array_of_strings[0], "cd", 3))
-    ft_cd(envp_list, array_of_strings,fd_out, exit_num);
+    ft_cd(envp_list, prog, array_of_strings, fd_out);
   else if (!ft_strncmp(array_of_strings[0], "pwd", 4))
-    ft_pwd(envp_list, array_of_strings, NOT_FIRST_CHECK_PWD, exit_num);
+    ft_pwd(prog);
   else if (!ft_strncmp(array_of_strings[0], "export", 7))
-    ft_export(envp_list, array_of_strings, fd_out, exit_num);
+    ft_export(envp_list, prog, array_of_strings, fd_out);
   else if (!ft_strncmp(array_of_strings[0], "unset", 6))
-    ft_unset(envp_list, array_of_strings, fd_out, exit_num);
+    ft_unset(envp_list, prog, array_of_strings, fd_out);
   else if (!ft_strncmp(array_of_strings[0], "env", 4))
-    ft_env(envp_list, array_of_strings, fd_out, exit_num);
+    ft_env(envp_list, prog, array_of_strings, fd_out);
   else if (!ft_strncmp(array_of_strings[0], "exit", 5))
-    ft_exit(array_of_strings, fd_out);
+    ft_exit(prog, array_of_strings, fd_out);
   return ;
 }
+
+
+
+// void ft_if_only_one_builtin(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog)
+// {
+//   char *tmp_str;
+//   if (!ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
+//       || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
+//       || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
+//       || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
+//   {
+//     ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog);
+//     return ;
+//   }
+//   tmp_str = ft_strdup(prog->argv_for_execve[0][0]);
+//   ft_str_to_lowercase(tmp_str);
+//   if (!ft_strncmp(tmp_str, "echo", 5)
+//       || !ft_strncmp(tmp_str, "pwd", 4)
+//       || !ft_strncmp(tmp_str, "env", 4))
+//   {
+//     ft_str_to_lowercase(prog->argv_for_execve[0][0]);
+//     ft_running_for_only_one_builtin(tmp_redir_list, envp_list, prog);
+//     free(tmp_str);
+//     return ;
+//   }
+//   free(tmp_str);
+//   return ;
+// }
+
+
+
+// void ft_if_not_only_one_builtin(t_environment_list **envp_list, t_for_prog *prog, int fd_out, int exit_num)
+// {
+//   char *tmp_str;
+//   if (!ft_strncmp(prog->argv_for_execve[prog->index][0], "cd", 3)
+//       || !ft_strncmp(prog->argv_for_execve[prog->index][0], "export", 7)
+//       || !ft_strncmp(prog->argv_for_execve[prog->index][0], "unset", 6)
+//       || !ft_strncmp(prog->argv_for_execve[prog->index][0], "exit", 5))
+//   {
+//     ft_running_builtin(prog->argv_for_execve[prog->index], envp_list, fd_out, exit_num);
+//     return ;
+//   }
+//   tmp_str = ft_strdup(prog->argv_for_execve[prog->index][0]);
+//   ft_str_to_lowercase(tmp_str);
+//   if (!ft_strncmp(tmp_str, "echo", 5)
+//       || !ft_strncmp(tmp_str, "pwd", 4)
+//       || !ft_strncmp(tmp_str, "env", 4))
+//   {
+//     free(tmp_str);
+//     ft_str_to_lowercase(prog->argv_for_execve[prog->index][0]);
+//     ft_running_builtin(prog->argv_for_execve[prog->index], envp_list, fd_out, exit_num);
+//     return ;
+//   }
+//   free(tmp_str);
+//   return ;
+// }
+
+
+
+// void ft_if_not_only_one_builtin(char **array_of_strings, t_environment_list **envp_list, int fd_out, int exit_num)
+// {
+//   char *tmp_str;
+//   if (!ft_strncmp(array_of_strings[0], "cd", 3)
+//       || !ft_strncmp(array_of_strings[0], "export", 7)
+//       || !ft_strncmp(array_of_strings[0], "unset", 6)
+//       || !ft_strncmp(array_of_strings[0], "exit", 5))
+//   {
+//     ft_running_builtin(array_of_strings, envp_list, fd_out, exit_num);
+//     return ;
+//   }
+//   tmp_str = ft_strdup(array_of_strings[0]);
+//   ft_str_to_lowercase(tmp_str);
+//   if (!ft_strncmp(tmp_str, "echo", 5)
+//       || !ft_strncmp(tmp_str, "pwd", 4)
+//       || !ft_strncmp(tmp_str, "env", 4))
+//   {
+//     free(tmp_str);
+//     ft_str_to_lowercase(array_of_strings[0]);
+//     ft_running_builtin(array_of_strings, envp_list, fd_out, exit_num);
+//     return ;
+//   }
+//   free(tmp_str);
+//   return ;
+// }

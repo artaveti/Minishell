@@ -14,7 +14,7 @@ t_token_list *ft_creat_redir_list_for_execve(t_token_list *token_list)
     redir_list->value = NULL;
     redir_list->next = NULL;
     while (token_list != NULL)
-    {    
+    {
         if (token_list->type == REDIR_INT)
             ft_creat_token_for_redir(redir_list, token_list->value, REDIR_INT);
         else if (token_list->type == REDIR_OUT)

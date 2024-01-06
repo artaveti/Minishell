@@ -1,7 +1,7 @@
 
 #include "lib_for_minishell.h"
 
-char *ft_readline(t_term *term)
+char *ft_readline(t_term_and_work_dir *term, int *loop_stop_num)
 {
     char *str;
     int i;
@@ -13,11 +13,14 @@ char *ft_readline(t_term *term)
         term->termios.c_lflag = term->num;
         tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
         printf("minishell> exit\n");
-        exit(EXIT_SUCCESS);
+        *loop_stop_num = 1;
+        return (NULL);
+//system("leaks minishell");
+//exit(g_exit_status_msh);
     }
     while(str[i] != '\0')
     {
-        if(ft_strchr(WHITESPACES_RL, str[i]))
+        if(ft_strchr(WHITESPACES_WITHOUT_SPACE_RL, str[i]))
             i++;
         else
             break;

@@ -4,9 +4,9 @@
 void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i);
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
 char **ft_prog_names_join(char	**path_arr, char	*prog_name);
-void ft_check_is_string_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
+void ft_check_is_name_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
 
-void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term *term)
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_and_work_dir *term)
 {
     t_token_list *tmp_redir_list;
     int     i;
@@ -17,15 +17,22 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list, t_term
     tcsetattr(STDIN_FILENO, TCSANOW, &(term->termios));
     while (prog->argv_for_execve[i] != NULL)
     { 
+      prog->index = i;
       while (tmp_redir_list != NULL)
         {
           if (tmp_redir_list->type == START)
             break;
           tmp_redir_list = tmp_redir_list->next;
         }
-        if (i == 0 && prog->argv_for_execve[0][0] != NULL
-            && prog->argv_for_execve[1] == NULL)
-          ft_if_only_one_builtin(tmp_redir_list, envp_list, prog);
+        //printf("(fd_quant_pipe(%d)\n", prog->fd_quant_pipe);
+        // if (i == 0 && prog->argv_for_execve[0][0] != NULL
+        //     && prog->argv_for_execve[1] == NULL)
+        //     {
+        //       prog->check_builtin = BUILTIN_RETURN;
+        //       ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, 0);
+        //     }
+        if (prog->fd_quant_pipe == 0)
+          ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, STDOUT_FILENO);
         if (prog->check_builtin == BUILTIN_EXIT)
           ft_fork(tmp_redir_list, envp_list, prog, i);
         if (tmp_redir_list != NULL && tmp_redir_list->type == START)
@@ -47,14 +54,18 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
 		  signal(SIGQUIT, SIG_DFL);
       signal(SIGINT, SIG_DFL);
       fk.fd_out = dup(STDOUT_FILENO);
+//printf("fk.fd_out(%d)\n", fk.fd_out);////
       ft_change_stdin_stdout_fd_pipe(prog->fd_arr_pipe, prog->fd_quant_pipe, i);
-      ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_redir, prog->fd_arr_heredoc, 0);
+      ft_change_stdin_stdout_fd_redir(tmp_redir_list, fk.fd_out, prog->fd_arr_heredoc, 0);
       ft_close_pipe_fd(prog->fd_arr_pipe, prog->fd_quant_pipe);
       ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
-      ft_check_is_string_dir_or_file(&fk, prog, i);
-      ft_if_not_only_one_builtin(prog->argv_for_execve[i], envp_list, fk.fd_out, BUILTIN_EXIT);
+      ft_check_is_name_dir_or_file(&fk, prog, i);
+      ft_check_if_builtin_run(envp_list, prog, NULL, fk.fd_out);
+// ft_if_not_only_one_builtin(prog->argv_for_execve[prog->index], envp_list, fk.fd_out, BUILTIN_EXIT);////
       if (prog->argv_for_execve[i][0] == NULL)
         exit(EXIT_SUCCESS);
+      if (prog->pwd_str[0] == NULL)
+        printf(ERROR_JWD_GETCWD_CANT_ACCESS);
       ft_execve(&fk, prog, i);
       dup2(fk.fd_out, STDOUT_FILENO);
       printf(ERROR_CMD_NOT_FOUND, prog->argv_for_execve[i][0]);
@@ -66,7 +77,7 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
 
 
 
-void ft_check_is_string_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i)
+void ft_check_is_name_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i)
 {
   DIR *tmp_dir;
 
@@ -85,14 +96,14 @@ void ft_check_is_string_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i)
     {
       dup2(fk->fd_out, STDOUT_FILENO);
       printf(ERROR_PERM_DEN, prog->argv_for_execve[i][0]);
-      exit(EXIT_ERROR_PERM_DEN);
+      exit(EXIT_ERROR_PERM_DEN_EXEC_FILE);
     }
     return ;
   }
   closedir(tmp_dir);
   dup2(fk->fd_out, STDOUT_FILENO);
   printf(ERROR_IS_DIR, prog->argv_for_execve[i][0]);
-  exit(EXIT_ERROR_IS_DIR);
+  exit(EXIT_ERROR_NAME_IS_DIR);
 }
 
 

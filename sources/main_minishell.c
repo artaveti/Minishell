@@ -9,16 +9,7 @@
 // printf("(%p)\n(%p)\n(%p)\n", (void *)55, (void *)'7', (void *)"7") return 0x37 0x37 0x104d36c20;
 // sleep 10 | ./minishell cuc chi talis ^C nshany
 // printf, vory chi verjanum '\n'-ov skhal er ashkhatum echo builtini het, khndiry kargavorvec printf-y pokharinelov write-i
-
 // 130, 131 exit_codes; ‘128+n’	Fatal error signal “n”	Process killed by -9 signal will return 128+9 131 as error code
-
-// stugel redirectionnery naev builtinneri het !!!
-// kargavorel signalnerov durs galuc heto tpely , ete pipe-a u verjum skhal commanda kam builtin, bayc bash-y tvyal jamanak SIGQUIT-i depqum chi tpum "Quit:3"
-// argumentneri qanaki error !!!
-// tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
-// configur g_exit_status_msh in unset->wrong_name change for working export and unset functions names
-// petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
-// rl_catch_signals = 0;
 // skzbic mana galis heredocery, ete ka bacuma, ete tesnuma syntax error gruma dra masin ev stopa talis, aysinqn heredocery chi bacum
 // heredoc documentation [COMMAND] <<[-] 'DELIMITER' (der petq chi anel, verjum kereva)
 // maximum quant of heredoc is 16
@@ -31,7 +22,16 @@
 // "bash: wcl: command not found" echo $? 127
 // ete grvuma "bash: (komandy, vory chka kam fayly, vory chka): u heto inchvor ban" , apa ayd jamanak cragiry ashkhatuma, hajord qaylina ancnum"
 // ete grvuma "bash: miangamic patchary u symboly", apa petq e chsharunakel
+// ete export es anum u gtnvum es ayn folderi mej vortegh ches karogh steghcel fayl, petq e cuyc ta error:"bash: file_name: Permission denied"
+// if your current directory unknown, chdir("..") == /Users/tumolabs/.Trash
+// tab seghmelux petka amboghj kamandayi anuny cuyc ta ???
+// rl_catch_signals = 0;
 
+// argumentneri qanaki error
+// ctrl + D for heredoc, print line
+// stugel redirectionnery naev builtinneri het
+// configur g_exit_status_msh in unset->wrong_name change for working export and unset functions names
+// petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
 int main(int argc, char *argv[], char *envp[])
 {
@@ -39,8 +39,8 @@ int main(int argc, char *argv[], char *envp[])
     t_token_list *token_list;
     t_token_list *heredoc_list;
 
-    (void)argc;
     (void)argv;
+    ft_check_argc_quant(argc);
 // ft_printf_double_arr(envp);
     envp_list = ft_list_creat_environment(envp);
 // ft_list_iter_printf_environment(envp_list, printf);
@@ -48,7 +48,9 @@ int main(int argc, char *argv[], char *envp[])
     heredoc_list = ft_list_creat_token();
     g_exit_status_msh = 0;
     ft_loop(token_list, heredoc_list, envp_list);
-    exit(EXIT_SUCCESS);
+    ft_list_free_for_envp_list(&envp_list);
+system("leaks minishell");
+    exit(g_exit_status_msh);
 }
 
 
@@ -59,22 +61,3 @@ int main(int argc, char *argv[], char *envp[])
 // e[1] = NULL;
 // envp_list = ft_list_creat_environment(e);
 // envp_list = NULL;
-
-
-
-// int main (void)
-// {
-//     // //char str[2];
-//     // char *tmp;
-//     // // tmp = NULL;
-//     int num = 100;
-//     // //tmp = getcwd(NULL, 0);
-//     // tmp = getcwd(NULL, 0);
-//     // perror("+++++++++");
-//     // printf("(%s)\n", tmp);
-//     // system("leaks minishell");
-//     printf("%d", -100 == -num);
-//     // opendir("/bin");
-//     // perror("opendir:");
-//     return (0);
-// }

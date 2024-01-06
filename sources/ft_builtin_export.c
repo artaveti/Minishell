@@ -11,17 +11,17 @@ int ft_check_name_for_export(char *str);
 void ft_check_and_add_to_environment(t_environment_list **envp, char *str);
 char *ft_creat_last_part_of_word_for_export(char *string, char *symbols);
 
-void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, int exit_num)
+void ft_export(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
     int i;
     
-    g_exit_status_msh = EXIT_SUCCESS;
     i = 1;
     if (array_of_strings[i] == NULL)
     {
         ft_print_for_export(*envp);
-        if (exit_num == BUILTIN_EXIT)
+        if (prog->check_builtin == BUILTIN_EXIT)
             exit(EXIT_SUCCESS);
+        g_exit_status_msh = EXIT_SUCCESS;
         return ;
     }
     while(array_of_strings[i] != NULL)
@@ -38,7 +38,7 @@ void ft_export(t_environment_list **envp, char **array_of_strings, int fd_out, i
             i++;
         }
     }
-    if (exit_num == BUILTIN_EXIT)
+    if (prog->check_builtin == BUILTIN_EXIT)
         exit(g_exit_status_msh);
     return ;
 }
@@ -143,9 +143,25 @@ void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
             }
             else
             {
-                if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                    || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
-                    tmp->envp_flag = 1;
+                // if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
+                //     tmp->envp_flag = 1;
+                // free(before_equal);
+                // return ;
+                if (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7) || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
+                    {
+                        tmp->envp_flag = 0;
+                        if (tmp->name_and_value[1] != NULL)
+                            tmp->envp_flag = 1;
+                    }
+                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
+                //     && tmp->envp_flag == 2)
+                //     tmp->envp_flag = 0;
+                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
+                //     && tmp->name_and_value[1] != NULL)
+                //     tmp->envp_flag = 1;
                 free(before_equal);
                 return ;
             }

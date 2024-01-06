@@ -2,9 +2,8 @@
 
 int     n_set(char *str, int *suppress_nl);
 void    ft_print_for_echo(char **array_of_strings, int *flag_word, int *i);
-void    ft_exit_for_echo(int *suppress_nl, int exit_num);
 
-void ft_echo(char **array_of_strings, int exit_num)
+void ft_echo(char **array_of_strings, t_for_prog *prog)
 {
     int i;
     int suppress_nl = 0;
@@ -27,7 +26,10 @@ void ft_echo(char **array_of_strings, int exit_num)
             i++;
         }
     }
-    ft_exit_for_echo(&suppress_nl, exit_num);
+    if (!suppress_nl)
+        write(STDOUT_FILENO, "\n", 1);
+    if (prog->check_builtin == BUILTIN_EXIT) 
+        exit(EXIT_SUCCESS);
     g_exit_status_msh = 0;
     return ;
 }
@@ -64,16 +66,5 @@ void    ft_print_for_echo(char **array_of_strings, int *flag_word, int *i)
     write(STDOUT_FILENO, array_of_strings[*i], ft_strlen(array_of_strings[*i]));
     if (array_of_strings[*i + 1])
         write(STDOUT_FILENO, " ", 1);
-    return ;
-}
-
-
-
-void    ft_exit_for_echo(int *suppress_nl, int exit_num)
-{
-    if (!*suppress_nl)
-        write(STDOUT_FILENO, "\n", 1);
-    if (exit_num == BUILTIN_EXIT) 
-        exit(EXIT_SUCCESS);
     return ;
 }

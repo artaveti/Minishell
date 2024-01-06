@@ -1,8 +1,8 @@
 
 #include "lib_for_minishell.h"
 
-int ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtin);
-int ft_dup2_stdout(t_token_list *redir_list, int *fd_redir);
+int ft_dup2_stdin(t_token_list *redir_list, int **heredoc_pipe, int fd_out, int only_one_builtin);
+int ft_dup2_stdout(t_token_list *redir_list, int fd_out, int only_one_builtin);
 
 void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i)
 {
@@ -25,7 +25,7 @@ void ft_change_stdin_stdout_fd_pipe(int **fd_arr, int fd_quant_pipe, int i)
 
 
 
-int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtint)
+int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int fd_out, int **heredoc_pipe, int only_one_builtint)
 {
   int return_num;
 
@@ -36,9 +36,8 @@ int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int
     redir_list = redir_list->next;
   while(redir_list != NULL && redir_list->type != START)
   {
-    return_num = ft_dup2_stdin(redir_list, fd_redir, heredoc_pipe,
-      only_one_builtint);
-    ft_dup2_stdout(redir_list, fd_redir);
+    return_num = ft_dup2_stdin(redir_list, heredoc_pipe, fd_out, only_one_builtint);
+    ft_dup2_stdout(redir_list, fd_out, only_one_builtint);
     redir_list = redir_list->next;
   }
   return (return_num);
@@ -46,50 +45,70 @@ int ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int *fd_redir, int
 
 
 
-int ft_dup2_stdin(t_token_list *redir_list, int *fd_redir, int **heredoc_pipe, int only_one_builtin)
+int ft_dup2_stdin(t_token_list *redir_list,int **heredoc_pipe, int fd_out, int only_one_builtin)
 {
-    char *error_str;
-    int num;
+    int num_for_atoi;
+    int fd_redir_int;
     
     if (redir_list->type == REDIR_INT)
     {
-      fd_redir[0] = open(redir_list->value, O_RDONLY, 0644);
-      if (fd_redir[0] < 0)
+      fd_redir_int = open(redir_list->value, O_RDONLY, 0644);
+      if (fd_redir_int < 0)
       {
-        error_str = ft_strjoin("minishell: ", redir_list->value);
-        perror(error_str);
-        free(error_str);
+        dup2(fd_out, STDOUT_FILENO);
+        printf(ERROR_NO_FILE_OR_DIR, redir_list->value);
         if (only_one_builtin != ONLY_ONE_BUILTIN)
           exit(EXIT_ERROR_NO_FILE_OR_DIRECTORY);
-        g_exit_status_msh = 1;
+        g_exit_status_msh = EXIT_ERROR_NO_FILE_OR_DIRECTORY;
         return (EXIT_ERROR_NO_FILE_OR_DIRECTORY);
       }
-      dup2(fd_redir[0], STDIN_FILENO);
-      close(fd_redir[0]);
+      dup2(fd_redir_int, STDIN_FILENO);
+      close(fd_redir_int);
     }
     else if (redir_list->type == HEREDOC)
     {
-      num = ft_atoi(redir_list->value);
-      dup2(heredoc_pipe[num][0], STDIN_FILENO);
+      num_for_atoi = ft_atoi(redir_list->value);
+      dup2(heredoc_pipe[num_for_atoi][0], STDIN_FILENO);
     }
 return (0);
 }
 
 
 
-int ft_dup2_stdout(t_token_list *redir_list, int *fd_redir)
+int ft_dup2_stdout(t_token_list *redir_list, int fd_out, int only_one_builtin)
 {
+  int fd_redir_out;
+  int fd_redir_append;
+
     if (redir_list->type == REDIR_OUT)
     {
-      fd_redir[1] = open(redir_list->value, O_RDWR | O_TRUNC, 0644);
-      dup2(fd_redir[1], STDOUT_FILENO);
-      close(fd_redir[1]);
+      fd_redir_out = open(redir_list->value, O_RDWR | O_TRUNC, 0644);
+      if (fd_redir_out < 0)
+      {
+        dup2(fd_out, STDOUT_FILENO);
+        printf(ERROR_PERM_DEN, redir_list->value);
+        if (only_one_builtin != ONLY_ONE_BUILTIN)
+          exit(EXIT_ERROR_PERM_DEN);
+        g_exit_status_msh = EXIT_ERROR_PERM_DEN;
+        return (EXIT_ERROR_PERM_DEN);
+      }
+      dup2(fd_redir_out, STDOUT_FILENO);
+      close(fd_redir_out);
     }
     else if (redir_list->type == REDIR_APPEND)
     {
-      fd_redir[2] = open(redir_list->value, O_RDWR | O_APPEND, 0644);
-      dup2(fd_redir[2], STDOUT_FILENO);
-      close(fd_redir[2]);
+      fd_redir_append = open(redir_list->value, O_RDWR | O_APPEND, 0644);
+      if (fd_redir_append < 0)
+      {
+        dup2(fd_out, STDOUT_FILENO);
+        printf(ERROR_PERM_DEN, redir_list->value);
+        if (only_one_builtin != ONLY_ONE_BUILTIN)
+          exit(EXIT_ERROR_PERM_DEN);
+        g_exit_status_msh = EXIT_ERROR_PERM_DEN;
+        return (EXIT_ERROR_PERM_DEN);
+      }
+      dup2(fd_redir_append, STDOUT_FILENO);
+      close(fd_redir_append);
     }
 return (0);
 }
