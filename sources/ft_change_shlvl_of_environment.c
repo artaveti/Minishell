@@ -97,9 +97,10 @@ int ft_change_shlvl_to_num_or_null(t_environment_list **list, long long long_lon
 void ft_list_creat_shlvl_for_environment(t_environment_list **start_of_list)
 {
     t_environment_list *shlvl;
-
+    
     shlvl = (t_environment_list *)malloc(sizeof(t_environment_list));
     shlvl->name_and_value = (char **)malloc(sizeof(char *) * 3);
+    shlvl->envp_flag = 1;
 	shlvl->name_and_value[0] = ft_strdup("SHLVL");
     shlvl->name_and_value[1] = ft_strdup("1");;
     shlvl->name_and_value[2] = NULL;
