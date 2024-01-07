@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_minishell.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 15:51:15 by artaveti          #+#    #+#             */
+/*   Updated: 2024/01/07 15:52:37 by artaveti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lib_for_minishell.h"
 
@@ -31,24 +42,24 @@
 // stugel redirectionnery naev builtinneri het
 // petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
 
-int main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
-    t_environment_list *envp_list;
-    t_token_list *token_list;
-    t_token_list *heredoc_list;
-
-    (void)argv;
-    ft_check_argc_quant(argc);
+	t_environment_list	*envp_list;
+	t_token_list		*token_list;
+	t_token_list		*heredoc_list;
+	
+	(void)argv;
+	ft_check_argc_quant(argc);
 // ft_printf_double_arr(envp);
-    envp_list = ft_list_creat_environment(envp);
+	envp_list = ft_list_creat_environment(envp);
 // ft_list_iter_printf_environment(envp_list, printf);
-    token_list = ft_list_creat_token();
-    heredoc_list = ft_list_creat_token();
-    g_exit_status_msh = 0;
-    ft_loop(token_list, heredoc_list, envp_list);
-    ft_list_free_for_envp_list(&envp_list);
+	token_list = ft_list_creat_token();
+	heredoc_list = ft_list_creat_token();
+	g_exit_status_msh = 0;
+	ft_loop(token_list, heredoc_list, envp_list);
+	ft_list_free_for_envp_list(&envp_list);
 //system("leaks minishell");
-    exit(g_exit_status_msh);
+	exit(g_exit_status_msh);
 }
 
 

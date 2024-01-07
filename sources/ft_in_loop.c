@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_in_loop.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 14:46:56 by artaveti          #+#    #+#             */
+/*   Updated: 2024/01/07 14:48:14 by artaveti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lib_for_minishell.h"
 
-void   ft_loop(t_token_list *token_list, t_token_list *heredoc_list, t_environment_list *envp_list)
+void	ft_loop(t_token_list *token_list, t_token_list *heredoc_list,
+			t_environment_list *envp_list)
 {
-    t_term_and_work_dir term;
-    int loop_stop_num;
-    char *input_str;
-    int error_num;
-
+	t_term_and_work_dir	term;
+	int					loop_stop_num;
+	char				*input_str;
+	int					error_num;
+	
 	tcgetattr(STDIN_FILENO, &(term.termios));
-    term.num = term.termios.c_lflag;
-    term.pwd_str_in_term = getcwd(NULL, 0);
-    loop_stop_num = 0;
-    error_num = 0;
-    while(loop_stop_num == 0)
+	term.num = term.termios.c_lflag;
+	term.pwd_str_in_term = getcwd(NULL, 0);
+	loop_stop_num = 0;
+	error_num = 0;
+	while(loop_stop_num == 0)
     {
 //printf("%s\n", term.pwd_str_in_term);
         term.termios.c_lflag &= ~ECHOCTL;

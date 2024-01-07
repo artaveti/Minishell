@@ -35,6 +35,7 @@ void ft_export(t_environment_list **envp, t_for_prog *prog, char **array_of_stri
         else
         {
             ft_check_and_add_to_environment(envp, array_of_strings[i]);
+            g_exit_status_msh = EXIT_SUCCESS;
             i++;
         }
     }

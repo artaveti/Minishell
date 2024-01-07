@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/06 20:56:39 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/07 19:08:41 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ No such file or directory\n"
 # define ERROR_CD_GETCWD_CANT_ACCESS "chdir: error retrieving current \
 directory: getcwd: cannot access parent directories: \
 No such file or directory\n"
+# define ERROR_CD_HOME_DIR "minishell: cd: HOME not set\n"
+# define ERROR_CD_NO_FILE_OR_DIR "minishell: cd: %s: No such file or directory\n"
 # define ERROR_HEREDOC_QUANT "minishell: maximum here-document count \
 exceeded\n" //// exit from bash
 # define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
@@ -81,6 +83,7 @@ token `%s'\n"
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, \
 resetting to 1\n"
 # define ERROR_WRONG_NAME "minishell: %s: `%s': not a valid identifier\n"
+
 
 //extern ???
 

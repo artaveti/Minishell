@@ -1,29 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_for_pipe.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 14:38:44 by artaveti          #+#    #+#             */
+/*   Updated: 2024/01/07 14:44:04 by artaveti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lib_for_minishell.h"
 
-int ft_fd_quant(t_token_list *token_list, int type)
+int	ft_fd_quant(t_token_list *token_list, int type)
 {
-    int fd_quant;
+	int	fd_quant;
 
-    fd_quant = 0;
-    while(token_list != NULL)
-    {
-        if (token_list->type == type)
-            fd_quant++;
-        token_list = token_list->next;
-    }
-    return(fd_quant);
+	fd_quant = 0;
+	while (token_list != NULL)
+	{
+		if (token_list->type == type)
+			fd_quant++;
+		token_list = token_list->next;
+	}
+	return (fd_quant);
 }
-
-
 
 int	**ft_creat_and_open_pipes(int fd_quant_pipe)
 {
 	int	i;
 	int	**fd_arr;
 
-    if (fd_quant_pipe == 0)
-        return (NULL);
+	if (fd_quant_pipe == 0)
+		return (NULL);
 	i = 0;
 	fd_arr = (int **)malloc(sizeof(int *) * (fd_quant_pipe));
 	if (!fd_arr)
@@ -45,8 +54,6 @@ int	**ft_creat_and_open_pipes(int fd_quant_pipe)
 	}
 	return (fd_arr);
 }
-
-
 
 void	ft_close_pipe_fd(int **fd, int fd_quant_pipe)
 {
