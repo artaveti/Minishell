@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:14:56 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 18:53:50 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:47:06 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ int	ft_change_stdin_stdout_fd_redir(t_token_list *redir_list, int fd_out,
 	{
 		return_num = ft_dup2_stdin(redir_list, heredoc_pipe,
 				fd_out, only_one_builtint);
-		ft_dup2_stdout(redir_list, fd_out, only_one_builtint);
+		if (return_num > 0)
+			return (return_num);
+		return_num = ft_dup2_stdout(redir_list, fd_out, only_one_builtint);
+		if (return_num > 0)
+			return (return_num);
 		redir_list = redir_list->next;
 	}
 	return (return_num);

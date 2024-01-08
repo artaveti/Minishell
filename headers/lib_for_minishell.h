@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 19:08:41 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:55:09 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +359,9 @@ void				ft_check_if_builtin_run(t_environment_list **envp_list,
 						int fd_out);
 void				ft_running_builtin(t_environment_list **envp_list,
 						t_for_prog *prog, char **array_of_strings, int fd_out);
+t_environment_list *find_node_by_name(t_environment_list *envp,  char *name);
+void change_node_by_name(t_environment_list **envp, char *name, char *value);
+int streq(char *s1, char *s2);
 
 //signal
 void				ft_sigint_new_line(int sig_num);

@@ -76,13 +76,13 @@ void ft_running_for_only_one_builtin(t_environment_list **envp_list, t_for_prog 
   fd_in = dup(STDIN_FILENO);
   fd_out = dup(STDOUT_FILENO);
   if (ft_change_stdin_stdout_fd_redir(tmp_redir_list, fd_out,
-    prog->fd_arr_heredoc, ONLY_ONE_BUILTIN) == EXIT_ERROR_NO_FILE_OR_DIRECTORY)
-    {
-      ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
-      dup2(fd_in, STDIN_FILENO);
-      dup2(fd_out, STDOUT_FILENO);
-      return ;
-    }
+    prog->fd_arr_heredoc, ONLY_ONE_BUILTIN) > 0)
+  {
+    ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
+    dup2(fd_in, STDIN_FILENO);
+    dup2(fd_out, STDOUT_FILENO);
+    return ;
+  }
   ft_close_pipe_fd(prog->fd_arr_heredoc, prog->fd_quant_heredoc);
   ft_running_builtin(envp_list, prog, prog->argv_for_execve[prog->index], fd_out);
   dup2(fd_in, STDIN_FILENO);

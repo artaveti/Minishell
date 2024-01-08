@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:03:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 18:28:35 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:21:14 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_creat_file(t_token_list *redir_list)
 		if (redir_list->type == REDIR_OUT)
 		{
 			fd_num = open(redir_list->value, O_CREAT | O_TRUNC, 0644);
+			perror("*********************");
 			close(fd_num);
 		}
 		else if (redir_list->type == REDIR_APPEND)

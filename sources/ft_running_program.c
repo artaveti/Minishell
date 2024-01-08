@@ -24,13 +24,6 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_
             break;
           tmp_redir_list = tmp_redir_list->next;
         }
-        //printf("(fd_quant_pipe(%d)\n", prog->fd_quant_pipe);
-        // if (i == 0 && prog->argv_for_execve[0][0] != NULL
-        //     && prog->argv_for_execve[1] == NULL)
-        //     {
-        //       prog->check_builtin = BUILTIN_RETURN;
-        //       ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, 0);
-        //     }
         if (prog->fd_quant_pipe == 0)
           ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, STDOUT_FILENO);
         if (prog->check_builtin == BUILTIN_EXIT)
@@ -153,3 +146,14 @@ char	**ft_prog_names_join(char	**path_arr, char	*prog_name)
 	free(str_backslash);
 	return (prog_paths);
 }
+
+
+
+        //printf("(fd_quant_pipe(%d)\n", prog->fd_quant_pipe);
+        // if (i == 0 && prog->argv_for_execve[0][0] != NULL
+        //     && prog->argv_for_execve[1] == NULL)
+        //     {
+        //       prog->check_builtin = BUILTIN_RETURN;
+        //       ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, 0);
+        //     }
+        
