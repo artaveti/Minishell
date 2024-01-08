@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/08 15:55:09 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/08 21:44:06 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,16 @@ typedef struct s_for_fork
 	int		fd_out;
 	char	**prog_paths;
 }	t_for_fork;
+
+typedef struct s_for_export
+{
+    char *before_equal;
+    char *after_equal;
+    int flag_for_equal;
+    int flag_for_plus;
+} t_for_export;
+
+
 
 //libft
 void				*ft_memmove(void	*dst, const void	*src,

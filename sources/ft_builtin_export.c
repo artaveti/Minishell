@@ -9,7 +9,9 @@
 void ft_print_for_export(t_environment_list *envp);
 int ft_check_name_for_export(char *str);
 void ft_check_and_add_to_environment(t_environment_list **envp, char *str);
+int ft_for_export_change_environment(t_environment_list **envp,  t_for_export *exp);
 char *ft_creat_last_part_of_word_for_export(char *string, char *symbols);
+void ft_for_export_add_new_for_environment(t_environment_list **envp, char *str);
 
 void ft_export(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
@@ -94,85 +96,34 @@ int ft_check_name_for_export(char *str)
 
 void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
 {
-    t_environment_list *tmp;
-    t_environment_list *tmp_new;
-    char *before_equal;
-    char *after_equal;
-    char *tmp_str;
-    int flag_for_equal;
-    int flag_for_plus;
+    // char *before_equal;
+    // char *after_equal;
+    // int flag_for_equal;
+    // int flag_for_plus;
 
-    tmp = *envp;
-    before_equal = NULL;
-    after_equal = NULL;
-    flag_for_equal = ft_char_find('=', str);
-    flag_for_plus = 0;
-    if (flag_for_equal == 1)
+    t_for_export exp;
+
+    exp.before_equal = NULL;
+    exp.after_equal = NULL;
+    exp.flag_for_equal = ft_char_find('=', str);
+    exp.flag_for_plus = 0;
+    if (exp.flag_for_equal == 1)
     {
         if (*(ft_strchr(str, '=') - 1) == '+')
-            flag_for_plus = 1;
-        if (flag_for_plus == 1)
-            before_equal = ft_creat_first_part_of_word(str, "+");
+            exp.flag_for_plus = 1;
+        if (exp.flag_for_plus == 1)
+            exp.before_equal = ft_creat_first_part_of_word(str, "+");
         else
-            before_equal = ft_creat_first_part_of_word(str, "=");
-        after_equal = ft_creat_last_part_of_word_for_export(str, "=");
+            exp.before_equal = ft_creat_first_part_of_word(str, "=");
+        exp.after_equal = ft_creat_last_part_of_word_for_export(str, "=");
     }
     else
-        before_equal = ft_strdup(str);
-    while (tmp != NULL)
-    {
-        if (!ft_strncmp(tmp->name_and_value[0], before_equal, ft_strlen(before_equal) + 1))
-        {
-            if (flag_for_equal == 1 && flag_for_plus == 1)
-            {   
-                tmp_str = tmp->name_and_value[1];
-                tmp->name_and_value[1] = ft_strjoin(tmp->name_and_value[1], after_equal);
-                tmp->envp_flag = 1;
-                free(tmp_str);
-                free(before_equal);
-                free(after_equal);
-                return ;
-            }
-            else if (flag_for_equal == 1 && flag_for_plus == 0)
-            {
-                free(tmp->name_and_value[1]);
-                tmp->name_and_value[1] = ft_strdup(after_equal);
-                tmp->envp_flag = 1;
-                free(before_equal);
-                free(after_equal);
-                return ;
-            }
-            else
-            {
-                // if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
-                //     tmp->envp_flag = 1;
-                // free(before_equal);
-                // return ;
-                if (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7) || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
-                    {
-                        tmp->envp_flag = 0;
-                        if (tmp->name_and_value[1] != NULL)
-                            tmp->envp_flag = 1;
-                    }
-                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
-                //     && tmp->envp_flag == 2)
-                //     tmp->envp_flag = 0;
-                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
-                //     && tmp->name_and_value[1] != NULL)
-                //     tmp->envp_flag = 1;
-                free(before_equal);
-                return ;
-            }
-        }
-        tmp = tmp->next;
-    }
-    free(before_equal);
-    free(after_equal);
-    tmp_new = ft_list_new_for_environment(str);
-    ft_list_add_back_for_environment(envp, tmp_new);
+        exp.before_equal = ft_strdup(str);
+    if (ft_for_export_change_environment(envp, &exp) == 1)
+        return ;
+    free(exp.before_equal);
+    free(exp.after_equal);
+    ft_for_export_add_new_for_environment(envp, str);
     return ;
 }
 
@@ -195,3 +146,81 @@ char *ft_creat_last_part_of_word_for_export(char *string, char *symbols)
     }
     return (NULL);
 }
+
+int ft_for_export_change_environment(t_environment_list **envp,  t_for_export *exp)
+{
+    t_environment_list *tmp;
+    char *tmp_str;
+
+    tmp = *envp;
+    tmp_str = NULL;
+    while (tmp != NULL)
+    {
+        if (!ft_strncmp(tmp->name_and_value[0], exp->before_equal, ft_strlen(exp->before_equal) + 1))
+        {
+            if (exp->flag_for_equal == 1 && exp->flag_for_plus == 1)
+            {   
+                if (tmp->name_and_value[1] == NULL)
+                    tmp->name_and_value[1] = ft_strdup(exp->after_equal);
+                else 
+                {
+                    tmp_str = tmp->name_and_value[1];
+                    tmp->name_and_value[1] = ft_strjoin(tmp->name_and_value[1], exp->after_equal);
+                    free(tmp_str);
+                }
+                tmp->envp_flag = 1;
+                free(exp->before_equal);
+                free(exp->after_equal);
+                return (1);
+            }
+            else if (exp->flag_for_equal == 1 && exp->flag_for_plus == 0)
+            {
+                free(tmp->name_and_value[1]);
+                tmp->name_and_value[1] = ft_strdup(exp->after_equal);
+                tmp->envp_flag = 1;
+                free(exp->before_equal);
+                free(exp->after_equal);
+                return (1);
+            }
+            else
+            {
+                if (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7) || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
+                    {
+                        tmp->envp_flag = 0;
+                        if (tmp->name_and_value[1] != NULL)
+                            tmp->envp_flag = 1;
+                    }
+                free(exp->before_equal);
+                return (1);
+            }
+        }
+        tmp = tmp->next;
+    }
+    return (0);
+}
+
+void ft_for_export_add_new_for_environment(t_environment_list **envp, char *str)
+{
+    t_environment_list *tmp_new;
+
+    tmp_new = ft_list_new_for_environment(str);
+    ft_list_add_back_for_environment(envp, tmp_new);
+    return ;
+}
+
+
+
+                // if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
+                //     tmp->envp_flag = 1;
+                // free(before_equal);
+                // return ;
+
+                                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
+                //     && tmp->envp_flag == 2)
+                //     tmp->envp_flag = 0;
+                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
+                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
+                //     && tmp->name_and_value[1] != NULL)
+                //     tmp->envp_flag = 1;

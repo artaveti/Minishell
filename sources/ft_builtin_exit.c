@@ -2,6 +2,7 @@
 #include "lib_for_minishell.h"
 
 int ft_atoi_for_long_long(char *str, long long *result);
+int ft_for_exit_atoi_check_sign_of_num(char *str, int *minus);
 int ft_for_exit_check_atoires(t_for_prog *prog, char **array_of_strings, int atoi_res);
 
 void ft_exit(t_for_prog *prog, char **array_of_strings, int fd_out)
@@ -46,27 +47,7 @@ int ft_atoi_for_long_long(char *str, long long *result)
 			|| *str == '\r' || *str == '\v' || *str == '\f'))
 		str++;
     if (ft_for_exit_atoi_check_sign_of_num(str, &minus) == 1)
-        str++
-
-
-int ft_for_exit_atoi_check_sign_of_num(char *str, int *minus)
-{
-	if (*str == '-')
-	{
-		//minus *= -1;
-        *minus = *minus * -1;
-		//str++;
-        return (1);
-	}
-	else if (*str == '+')
-    {
-		//str++;
-        return (1);
-    }
-    return (0);
-}
-
-
+        str++;
 	if (!ft_isdigit(*str))
 		return (0);
 	while (ft_isdigit(*str))
@@ -80,6 +61,18 @@ int ft_for_exit_atoi_check_sign_of_num(char *str, int *minus)
         return (0);
     *result = num * minus;
 	return (1);
+}
+
+int ft_for_exit_atoi_check_sign_of_num(char *str, int *minus)
+{
+	if (*str == '-')
+	{
+        *minus = *minus * -1;
+        return (1);
+	}
+	else if (*str == '+')
+        return (1);
+    return (0);
 }
 
 int ft_for_exit_check_atoires(t_for_prog *prog, char **array_of_strings, int atoi_res)
