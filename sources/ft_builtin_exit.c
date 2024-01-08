@@ -2,39 +2,24 @@
 #include "lib_for_minishell.h"
 
 int ft_atoi_for_long_long(char *str, long long *result);
+int ft_for_exit_check_atoires(t_for_prog *prog, char **array_of_strings, int atoi_res);
 
 void ft_exit(t_for_prog *prog, char **array_of_strings, int fd_out)
 {
     long long exit_atoi;
     int atoi_res;
-    int i;
 
     dup2(fd_out, STDOUT_FILENO);
-    i = 1;
-    if (array_of_strings[i] == NULL)
+    if (array_of_strings[1] == NULL)
     {
         if (prog->check_builtin == BUILTIN_RETURN)
             printf(PRINT_EXIT);
         exit(g_exit_status_msh);
     }
     exit_atoi = 0;
-    atoi_res = ft_atoi_for_long_long(array_of_strings[i], &exit_atoi);
-    if (atoi_res == 1 && array_of_strings[i + 1] != NULL)
-    {
-        if (prog->check_builtin == BUILTIN_RETURN)
-            printf(PRINT_EXIT);
-        printf(ERROR_MANY_ARG);
-        g_exit_status_msh = EXIT_FAILURE;
-        return ;
-    }
-    else if (atoi_res == 0)
-    {
-        if (prog->check_builtin == BUILTIN_RETURN)
-            printf(PRINT_EXIT);
-        printf(ERROR_NUM_ARG_REQ, array_of_strings[i]);
-        g_exit_status_msh = 255;
-        exit(g_exit_status_msh);
-    }
+    atoi_res = ft_atoi_for_long_long(array_of_strings[1], &exit_atoi);
+    if (ft_for_exit_check_atoires(prog, array_of_strings, atoi_res) == 1)
+        return;
     else
     {
         if (prog->check_builtin == BUILTIN_RETURN)
@@ -48,8 +33,6 @@ void ft_exit(t_for_prog *prog, char **array_of_strings, int fd_out)
     return ;
 }
 
-
-
 int ft_atoi_for_long_long(char *str, long long *result)
 {
     unsigned long long   num;
@@ -62,20 +45,34 @@ int ft_atoi_for_long_long(char *str, long long *result)
 	while (*str != '\0' && (*str == ' ' || *str == '\t' || *str == '\n'
 			|| *str == '\r' || *str == '\v' || *str == '\f'))
 		str++;
+    if (ft_for_exit_atoi_check_sign_of_num(str, &minus) == 1)
+        str++
+
+
+int ft_for_exit_atoi_check_sign_of_num(char *str, int *minus)
+{
 	if (*str == '-')
 	{
-		minus *= -1;
-		str++;
+		//minus *= -1;
+        *minus = *minus * -1;
+		//str++;
+        return (1);
 	}
 	else if (*str == '+')
-		str++;
+    {
+		//str++;
+        return (1);
+    }
+    return (0);
+}
+
+
 	if (!ft_isdigit(*str))
 		return (0);
 	while (ft_isdigit(*str))
 	{
 		num = num * 10 + *str - 48;
-        if ((minus == 1 && num > LLONG_MAX)
-            || (minus == -1 && num > min))
+        if ((minus == 1 && num > LLONG_MAX) || (minus == -1 && num > min))
             return (0);
 		str++;
 	}
@@ -83,4 +80,25 @@ int ft_atoi_for_long_long(char *str, long long *result)
         return (0);
     *result = num * minus;
 	return (1);
+}
+
+int ft_for_exit_check_atoires(t_for_prog *prog, char **array_of_strings, int atoi_res)
+{
+    if (atoi_res == 1 && array_of_strings[2] != NULL)
+    {
+        if (prog->check_builtin == BUILTIN_RETURN)
+            printf(PRINT_EXIT);
+        printf(ERROR_MANY_ARG);
+        g_exit_status_msh = EXIT_FAILURE;
+        return (1);
+    }
+    else if (atoi_res == 0)
+    {
+        if (prog->check_builtin == BUILTIN_RETURN)
+            printf(PRINT_EXIT);
+        printf(ERROR_NUM_ARG_REQ, array_of_strings[1]);
+        g_exit_status_msh = 255;
+        exit(g_exit_status_msh);
+    }
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:03:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/08 16:21:14 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:41:02 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	ft_creat_file(t_token_list *redir_list)
 		if (redir_list->type == REDIR_OUT)
 		{
 			fd_num = open(redir_list->value, O_CREAT | O_TRUNC, 0644);
-			perror("*********************");
 			close(fd_num);
 		}
 		else if (redir_list->type == REDIR_APPEND)
@@ -91,8 +90,8 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 	return ;
 }
 
-	void ft_if_sigquit_or_sigint_print(int signal_flag)
-	{
+void ft_if_sigquit_or_sigint_print(int signal_flag)
+{
 		if (g_exit_status_msh == EXIT_ERROR_SIGQUIT)
 			printf("Quit: %d\n", SIGQUIT);
 		if (signal_flag == SIGINT)
@@ -101,7 +100,7 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 			rl_redisplay();
 		}
 		return ;
-	}
+}
 
 void	ft_free_for_prog(t_for_prog *prog)
 {
