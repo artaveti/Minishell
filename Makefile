@@ -10,7 +10,7 @@ PREFIX 			= $(shell pwd)/$(RD_FOLDER_NAME)
 #PREFIX 		= $(shell find ${HOME} -name ${RD_FOLDER_NAME} 2>/dev/null)
 
 CC 		= cc
-CFLAGS 	= -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS 	= -Wall -Wextra -Werror -g -fsanitize=address
 INC 	= -I 
 RDLN	= -lreadline
 AR 		= ar rcs

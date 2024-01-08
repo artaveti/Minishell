@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/08 21:44:06 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:37:01 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,15 +363,26 @@ void				ft_env(t_environment_list **envp, t_for_prog *prog,
 						char **array_of_strings, int fd_out);
 void				ft_exit(t_for_prog *prog, char **array_of_strings,
 						int fd_out);
-int					ft_wrong_name(char	*name, char	*command);
 void				ft_check_if_builtin_run(t_environment_list **envp_list,
 						t_for_prog *prog, t_token_list *tmp_redir_list,
 						int fd_out);
 void				ft_running_builtin(t_environment_list **envp_list,
 						t_for_prog *prog, char **array_of_strings, int fd_out);
+
+//for builtin unset
+int					ft_wrong_name(char	*name, char	*command);
+
+//for builtin cd
 t_environment_list *find_node_by_name(t_environment_list *envp,  char *name);
 void change_node_by_name(t_environment_list **envp, char *name, char *value);
 int streq(char *s1, char *s2);
+
+//for builtin export
+void ft_check_and_add_to_environment(t_environment_list **envp, char *str);
+int ft_for_export_check_equal_and_plus(t_environment_list *tmp, t_for_export *exp);
+void ft_for_export_if_equal_and_plus(t_environment_list *tmp, t_for_export *exp);
+void ft_for_export_if_equal_not_plus(t_environment_list *tmp, t_for_export *exp);
+void ft_for_export_if_not_equal_not_plus(t_environment_list *tmp, t_for_export *exp);
 
 //signal
 void				ft_sigint_new_line(int sig_num);

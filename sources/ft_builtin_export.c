@@ -1,4 +1,3 @@
-
 #include "lib_for_minishell.h"
 
 //// '#' sign in export ???
@@ -6,65 +5,55 @@
 //// '+=' sign in export ???
 //// krknvogh anunner
 
-void ft_print_for_export(t_environment_list *envp);
+int ft_print_for_export(t_environment_list *envp, t_for_prog *prog, char **array_of_strings);
 int ft_check_name_for_export(char *str);
-void ft_check_and_add_to_environment(t_environment_list **envp, char *str);
-int ft_for_export_change_environment(t_environment_list **envp,  t_for_export *exp);
-char *ft_creat_last_part_of_word_for_export(char *string, char *symbols);
-void ft_for_export_add_new_for_environment(t_environment_list **envp, char *str);
 
 void ft_export(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
     int i;
+    int flag_for_export;
     
-    i = 1;
-    if (array_of_strings[i] == NULL)
-    {
-        ft_print_for_export(*envp);
-        if (prog->check_builtin == BUILTIN_EXIT)
-            exit(EXIT_SUCCESS);
-        g_exit_status_msh = EXIT_SUCCESS;
+    if (ft_print_for_export(*envp, prog, array_of_strings) == 0)
         return ;
-    }
+    i = 1;
+    flag_for_export = EXIT_SUCCESS;
     while(array_of_strings[i] != NULL)
     {
         dup2(fd_out, STDOUT_FILENO);
         if (ft_check_name_for_export(array_of_strings[i]) == 1)
-        {
-            g_exit_status_msh = EXIT_FAILURE;
-            i++;
-        }
+            flag_for_export = EXIT_FAILURE;
         else
-        {
             ft_check_and_add_to_environment(envp, array_of_strings[i]);
-            g_exit_status_msh = EXIT_SUCCESS;
-            i++;
-        }
+        i++;
     }
+    g_exit_status_msh = flag_for_export;
     if (prog->check_builtin == BUILTIN_EXIT)
         exit(g_exit_status_msh);
     return ;
 }
 
-
-
-void ft_print_for_export(t_environment_list *envp)
+int ft_print_for_export(t_environment_list *envp, t_for_prog *prog, char **array_of_strings)
 {
     t_environment_list *tmp;
 
-    tmp = envp;
-    while(tmp != NULL)
+    if (array_of_strings[1] == NULL)
     {
-        if (tmp->envp_flag == 0)
-            printf("declare -x %s\n", tmp->name_and_value[0]);
-        else if (tmp->envp_flag == 1)
-            printf("declare -x %s=\"%s\"\n", tmp->name_and_value[0], tmp->name_and_value[1]);
-        tmp = tmp->next;
+        tmp = envp;
+        while(tmp != NULL)
+        {
+            if (tmp->envp_flag == 0)
+                printf("declare -x %s\n", tmp->name_and_value[0]);
+            else if (tmp->envp_flag == 1)
+                printf("declare -x %s=\"%s\"\n", tmp->name_and_value[0], tmp->name_and_value[1]);
+            tmp = tmp->next;
+        }
+        if (prog->check_builtin == BUILTIN_EXIT)
+            exit(EXIT_SUCCESS);
+        g_exit_status_msh = EXIT_SUCCESS;
+        return (EXIT_SUCCESS);
     }
-    return ;
+    return (1);
 }
-
-
 
 int ft_check_name_for_export(char *str)
 {
@@ -90,122 +79,6 @@ int ft_check_name_for_export(char *str)
         i++;
     }
     return (0);
-}
-
-
-
-void ft_check_and_add_to_environment(t_environment_list **envp, char *str)
-{
-    // char *before_equal;
-    // char *after_equal;
-    // int flag_for_equal;
-    // int flag_for_plus;
-
-    t_for_export exp;
-
-    exp.before_equal = NULL;
-    exp.after_equal = NULL;
-    exp.flag_for_equal = ft_char_find('=', str);
-    exp.flag_for_plus = 0;
-    if (exp.flag_for_equal == 1)
-    {
-        if (*(ft_strchr(str, '=') - 1) == '+')
-            exp.flag_for_plus = 1;
-        if (exp.flag_for_plus == 1)
-            exp.before_equal = ft_creat_first_part_of_word(str, "+");
-        else
-            exp.before_equal = ft_creat_first_part_of_word(str, "=");
-        exp.after_equal = ft_creat_last_part_of_word_for_export(str, "=");
-    }
-    else
-        exp.before_equal = ft_strdup(str);
-    if (ft_for_export_change_environment(envp, &exp) == 1)
-        return ;
-    free(exp.before_equal);
-    free(exp.after_equal);
-    ft_for_export_add_new_for_environment(envp, str);
-    return ;
-}
-
-
-
-char *ft_creat_last_part_of_word_for_export(char *string, char *symbols)
-{
-    char *last_part;
-    int i;
-
-    i = 0;
-    while (string[i] != '\0')
-    {
-        if (ft_strchr(symbols, string[i]))
-        {
-            last_part = ft_strdup(&string[i + 1]);
-            return (last_part);
-        }
-        i++;
-    }
-    return (NULL);
-}
-
-int ft_for_export_change_environment(t_environment_list **envp,  t_for_export *exp)
-{
-    t_environment_list *tmp;
-    char *tmp_str;
-
-    tmp = *envp;
-    tmp_str = NULL;
-    while (tmp != NULL)
-    {
-        if (!ft_strncmp(tmp->name_and_value[0], exp->before_equal, ft_strlen(exp->before_equal) + 1))
-        {
-            if (exp->flag_for_equal == 1 && exp->flag_for_plus == 1)
-            {   
-                if (tmp->name_and_value[1] == NULL)
-                    tmp->name_and_value[1] = ft_strdup(exp->after_equal);
-                else 
-                {
-                    tmp_str = tmp->name_and_value[1];
-                    tmp->name_and_value[1] = ft_strjoin(tmp->name_and_value[1], exp->after_equal);
-                    free(tmp_str);
-                }
-                tmp->envp_flag = 1;
-                free(exp->before_equal);
-                free(exp->after_equal);
-                return (1);
-            }
-            else if (exp->flag_for_equal == 1 && exp->flag_for_plus == 0)
-            {
-                free(tmp->name_and_value[1]);
-                tmp->name_and_value[1] = ft_strdup(exp->after_equal);
-                tmp->envp_flag = 1;
-                free(exp->before_equal);
-                free(exp->after_equal);
-                return (1);
-            }
-            else
-            {
-                if (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7) || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
-                    {
-                        tmp->envp_flag = 0;
-                        if (tmp->name_and_value[1] != NULL)
-                            tmp->envp_flag = 1;
-                    }
-                free(exp->before_equal);
-                return (1);
-            }
-        }
-        tmp = tmp->next;
-    }
-    return (0);
-}
-
-void ft_for_export_add_new_for_environment(t_environment_list **envp, char *str)
-{
-    t_environment_list *tmp_new;
-
-    tmp_new = ft_list_new_for_environment(str);
-    ft_list_add_back_for_environment(envp, tmp_new);
-    return ;
 }
 
 
