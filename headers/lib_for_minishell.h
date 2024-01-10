@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 15:59:58 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:31:11 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ No such file or directory\n"
 directory: getcwd: cannot access parent directories: \
 No such file or directory\n"
 # define ERROR_CD_HOME_DIR "minishell: cd: HOME not set\n"
-# define ERROR_CD_NO_FILE_OR_DIR "minishell: cd: %s: No such file or directory\n"
+# define ERROR_CD_NO_FILE_OR_DIR "minishell: cd: %s:\
+No such file or directory\n"
 # define ERROR_HEREDOC_QUANT "minishell: maximum here-document count \
 exceeded\n" //// exit from bash
 # define ERROR_MANY_ARG "minishell: exit: too many arguments\n"
@@ -83,8 +84,8 @@ token `%s'\n"
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, \
 resetting to 1\n"
 # define ERROR_WRONG_NAME "minishell: %s: `%s': not a valid identifier\n"
-# define ERRO_RES_NOT_ENOUGH "minishell: fork: Resource temporarily unavailable\n"
-
+# define ERRO_RES_NOT_ENOUGH "minishell: fork:\
+Resource temporarily unavailable\n"
 
 //extern ???
 
@@ -156,13 +157,11 @@ typedef struct s_for_fork
 
 typedef struct s_for_export
 {
-    char *before_equal;
-    char *after_equal;
-    int flag_for_equal;
-    int flag_for_plus;
-} t_for_export;
-
-
+	char	*before_equal;
+	char	*after_equal;
+	int		flag_for_equal;
+	int		flag_for_plus;
+}	t_for_export;
 
 //libft
 void				*ft_memmove(void	*dst, const void	*src,
@@ -333,7 +332,8 @@ void				ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 //execve
 void				ft_running_program(t_for_prog *prog,
 						t_environment_list **envp_list,
-						t_term_and_work_dir *term, int *flag_for_kill_child_processe);
+						t_term_and_work_dir *term,
+						int *flag_for_kill_child_processe);
 void				ft_change_stdin_stdout_fd_pipe(int **fd_arr,
 						int fd_quant_pipe, int i);
 int					ft_change_stdin_stdout_fd_redir(t_token_list *redir_list,
@@ -376,16 +376,22 @@ void				ft_running_builtin(t_environment_list **envp_list,
 int					ft_wrong_name(char	*name, char	*command);
 
 //for builtin cd
-t_environment_list *find_node_by_name(t_environment_list *envp,  char *name);
-void change_node_by_name(t_environment_list **envp, char *name, char *value);
-int streq(char *s1, char *s2);
+t_environment_list	*find_node_by_name(t_environment_list *envp, char *name);
+void				change_node_by_name(t_environment_list **envp, char *name,
+						char *value);
+int					streq(char *s1, char *s2);
 
 //for builtin export
-void ft_check_and_add_to_environment(t_environment_list **envp, char *str);
-int ft_for_export_check_equal_and_plus(t_environment_list *tmp, t_for_export *exp);
-void ft_for_export_if_equal_and_plus(t_environment_list *tmp, t_for_export *exp);
-void ft_for_export_if_equal_not_plus(t_environment_list *tmp, t_for_export *exp);
-void ft_for_export_if_not_equal_not_plus(t_environment_list *tmp, t_for_export *exp);
+void				ft_check_and_add_to_environment(t_environment_list **envp,
+						char *str);
+int					ft_for_export_check_equal_and_plus(t_environment_list *tmp,
+						t_for_export *exp);
+void				ft_for_export_if_equal_and_plus(t_environment_list *tmp,
+						t_for_export *exp);
+void				ft_for_export_if_equal_not_plus(t_environment_list *tmp,
+						t_for_export *exp);
+void				ft_for_export_if_not_equal_not_plus(
+						t_environment_list *tmp, t_for_export *exp);
 
 //signal
 void				ft_sigint_new_line(int sig_num);

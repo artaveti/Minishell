@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:51:15 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 14:56:59 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:59:39 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@
 // argumentneri qanaki error
 // stugel redirectionnery naev builtinneri het
 // petqe hashvi arnel envp-i NULL linely (unsetov karelia amboghjy jnjel), thready error e cuyc talis
-
-//max num of forks is 494
 
 int	main(int argc, char *argv[], char *envp[])
 {
