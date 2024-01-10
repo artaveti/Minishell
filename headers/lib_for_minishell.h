@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/09 00:37:01 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:59:58 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ token `%s'\n"
 # define ERROR_SHLVL "minishell: warning: shell level (%lld) too high, \
 resetting to 1\n"
 # define ERROR_WRONG_NAME "minishell: %s: `%s': not a valid identifier\n"
+# define ERRO_RES_NOT_ENOUGH "minishell: fork: Resource temporarily unavailable\n"
 
 
 //extern ???
@@ -247,6 +248,8 @@ void				ft_parser_sixth_change_heredoc_value(t_token_list **list,
 						t_environment_list *envp_list);
 void				ft_parser_remove_sep_from_list(t_token_list **list,
 						t_environment_list *envp_list);
+void				ft_parser_if_word_only_null_char(t_token_list **list,
+						t_environment_list *envp_list);
 
 //change dollar sign in word
 char				*ft_change_dollar_sign_in_word(char *string,
@@ -330,7 +333,7 @@ void				ft_close_pipe_fd(int **fd, int fd_quant_pipe);
 //execve
 void				ft_running_program(t_for_prog *prog,
 						t_environment_list **envp_list,
-						t_term_and_work_dir *term);
+						t_term_and_work_dir *term, int *flag_for_kill_child_processe);
 void				ft_change_stdin_stdout_fd_pipe(int **fd_arr,
 						int fd_quant_pipe, int i);
 int					ft_change_stdin_stdout_fd_redir(t_token_list *redir_list,

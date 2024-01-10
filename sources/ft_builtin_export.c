@@ -1,10 +1,5 @@
 #include "lib_for_minishell.h"
 
-//// '#' sign in export ???
-//// '=' sign in export ???
-//// '+=' sign in export ???
-//// krknvogh anunner
-
 int ft_print_for_export(t_environment_list *envp, t_for_prog *prog, char **array_of_strings);
 int ft_check_name_for_export(char *str);
 
@@ -80,20 +75,3 @@ int ft_check_name_for_export(char *str)
     }
     return (0);
 }
-
-
-
-                // if (tmp->name_and_value != NULL && (!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4)) && tmp->name_and_value[1] != NULL)
-                //     tmp->envp_flag = 1;
-                // free(before_equal);
-                // return ;
-
-                                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
-                //     && tmp->envp_flag == 2)
-                //     tmp->envp_flag = 0;
-                // if ((!ft_strncmp(tmp->name_and_value[0], "OLDPWD", 7)
-                //     || !ft_strncmp(tmp->name_and_value[0], "PWD", 4))
-                //     && tmp->name_and_value[1] != NULL)
-                //     tmp->envp_flag = 1;

@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:03:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/08 18:41:02 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:37:41 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_creat_file(t_token_list *redir_list);
 void	ft_if_sigquit_or_sigint_print(int signal_flag);
+void	ft_malloc_and_set_zero_for_prog_pid_arr(t_for_prog *prog);
 
 int	ft_creat_for_program(t_for_prog *prog, t_token_list *token_list,
 			t_token_list *heredoc_list, t_environment_list **envp_list)
@@ -36,7 +37,7 @@ int	ft_creat_for_program(t_for_prog *prog, t_token_list *token_list,
 	ft_creat_file(prog->redir_list);
 	prog->argv_for_execve = ft_creat_argv_for_execve(token_list,
 			prog->fd_quant_pipe);
-	prog->pid_arr = (int *)malloc(sizeof(int) * (prog->fd_quant_pipe + 1));
+	ft_malloc_and_set_zero_for_prog_pid_arr(prog);
 	prog->check_builtin = BUILTIN_EXIT;
 	return (return_num);
 }
@@ -67,6 +68,7 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 	int	i;
 	int	status;
 	int	signal_flag;
+	int waitpid_num;
 
 	if (prog->check_builtin == BUILTIN_RETURN)
 		return ; //// this if for right exit number
@@ -75,7 +77,7 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 	i = 0;
 	while (i < prog->fd_quant_pipe + 1)
 	{
-		waitpid(prog->pid_arr[i], &status, 0);
+		waitpid_num = waitpid(prog->pid_arr[i], &status, 0);
 		WIFEXITED(status);
 		g_exit_status_msh = WEXITSTATUS(status);
 		if(status == SIGQUIT)
@@ -111,10 +113,22 @@ void	ft_free_for_prog(t_for_prog *prog)
 	free(prog->pid_arr);
 	ft_free_triple_pointer_array(&prog->argv_for_execve);
 	ft_list_free_for_token(&prog->redir_list);
-    //free(prog->pwd_str);
 	return ;
 }
 
+void ft_malloc_and_set_zero_for_prog_pid_arr(t_for_prog *prog)
+{
+	int i;
+	
+	prog->pid_arr = (int *)malloc(sizeof(int) * (prog->fd_quant_pipe + 1));
+	i = 0;
+	while(i < prog->fd_quant_pipe + 1)
+	{
+		prog->pid_arr[i] = 0;
+		i++;
+	}
+	return ;
+}
 
 
 

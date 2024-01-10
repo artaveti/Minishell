@@ -1,12 +1,12 @@
 
 #include "lib_for_minishell.h"
 
-void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i);
+int ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i);
 void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
 char **ft_prog_names_join(char	**path_arr, char	*prog_name);
 void ft_check_is_name_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
 
-void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_and_work_dir *term)
+void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_and_work_dir *term, int *flag_for_kill_child_processes)
 {
     t_token_list *tmp_redir_list;
     int     i;
@@ -27,7 +27,11 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_
         if (prog->fd_quant_pipe == 0)
           ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, STDOUT_FILENO);
         if (prog->check_builtin == BUILTIN_EXIT)
-          ft_fork(tmp_redir_list, envp_list, prog, i);
+          if (ft_fork(tmp_redir_list, envp_list, prog, i) == 1)
+          {
+            *flag_for_kill_child_processes = -1;
+            return ;
+          }
         if (tmp_redir_list != NULL && tmp_redir_list->type == START)
           tmp_redir_list = tmp_redir_list->next;
         i++;
@@ -37,11 +41,16 @@ void ft_running_program(t_for_prog *prog, t_environment_list **envp_list,t_term_
 
 
 
-void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i)
+int ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for_prog *prog, int i)
 {
      t_for_fork fk;
 
      fk.pid = fork();
+     if (fk.pid < 0)
+     {
+      prog->pid_arr[i] = -1;
+      return (1); 
+     }
      if (fk.pid == 0)
      {
 		  signal(SIGQUIT, SIG_DFL);
@@ -65,7 +74,7 @@ void ft_fork(t_token_list *tmp_redir_list, t_environment_list **envp_list, t_for
       exit(EXIT_ERROR_CMD_NOT_FOUND);
     }
     prog->pid_arr[i] = fk.pid;
-    return ;
+    return (0);
 }
 
 

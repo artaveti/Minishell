@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   for_ft_parser_one.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:43:04 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 12:44:18 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:19:09 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,25 @@ char	*ft_change_char_from_the_last(char *string, char symbol)
 		string[i] = '\0';
 	tmp_string = ft_strdup(string);
 	return (tmp_string);
+}
+
+void	ft_parser_if_word_only_null_char(t_token_list **list,
+			t_environment_list *envp_list)
+{
+	t_token_list	*tmp;
+	char			*tmp_string;
+
+	(void)envp_list;
+	tmp = *list;
+	while (tmp != NULL)
+	{
+		if (tmp->type == WORD && tmp->value[0] == '\0')
+		{
+			tmp->type = SEP;
+			g_exit_status_msh = EXIT_SUCCESS;
+		}
+		tmp = tmp->next;
+	}
+	tmp_string = NULL;
+	return ;
 }

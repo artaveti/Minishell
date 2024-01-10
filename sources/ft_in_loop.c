@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_in_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:46:56 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 14:48:14 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:00:51 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	ft_loop(t_token_list *token_list, t_token_list *heredoc_list,
             error_num = ft_syntax_error_quotes_quant(input_str);
             ft_lexer(input_str, token_list);
             ft_parser(&token_list, envp_list);
+//ft_list_iter_printf_token(token_list, printf);
             ft_syntax_error(&token_list->next, &error_num);
             ft_heredoc_quant_error(&token_list->next, &error_num);
             ft_creat_token_for_heredoc(input_str, heredoc_list, envp_list);
-//ft_list_iter_printf_token(token_list, printf);
             if (error_num != EXIT_ERROR_SYNTAX
                 && token_list->next != NULL)
                 ft_program(token_list, heredoc_list, &envp_list, &term);

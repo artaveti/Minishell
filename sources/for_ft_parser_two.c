@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   for_ft_parser_two.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:44:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 13:03:06 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:27:28 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	ft_parser_remove_sep_from_list(t_token_list **list,
 		if (tmp->type == SEP)
 		{
 			previous->next = tmp->next;
+			free(tmp->value);
 			free(tmp);
 			tmp = previous->next;
 		}
