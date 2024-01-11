@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:03:10 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 17:07:18 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:04:57 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,16 @@ char	*ft_change_dollar_sign_in_before_end_symb(char **before_end_symb,
 	else if (!ft_memcmp(&tmp_str[1], name_and_value[0],
 			ft_strlen(&tmp_str[1]) + 1))
 	{
-		tmp_str = ft_strdup(name_and_value[1]);
-		*result = 1;
+		if (name_and_value[1] == NULL)
+		{
+			tmp_str = ft_strdup("");
+			*result = 1;
+		}
+		else
+		{
+			tmp_str = ft_strdup(name_and_value[1]);
+			*result = 1;
+		}
 	}
 	else if (num_for_last == 1)
 	{

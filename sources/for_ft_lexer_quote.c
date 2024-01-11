@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:28:35 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 18:08:24 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:37:12 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,16 @@ void	ft_is_token_double_quote(int *i, char *input_str,
 	return ;
 }
 
-		void ft_set_chars_of_word(t_token_list	*tmp, char *input_str, char	quote, int *j)
-		{
-			int	k;
-			
-			k = 0;
-			while (input_str[*j] != quote && input_str[*j] != '\0')
-			{
-				tmp->value[k] = input_str[*j];
-				k++;
-				*j = *j + 1;
-			}
-			tmp->value[k] = '\0';
-			return ;
-		}
+void ft_set_chars_of_word(t_token_list	*tmp, char *input_str, char	quote, int *j)
+{
+	int	k;
+	k = 0;
+	while (input_str[*j] != quote && input_str[*j] != '\0')
+	{
+		tmp->value[k] = input_str[*j];
+		k++;
+		*j = *j + 1;
+	}
+	tmp->value[k] = '\0';
+	return ;
+}

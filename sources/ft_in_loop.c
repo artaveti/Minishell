@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:46:56 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 16:00:51 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:12:00 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_loop(t_token_list *token_list, t_token_list *heredoc_list,
             ft_list_free_for_token(&token_list->next);
             ft_list_free_for_token(&heredoc_list->next);
         }
+        //system("leaks minishell");////
     }
     free(term.pwd_str_in_term);
     return ;

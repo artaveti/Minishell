@@ -1,6 +1,6 @@
 #include "lib_for_minishell.h"
 
-t_environment_list *find_node_by_name(t_environment_list *envp,  char *name) 
+t_environment_list *find_node_by_name(t_environment_list *envp,  char *name)
 {
     while (envp != NULL)
      {

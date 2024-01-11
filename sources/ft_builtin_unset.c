@@ -3,6 +3,7 @@
 
 void for_ft_unset(t_environment_list **head, const char *name);
 int ft_unset_head_of_envp_list(t_environment_list **head, const char *name);
+int ft_for_unset_check_oldpwd_and_pwd(t_environment_list *current, const char *name);
 
 void ft_unset(t_environment_list **envp, t_for_prog *prog, char **array_of_strings, int fd_out)
 {
@@ -26,8 +27,6 @@ void ft_unset(t_environment_list **envp, t_for_prog *prog, char **array_of_strin
     return ;
 }
 
-
-
 void for_ft_unset(t_environment_list **head, const char *name)
 {
     t_environment_list *current;
@@ -41,11 +40,8 @@ void for_ft_unset(t_environment_list **head, const char *name)
     {
         if (ft_strncmp(current->name_and_value[0], name, ft_strlen((*head)->name_and_value[0]) + 1) == 0)
         {
-            if (!ft_strncmp(name, "OLDPWD", 7) || !ft_strncmp(name, "PWD", 4))
-            {
-                current->envp_flag = 2;
+            if (ft_for_unset_check_oldpwd_and_pwd(current, name) == 1)
                 return ;
-            }
             prev->next = current->next;
             free(current->name_and_value[0]);
             free(current->name_and_value[1]);
@@ -58,8 +54,6 @@ void for_ft_unset(t_environment_list **head, const char *name)
     }
     return ;
 }
-
-
 
 int ft_unset_head_of_envp_list(t_environment_list **head, const char *name)
 {
@@ -76,6 +70,16 @@ int ft_unset_head_of_envp_list(t_environment_list **head, const char *name)
         free(temp->name_and_value[1]);
         free(temp->name_and_value);
         free(temp);
+        return (1);
+    }
+    return (0);
+}
+
+int ft_for_unset_check_oldpwd_and_pwd(t_environment_list *current, const char *name)
+{
+    if (!ft_strncmp(name, "OLDPWD", 7) || !ft_strncmp(name, "PWD", 4))
+    {
+        current->envp_flag = 2;
         return (1);
     }
     return (0);

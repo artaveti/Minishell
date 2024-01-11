@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 17:53:14 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 18:38:35 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:18:19 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int ft_check_if_cd_export_unset_exit(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list, int fd_out);
 int ft_check_if_echo_pwd_env(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list, int fd_out);
-void ft_free_and_str_to_lowercase_for_echo_pwd_env(t_for_prog *prog, char *tmp_str);
+void ft_free_and_str_to_lowercase_for_echo_pwd_env(t_for_prog *prog, char **tmp_str);
 void ft_running_for_only_one_builtin(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list);
 
 void ft_check_if_builtin_run(t_environment_list **envp_list, t_for_prog *prog, t_token_list *tmp_redir_list, int fd_out)
@@ -63,13 +63,13 @@ int ft_check_if_echo_pwd_env(t_environment_list **envp_list, t_for_prog *prog, t
     if(prog->fd_quant_pipe == 0)
     {
       prog->check_builtin = BUILTIN_RETURN;
-      ft_free_and_str_to_lowercase_for_echo_pwd_env(prog, tmp_str);
+      ft_free_and_str_to_lowercase_for_echo_pwd_env(prog, &tmp_str);
       ft_running_for_only_one_builtin(envp_list, prog, tmp_redir_list);
       return (0);
     }
     else
     {
-      ft_free_and_str_to_lowercase_for_echo_pwd_env(prog, tmp_str);
+      ft_free_and_str_to_lowercase_for_echo_pwd_env(prog, &tmp_str);
       ft_running_builtin(envp_list, prog, prog->argv_for_execve[prog->index], fd_out);
       return (0);
     }
@@ -119,9 +119,9 @@ void ft_running_builtin(t_environment_list **envp_list, t_for_prog *prog, char *
   return ;
 }
 
-void ft_free_and_str_to_lowercase_for_echo_pwd_env(t_for_prog *prog, char *tmp_str)
+void ft_free_and_str_to_lowercase_for_echo_pwd_env(t_for_prog *prog, char **tmp_str)
 {
-  free(tmp_str);
+  free(*tmp_str);
   ft_str_to_lowercase(prog->argv_for_execve[prog->index][0]);
   return ;  
 }

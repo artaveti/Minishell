@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:43:04 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 16:19:09 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:28:48 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,23 +91,30 @@ char	*ft_change_char_from_the_last(char *string, char symbol)
 	return (tmp_string);
 }
 
-void	ft_parser_if_word_only_null_char(t_token_list **list,
+void	ft_parser_remove_if_word_only_null_char(t_token_list **list,
 			t_environment_list *envp_list)
 {
+	t_token_list	*previous;
 	t_token_list	*tmp;
-	char			*tmp_string;
 
 	(void)envp_list;
-	tmp = *list;
+	previous = *list;
+	tmp = previous->next;
 	while (tmp != NULL)
 	{
-		if (tmp->type == WORD && tmp->value[0] == '\0')
+		if (tmp->type == WORD && (tmp->value == NULL || tmp->value[0] == '\0'))
 		{
-			tmp->type = SEP;
+			previous->next = tmp->next;
+			free(tmp->value);
+			free(tmp);
+			tmp = previous->next;
 			g_exit_status_msh = EXIT_SUCCESS;
 		}
-		tmp = tmp->next;
+		else
+		{
+			previous = previous->next;
+			tmp = previous->next;
+		}
 	}
-	tmp_string = NULL;
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 17:31:11 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:28:48 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void				ft_parser_sixth_change_heredoc_value(t_token_list **list,
 						t_environment_list *envp_list);
 void				ft_parser_remove_sep_from_list(t_token_list **list,
 						t_environment_list *envp_list);
-void				ft_parser_if_word_only_null_char(t_token_list **list,
+void				ft_parser_remove_if_word_only_null_char(t_token_list **list,
 						t_environment_list *envp_list);
 
 //change dollar sign in word

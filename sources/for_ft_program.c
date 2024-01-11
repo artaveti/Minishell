@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:03:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 16:37:41 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:39:05 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 	int	i;
 	int	status;
 	int	signal_flag;
-	int waitpid_num;
 
 	if (prog->check_builtin == BUILTIN_RETURN)
 		return ; //// this if for right exit number
@@ -77,7 +76,7 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 	i = 0;
 	while (i < prog->fd_quant_pipe + 1)
 	{
-		waitpid_num = waitpid(prog->pid_arr[i], &status, 0);
+		waitpid(prog->pid_arr[i], &status, 0);
 		WIFEXITED(status);
 		g_exit_status_msh = WEXITSTATUS(status);
 		if(status == SIGQUIT)
