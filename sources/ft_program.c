@@ -6,13 +6,14 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:26:57 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 16:38:34 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:10:25 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_for_minishell.h"
 
 void	ft_set_null_for_prog(t_for_prog *prog);
+void	ft_kill_and_waitpid(t_for_prog *prog, int flag_for_kill_child_processes);
 void	ft_kill_child_processes(t_for_prog *prog);
 
 void	ft_program(t_token_list *token_list, t_token_list *heredoc_list,
@@ -41,11 +42,7 @@ void	ft_program(t_token_list *token_list, t_token_list *heredoc_list,
 	ft_running_program(&prog, envp_list, term, &flag_for_kill_child_processes);
 	ft_close_pipe_fd(prog.fd_arr_pipe, prog.fd_quant_pipe);
 	ft_close_pipe_fd(prog.fd_arr_heredoc, prog.fd_quant_heredoc);
-	if(flag_for_kill_child_processes == -1)
-		ft_kill_child_processes(&prog);
-	ft_waitpid_for_prog(&prog);
-	if (flag_for_kill_child_processes == -1)
-		g_exit_status_msh = EXIT_FAILURE;
+	ft_kill_and_waitpid(&prog, flag_for_kill_child_processes);
 	ft_free_for_prog(&prog);
 	return ;
 }
@@ -64,6 +61,16 @@ void	ft_set_null_for_prog(t_for_prog *prog)
 	prog->pid_arr = NULL;
 	prog->check_builtin = 0;
 	prog->pwd_str = NULL;
+	return ;
+}
+
+void ft_kill_and_waitpid(t_for_prog *prog, int flag_for_kill_child_processes)
+{
+	if(flag_for_kill_child_processes == -1)
+		ft_kill_child_processes(prog);
+	ft_waitpid_for_prog(prog);
+	if (flag_for_kill_child_processes == -1)
+		g_exit_status_msh = EXIT_FAILURE;
 	return ;
 }
 

@@ -1,4 +1,3 @@
-
 #include "lib_for_minishell.h"
 
 int ft_change_shlvl_to_zero(t_environment_list **list, long long long_long_num);
@@ -6,7 +5,7 @@ int	ft_check_is_num_minus(const char *str);
 int ft_change_shlvl_to_num_or_null(t_environment_list **list, long long long_long_num);
 void ft_list_creat_shlvl_for_environment(t_environment_list **start_of_list);
 
-void ft_change_shlvl_of_environment(t_environment_list **start_of_list)
+void ft_creat_or_change_shlvl_of_environment(t_environment_list **start_of_list)
 {
     t_environment_list *tmp_list;
     long long long_long_num ;
