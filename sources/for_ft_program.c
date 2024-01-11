@@ -6,13 +6,14 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:03:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 20:39:05 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 20:32:57 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_for_minishell.h"
 
 void	ft_creat_file(t_token_list *redir_list);
+void	ft_check_file_creating(t_token_list *redir_list, int *flag_for_break);
 void	ft_if_sigquit_or_sigint_print(int signal_flag);
 void	ft_malloc_and_set_zero_for_prog_pid_arr(t_for_prog *prog);
 
@@ -44,24 +45,47 @@ int	ft_creat_for_program(t_for_prog *prog, t_token_list *token_list,
 
 void	ft_creat_file(t_token_list *redir_list)
 {
-	int	fd_num;
+	int flag_for_break;
 
+	flag_for_break = 0;
 	while (redir_list != NULL)
 	{
-		if (redir_list->type == REDIR_OUT)
-		{
-			fd_num = open(redir_list->value, O_CREAT | O_TRUNC, 0644);
-			close(fd_num);
-		}
-		else if (redir_list->type == REDIR_APPEND)
-		{
-			fd_num = open(redir_list->value, O_CREAT, 0644);
-			close(fd_num);
-		}
+		if (redir_list->type == START)
+			flag_for_break = 0;
+		if (flag_for_break == 0)
+			ft_check_file_creating(redir_list, &flag_for_break);
 		redir_list = redir_list->next;
 	}
 	return ;
 }
+
+			void ft_check_file_creating(t_token_list *redir_list, int *flag_for_break)
+			{
+				int fd_num;
+				
+				if (redir_list->type == REDIR_OUT)
+				{
+					fd_num = open(redir_list->value, O_CREAT | O_TRUNC, 0644);
+					if (fd_num < 0)
+						*flag_for_break = 1;
+					close(fd_num);
+				}
+				else if (redir_list->type == REDIR_APPEND)
+				{
+					fd_num = open(redir_list->value, O_CREAT, 0644);
+					if (fd_num < 0)
+						*flag_for_break = 1;
+					close(fd_num);
+				}
+				else if (redir_list->type == REDIR_INT)
+				{
+					fd_num = open(redir_list->value, O_RDONLY, 0644);
+					if (fd_num < 0)
+						*flag_for_break = 1;
+					close(fd_num);
+				}		
+				return ;
+			}
 
 void	ft_waitpid_for_prog(t_for_prog *prog)
 {

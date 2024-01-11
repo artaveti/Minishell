@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:03:10 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/11 15:04:57 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:21:04 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,45 +67,6 @@ void	ft_creat_before_after_strings(int i, char **tmp_str,
 	return ;
 }
 
-char	*ft_change_dollar_sign_in_before_end_symb(char **before_end_symb,
-			char **name_and_value, int num_for_last, int *result)
-{
-	char	*tmp_str;
-	char	*str_for_dup;
-	char	*g_exit_status_msh_str;
-
-	tmp_str = *before_end_symb;
-	//*result = 0;
-	if (tmp_str[1] == '\0')
-	{
-		tmp_str = ft_strdup("$");
-		*result = 1;
-	}
-	else if (ft_strchr("?0123456789", tmp_str[1]) && tmp_str[1] != '\0')
-		ft_additional_for_else_if(&str_for_dup, &tmp_str,
-			&g_exit_status_msh_str, result);
-	else if (!ft_memcmp(&tmp_str[1], name_and_value[0],
-			ft_strlen(&tmp_str[1]) + 1))
-	{
-		if (name_and_value[1] == NULL)
-		{
-			tmp_str = ft_strdup("");
-			*result = 1;
-		}
-		else
-		{
-			tmp_str = ft_strdup(name_and_value[1]);
-			*result = 1;
-		}
-	}
-	else if (num_for_last == 1)
-	{
-		tmp_str = ft_strdup("");
-		*result = 1;
-	}
-	return (tmp_str);
-}
-
 char	*ft_creat_last_part_of_word(char *string, char *symbols)
 {
 	char	*last_part;
@@ -126,21 +87,3 @@ char	*ft_creat_last_part_of_word(char *string, char *symbols)
 	return (NULL);
 }
 
-void	ft_additional_for_else_if(char **str_for_dup, char **tmp_str,
-			char **g_exit_status_msh_str, int *result)
-{
-	*str_for_dup = ft_strdup(&tmp_str[0][2]);
-	if (tmp_str[0][1] == '?')
-	{
-		*g_exit_status_msh_str = ft_itoa(g_exit_status_msh);
-		*tmp_str = ft_strjoin(*g_exit_status_msh_str, *str_for_dup);
-		free(*g_exit_status_msh_str);
-	}
-	else if (tmp_str[0][1] == '0')
-		*tmp_str = ft_strjoin("minishell", *str_for_dup);
-	else
-		*tmp_str = ft_strdup(*str_for_dup);
-	free(*str_for_dup);
-	*result = 1;
-	return ;
-}

@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/11 14:28:48 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:24:19 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,9 +274,6 @@ char				*ft_change_dollar_sign_in_before_end_symb(
 						char **before_end_symb, char **name_and_value,
 						int num_for_last, int *result);
 char				*ft_creat_last_part_of_word(char *string, char *symbols);
-void				ft_additional_for_else_if(char **str_for_dup,
-						char **tmp_str, char **g_exit_status_msh_str,
-						int *result);
 
 //change dollar sign in qdoub
 char				*ft_change_dollar_sign_in_qdoub(char *string,
@@ -338,6 +335,12 @@ void				ft_change_stdin_stdout_fd_pipe(int **fd_arr,
 						int fd_quant_pipe, int i);
 int					ft_change_stdin_stdout_fd_redir(t_token_list *redir_list,
 						int fd_out, int **heredoc_pipe, int only_one_builtint);
+
+//fork
+int ft_check_if_pid_less_than_null(t_for_prog *prog, t_for_fork *fk, int i);
+void ft_change_and_close_fd_in_fork(t_token_list *tmp_redir_list, t_for_prog *prog, t_for_fork *fk, int i);
+void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
+void ft_check_is_name_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
 
 //free
 void				ft_free_double_pointer_array(char ***array);
