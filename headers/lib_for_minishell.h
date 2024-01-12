@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/12 17:33:13 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/12 21:17:19 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,7 @@ void				ft_additional_for_creat_joined_second(int *j, int *k,
 						char **splitted_str, char *joined_after_change);
 
 //syntax_error; heredoc_error
-int					ft_syntax_error_quotes_quant(char *input_str);
+void	ft_syntax_error_quotes_quant(char *input_str, int *error_num);
 void				ft_syntax_error(t_token_list **list, int *error_num);
 void				ft_heredoc_quant_error(t_token_list **list, int *error_num);
 
