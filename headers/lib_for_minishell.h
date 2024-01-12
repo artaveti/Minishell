@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/11 21:47:46 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/12 17:33:13 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,9 @@ void				ft_list_add_back_for_environment(t_environment_list	**list,
 int					ft_list_length_for_environment(t_environment_list *list);
 void				ft_creat_or_change_shlvl_of_environment(
 						t_environment_list **start_of_list);
-
+void ft_creat_or_change_pwd_of_environment(t_environment_list **start_of_list);
+void ft_creat_or_change_oldpwd_of_environment(t_environment_list **start_of_list);
+void ft_list_creat_by_name_for_environment(t_environment_list **start_of_list, int envp_flag, char *name, char *value);
 
 //token list
 t_token_list		*ft_list_creat_token(void);

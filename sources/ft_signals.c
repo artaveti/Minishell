@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_signals.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:35:26 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 15:37:06 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/12 19:19:06 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	ft_sigint_heredoc(int sig_num)
 {
 	(void)sig_num;
 	printf("\n");
-//system("leaks minishell");
 	exit(EXIT_HEREDOC_SIGINT);
 }
 
