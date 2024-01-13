@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   for_ft_change_dollar_sign_in_qdoub_one.c           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:47:27 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 10:49:01 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:40:53 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_count_spaces_for_joined_after_change(char *string)
 	space_count = 0;
 	while (string[i] != '\0')
 	{
-		if (string[i] == ' ') ////if(ft_strchr(WHITESPACES, string[i]))
+		if (string[i] == ' ')
 			space_count++;
 		i++;
 	}

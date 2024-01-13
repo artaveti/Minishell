@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   for_ft_change_dollar_sign_in_word_four.c           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 17:15:35 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/13 17:18:54 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:41:01 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*ft_change_dollar_sign_in_before_end_symb(char **before_end_symb,
 	char	*g_exit_status_msh_str;
 
 	tmp_str = *before_end_symb;
-	//*result = 0;
 	if (tmp_str[1] == '\0')
 	{
 		tmp_str = ft_strdup("$");

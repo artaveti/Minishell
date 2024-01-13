@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:14:56 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/08 17:47:06 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:59:58 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,13 @@ int	ft_dup2_stdout(t_token_list *redir_list, int fd_out, int only_one_builtin)
 
 	fd_redir_out_or_append = 0;
 	if (redir_list->type == REDIR_OUT || redir_list->type == REDIR_APPEND)
-	{		
+	{
 		if (redir_list->type == REDIR_OUT)
-			fd_redir_out_or_append = open(redir_list->value, O_RDWR | O_TRUNC, 0644);
+			fd_redir_out_or_append = open(redir_list->value,
+					O_RDWR | O_TRUNC, 0644);
 		else if (redir_list->type == REDIR_APPEND)
-			fd_redir_out_or_append = open(redir_list->value, O_RDWR | O_APPEND, 0644);
+			fd_redir_out_or_append = open(redir_list->value,
+					O_RDWR | O_APPEND, 0644);
 		if (fd_redir_out_or_append < 0)
 		{
 			dup2(fd_out, STDOUT_FILENO);
@@ -109,48 +111,8 @@ int	ft_dup2_stdout(t_token_list *redir_list, int fd_out, int only_one_builtin)
 			g_exit_status_msh = EXIT_ERROR_PERM_DEN;
 			return (EXIT_ERROR_PERM_DEN);
 		}
-			dup2(fd_redir_out_or_append, STDOUT_FILENO);
-			close(fd_redir_out_or_append);
+		dup2(fd_redir_out_or_append, STDOUT_FILENO);
+		close(fd_redir_out_or_append);
 	}
 	return (0);
 }
-
-
-
-// int	ft_dup2_stdout(t_token_list *redir_list, int fd_out, int only_one_builtin)
-// {
-// 	int	fd_redir_out;
-// 	int	fd_redir_append;
-
-// 	if (redir_list->type == REDIR_OUT)
-// 	{
-// 		fd_redir_out = open(redir_list->value, O_RDWR | O_TRUNC, 0644);
-// 		if (fd_redir_out < 0)
-// 		{
-// 			dup2(fd_out, STDOUT_FILENO);
-// 			printf(ERROR_PERM_DEN, redir_list->value);
-// 			if (only_one_builtin != ONLY_ONE_BUILTIN)
-// 				exit(EXIT_ERROR_PERM_DEN);
-// 			g_exit_status_msh = EXIT_ERROR_PERM_DEN;
-// 			return (EXIT_ERROR_PERM_DEN);
-// 		}
-// 		dup2(fd_redir_out, STDOUT_FILENO);
-// 		close(fd_redir_out);
-// 	}
-// 	else if (redir_list->type == REDIR_APPEND)
-// 	{
-// 		fd_redir_append = open(redir_list->value, O_RDWR | O_APPEND, 0644);
-// 		if (fd_redir_append < 0)
-// 		{
-// 			dup2(fd_out, STDOUT_FILENO);
-// 			printf(ERROR_PERM_DEN, redir_list->value);
-// 			if (only_one_builtin != ONLY_ONE_BUILTIN)
-// 				exit(EXIT_ERROR_PERM_DEN);
-// 			g_exit_status_msh = EXIT_ERROR_PERM_DEN;
-// 			return (EXIT_ERROR_PERM_DEN);
-// 		}
-// 		dup2(fd_redir_append, STDOUT_FILENO);
-// 		close(fd_redir_append);
-// 	}
-// 	return (0);
-// }

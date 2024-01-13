@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:25:40 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/08 16:11:37 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:59:28 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_for_echo_print(char **array_of_strings, int *flag_word, int *i);
 void	ft_echo(char **array_of_strings, t_for_prog *prog)
 {
 	int	suppress_nl;
-	
+
 	suppress_nl = 0;
 	ft_for_echo_check(array_of_strings, &suppress_nl);
 	if (!suppress_nl)
@@ -30,7 +30,7 @@ void	ft_echo(char **array_of_strings, t_for_prog *prog)
 	return ;
 }
 
-void ft_for_echo_check(char **array_of_strings, int	*suppress_nl)
+void	ft_for_echo_check(char **array_of_strings, int	*suppress_nl)
 {
 	int	i;
 	int	flag_word;
@@ -90,67 +90,3 @@ void	ft_for_echo_print(char **array_of_strings, int *flag_word, int *i)
 		write(STDOUT_FILENO, " ", 1);
 	return ;
 }
-
-
-
-// void ft_for_echo_check(char **array_of_strings, int	*suppress_nl,)
-// {
-	
-// 	while (array_of_strings[i] != NULL)
-// 	{
-// 		if (ft_strlen(array_of_strings[i]) >= 2
-// 			&& n_set(array_of_strings[i], &suppress_nl)
-// 			&& !flag_word)
-// 		{
-// 			flag_set = suppress_nl;
-// 			i++;
-// 		}
-// 		else
-// 		{
-// 			if (!flag_set)
-// 				suppress_nl = 0;
-// 			ft_for_echo_print(array_of_strings, &flag_word, &i);
-// 			i++;
-// 		}
-// 	}
-// 	return ;
-// }
-
-
-
-// void	ft_echo(char **array_of_strings, t_for_prog *prog)
-// {
-// 	int	i;
-// 	int	suppress_nl;
-// 	int	flag_word;
-// 	int	flag_set;
-
-// 	suppress_nl = 0;
-// 	flag_word = 0;
-// 	flag_set = 0;
-// 	i = 1;
-	
-
-
-// void ft_for_echo_check(char **array_of_strings, int	*suppress_nl,)
-// {
-	
-// 	while (array_of_strings[i] != NULL)
-// 	{
-// 		if (ft_strlen(array_of_strings[i]) >= 2
-// 			&& n_set(array_of_strings[i], suppress_nl)
-// 			&& !flag_word)
-// 		{
-// 			flag_set = *suppress_nl;
-// 			i++;
-// 		}
-// 		else
-// 		{
-// 			if (!flag_set)
-// 				*suppress_nl = 0;
-// 			ft_for_echo_print(array_of_strings, &flag_word, &i);
-// 			i++;
-// 		}
-// 	}
-// 	return ;
-// }

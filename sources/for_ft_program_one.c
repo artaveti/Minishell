@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:03:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/13 17:49:01 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:42:21 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,47 +89,13 @@ void	ft_check_file_creating(t_token_list *redir_list, int *flag_for_break)
 void	ft_malloc_and_set_zero_for_prog_pid_arr(t_for_prog *prog)
 {
 	int	i;
-	
+
 	prog->pid_arr = (int *)malloc(sizeof(int) * (prog->fd_quant_pipe + 1));
 	i = 0;
-	while(i < prog->fd_quant_pipe + 1)
+	while (i < prog->fd_quant_pipe + 1)
 	{
 		prog->pid_arr[i] = 0;
 		i++;
 	}
 	return ;
 }
-
-
-
-    // if(signal_flag == SIGQUIT)
-    // {
-    //     g_exit_status_msh = 131;
-    //     printf("Quit: %d\n", SIGQUIT);
-    // }
-    // else if (signal_flag == SIGINT)
-    // {
-    //     g_exit_status_msh = 130;
-    //     printf("\n");
-	//     rl_redisplay();
-    // }
-	
-		// if(status == SIGQUIT)
-		//      signal_flag = SIGQUIT;
-		// else if (status == SIGINT)
-		//      signal_flag = SIGINT;
-
-
-
-    // if (prog->fd_quant_pipe == 0 && prog->argv_for_execve[1] == NULL)
-    // {
-    //     if (!ft_strncmp(prog->argv_for_execve[0][0], "echo", 5)
-    //      || !ft_strncmp(prog->argv_for_execve[0][0], "cd", 3)
-    //      || !ft_strncmp(prog->argv_for_execve[0][0], "pwd", 4)
-    //      || !ft_strncmp(prog->argv_for_execve[0][0], "export", 7)
-    //      || !ft_strncmp(prog->argv_for_execve[0][0], "unset", 6)
-    //      || !ft_strncmp(prog->argv_for_execve[0][0], "env", 4)
-    //      || !ft_strncmp(prog->argv_for_execve[0][0], "exit", 5))
-    //     return ;
-    // } // this if for right exit number
-	

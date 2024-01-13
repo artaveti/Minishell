@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   for_ft_input_to_heredoc.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:54:45 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 12:07:32 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:41:42 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	ft_change_string_for_heredoc(char **heredoc_line,
 	}
 	ft_list_free_for_token(&string_list->next);
 	free(string_list);
-	//// system("leaks minishell");
-	////// ft_list_iter_printf_token(string_list, printf);
 	return ;
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   for_creat_or_change_pwd_and_oldpwd_of_env          :+:      :+:    :+:   */
+/*   for_creat_or_change_pwd_and_oldpwd_of_envir        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:53:25 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/13 17:04:05 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:40:41 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	ft_change_pwd_of_environment(t_environment_list *tmp_list,
 void	ft_creat_or_change_pwd_of_environment(
 			t_environment_list **start_of_list)
 {
-	//use getenv in this function
 	t_environment_list	*tmp_list;
 	char				*working_dir;
 

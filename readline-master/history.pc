@@ -1,4 +1,4 @@
-prefix=/Users/artaveti/Desktop/Minishell/for_readline_1
+prefix=/Users/artaveti/Desktop/Minishell_for_GIT/for_readline_1
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

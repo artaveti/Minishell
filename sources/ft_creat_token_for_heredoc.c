@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 13:56:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 16:05:17 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 19:46:49 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_parser_fifth_change_type_for_heredoc(t_token_list **list,
 			t_environment_list *envp_list);
 void	ft_parser_remove_all_except_heredoc_delimiter(t_token_list **list,
 			t_environment_list *envp_list);
+
 void	ft_creat_token_for_heredoc(char *input_str, t_token_list *heredoc_list,
 			t_environment_list *envp_list)
 {

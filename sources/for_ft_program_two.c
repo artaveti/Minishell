@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   for_ft_program_two.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/13 19:04:02 by artaveti          #+#    #+#             */
+/*   Updated: 2024/01/13 21:42:31 by artaveti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lib_for_minishell.h"
 
 void	ft_if_sigquit_or_sigint_print(int signal_flag);
 
-void ft_kill_child_processes(t_for_prog *prog)
+void	ft_kill_child_processes(t_for_prog *prog)
 {
-	int i;
-	int kill_num;
-	
+	int	i;
+	int	kill_num;
+
 	i = 0;
-	while(prog->pid_arr[i] != -1)
+	while (prog->pid_arr[i] != -1)
 	{
 		kill_num = kill(prog->pid_arr[i], SIGKILL);
 		i++;
@@ -24,7 +36,7 @@ void	ft_waitpid_for_prog(t_for_prog *prog)
 	int	signal_flag;
 
 	if (prog->check_builtin == BUILTIN_RETURN)
-		return ; //// this if for right exit number
+		return ;
 	signal(SIGINT, SIG_IGN);
 	signal_flag = 0;
 	i = 0;

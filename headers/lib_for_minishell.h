@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:56:38 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/13 18:08:37 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:55:55 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ resetting to 1\n"
 # define ERROR_RES_NOT_ENOUGH "minishell: fork:\
 Resource temporarily unavailable\n"
 
-//extern ???
-
 int	g_exit_status_msh;
 
 typedef struct s_term_and_work_dir
@@ -112,10 +110,6 @@ typedef enum s_type_of_token
 	HEREDOC_W, //9
 	HEREDOC_Q_S, //10
 	HEREDOC_Q_D, //11
-	// AND,
-	// OR,
-	// PAR_LEFT,
-	// PAR_RIGHT,
 }	t_type_of_token;
 
 typedef struct s_environment_list
@@ -183,8 +177,6 @@ void				ft_str_to_lowercase(char *str);
 int					ft_isalpha(int symbol);
 int					ft_isnum(int symbol);
 int					ft_isalnum(int symbol);
-//size_t	ft_strl_spc(const	char *s);
-//char	*ft_strjoin_space(char const	*s1, char const	*s2);
 
 //for_main
 void				ft_check_argc_quant(int argc);
@@ -204,9 +196,13 @@ void				ft_list_add_back_for_environment(t_environment_list	**list,
 int					ft_list_length_for_environment(t_environment_list *list);
 void				ft_creat_or_change_shlvl_of_environment(
 						t_environment_list **start_of_list);
-void ft_creat_or_change_pwd_of_environment(t_environment_list **start_of_list);
-void ft_creat_or_change_oldpwd_of_environment(t_environment_list **start_of_list);
-void ft_list_creat_by_name_for_environment(t_environment_list **start_of_list, int envp_flag, char *name, char *value);
+void				ft_creat_or_change_pwd_of_environment(
+						t_environment_list **start_of_list);
+void				ft_creat_or_change_oldpwd_of_environment(
+						t_environment_list **start_of_list);
+void				ft_list_creat_by_name_for_environment(
+						t_environment_list **start_of_list, int envp_flag,
+						char *name, char *value);
 
 //token list
 t_token_list		*ft_list_creat_token(void);
@@ -293,7 +289,8 @@ void				ft_additional_for_creat_joined_second(int *j, int *k,
 						char **splitted_str, char *joined_after_change);
 
 //syntax_error; heredoc_error
-void	ft_syntax_error_quotes_quant(char *input_str, int *error_num);
+void				ft_syntax_error_quotes_quant(char *input_str,
+						int *error_num);
 void				ft_syntax_error(t_token_list **list, int *error_num);
 void				ft_heredoc_quant_error(t_token_list **list, int *error_num);
 
@@ -321,7 +318,7 @@ char				**ft_creat_path_argv_for_execve(char	**envp);
 t_token_list		*ft_creat_redir_list_for_execve(t_token_list *token_list);
 char				***ft_creat_argv_for_execve(t_token_list *token_list,
 						int fd_quant_pipe);
-void ft_kill_child_processes(t_for_prog *prog);
+void				ft_kill_child_processes(t_for_prog *prog);
 void				ft_waitpid_for_prog(t_for_prog *prog);
 void				ft_free_for_prog(t_for_prog *prog);
 
@@ -341,10 +338,14 @@ int					ft_change_stdin_stdout_fd_redir(t_token_list *redir_list,
 						int fd_out, int **heredoc_pipe, int only_one_builtint);
 
 //fork
-int ft_check_if_pid_less_than_null(t_for_prog *prog, t_for_fork *fk, int i);
-void ft_change_and_close_fd_in_fork(t_token_list *tmp_redir_list, t_for_prog *prog, t_for_fork *fk, int i);
-void ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
-void ft_check_is_name_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i);
+int					ft_check_if_pid_less_than_null(t_for_prog *prog,
+						t_for_fork *fk, int i);
+void				ft_change_and_close_fd_in_fork(
+						t_token_list *tmp_redir_list, t_for_prog *prog,
+						t_for_fork *fk, int i);
+void				ft_execve(t_for_fork *fk, t_for_prog *prog, int i);
+void				ft_check_is_name_dir_or_file(t_for_fork *fk,
+						t_for_prog *prog, int i);
 
 //free
 void				ft_free_double_pointer_array(char ***array);
@@ -376,13 +377,11 @@ void				ft_exit(t_for_prog *prog, char **array_of_strings,
 void				ft_check_if_builtin_run(t_environment_list **envp_list,
 						t_for_prog *prog, t_token_list *tmp_redir_list,
 						int fd_out);
-void	ft_running_for_only_one_builtin(t_environment_list **envp_list,
-			t_for_prog *prog, t_token_list *tmp_redir_list);
+void				ft_running_for_only_one_builtin(
+						t_environment_list **envp_list, t_for_prog *prog,
+						t_token_list *tmp_redir_list);
 void				ft_running_builtin(t_environment_list **envp_list,
 						t_for_prog *prog, char **array_of_strings, int fd_out);
-
-//for builtin unset
-int					ft_wrong_name(char	*name, char	*command);
 
 //for builtin cd
 t_environment_list	*find_node_by_name(t_environment_list *envp, char *name);
@@ -401,6 +400,9 @@ void				ft_for_export_if_equal_not_plus(t_environment_list *tmp,
 						t_for_export *exp);
 void				ft_for_export_if_not_equal_not_plus(
 						t_environment_list *tmp, t_for_export *exp);
+
+//for builtin unset
+int					ft_wrong_name(char	*name, char	*command);
 
 //signal
 void				ft_sigint_new_line(int sig_num);

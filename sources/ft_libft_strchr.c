@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_libft_strchr.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:04:57 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/07 15:05:17 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:58:46 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,3 @@ char	*ft_strchr(const char	*s, int c)
 	}
 	return (NULL);
 }
-
-// char	*ft_strchr(const char	*s, int c)
-// {
-// 	int i;
-
-// 	if (!s)
-// 		return (NULL);
-// 	i = 0;
-// 	while (s[i] || s[i] == (char)c)
-// 	{
-// 		if (s[i] == (char)c)
-// 			return ((char *)&s[i]);
-// 		i++;
-// 	}
-// 	return (NULL);
-// }

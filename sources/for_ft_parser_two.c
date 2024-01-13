@@ -6,7 +6,7 @@
 /*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:44:58 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/10 21:28:07 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 21:42:10 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	ft_parser_fifth_change_redir_value(t_token_list **list,
 	{
 		if ((tmp->type == REDIR_INT
 				|| tmp->type == REDIR_OUT
-				|| tmp->type == REDIR_APPEND) //// || tmp->type == HEREDOC)
+				|| tmp->type == REDIR_APPEND)
 			&& tmp->next != NULL
 			&& tmp->next->type == WORD)
 		{

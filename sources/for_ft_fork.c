@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   for_ft_fork.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 17:20:13 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/13 17:27:47 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 22:00:22 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,3 @@ void	ft_check_is_name_dir_or_file(t_for_fork *fk, t_for_prog *prog, int i)
 	printf(ERROR_IS_DIR, prog->argv_for_execve[i][0]);
 	exit(EXIT_ERROR_NAME_IS_DIR);
 }
-
-        //printf("(fd_quant_pipe(%d)\n", prog->fd_quant_pipe);
-        // if (i == 0 && prog->argv_for_execve[0][0] != NULL
-        //     && prog->argv_for_execve[1] == NULL)
-        //     {
-        //       prog->check_builtin = BUILTIN_RETURN;
-        //       ft_check_if_builtin_run(envp_list, prog, tmp_redir_list, 0);
-        //     }
-        
