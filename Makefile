@@ -7,7 +7,6 @@ SOURCE_FILES	= $(wildcard $(SOURCES_DIR)/*.c)
 OBJECT_FILES	= $(patsubst $(SOURCES_DIR)/%.c, $(OBJECTS_DIR)/%.o, $(SOURCE_FILES))
 RD_FOLDER_NAME	= for_readline
 PREFIX 			= $(shell pwd)/$(RD_FOLDER_NAME)
-#PREFIX 		= $(shell find ${HOME} -name ${RD_FOLDER_NAME} 2>/dev/null)
 
 CC 		= cc
 CFLAGS 	= -Wall -Wextra -Werror #-g -fsanitize=address
@@ -17,7 +16,7 @@ AR 		= ar rcs
 RM 		= rm -rf
 MK 		= mkdir -p
 
-all: $(OBJECTS_DIR) $(OBJECTS_DIR) $(NAME) #petke avelacnel "readline" bary "all:"-ic heto $(RD_FOLDER_NAME)
+all: $(OBJECTS_DIR) $(OBJECTS_DIR) $(NAME)
 
 $(RD_FOLDER_NAME): $(HEADERS_DIR) $(SOURCES_DIR)
 	#$(MK) $(RD_FOLDER_NAME)
