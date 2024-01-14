@@ -5,7 +5,7 @@ OBJECTS_DIR		= objects
 HEADER_FILES	= $(wildcard $(HEADERS_DIR)/*.h)
 SOURCE_FILES	= $(wildcard $(SOURCES_DIR)/*.c)
 OBJECT_FILES	= $(patsubst $(SOURCES_DIR)/%.c, $(OBJECTS_DIR)/%.o, $(SOURCE_FILES))
-RD_FOLDER_NAME	= for_readline_1
+RD_FOLDER_NAME	= for_readline
 PREFIX 			= $(shell pwd)/$(RD_FOLDER_NAME)
 #PREFIX 		= $(shell find ${HOME} -name ${RD_FOLDER_NAME} 2>/dev/null)
 
@@ -19,7 +19,7 @@ MK 		= mkdir -p
 
 all: $(OBJECTS_DIR) $(OBJECTS_DIR) $(NAME) #petke avelacnel "readline" bary "all:"-ic heto $(RD_FOLDER_NAME)
 
-#$(RD_FOLDER_NAME): $(HEADERS_DIR) $(SOURCES_DIR)
+$(RD_FOLDER_NAME): $(HEADERS_DIR) $(SOURCES_DIR)
 	#$(MK) $(RD_FOLDER_NAME)
 
 $(OBJECTS_DIR): $(HEADERS_DIR) $(SOURCES_DIR)
