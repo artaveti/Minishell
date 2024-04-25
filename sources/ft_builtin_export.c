@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_export.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artaveti <artaveti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: artaveti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 19:18:57 by artaveti          #+#    #+#             */
-/*   Updated: 2024/01/14 18:36:21 by artaveti         ###   ########.fr       */
+/*   Updated: 2024/01/13 19:25:05 by artaveti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ int	ft_check_name_for_export(char *str)
 	int	i;
 
 	if (!str || str == NULL || str[0] == '\0')
+	{
+		printf(ERROR_FOR_EXPORT, str);
 		return (1);
+	}
 	if (ft_isnum(str[0]) || str[0] == '+' || str[0] == '=')
 	{
 		printf(ERROR_FOR_EXPORT, str);
