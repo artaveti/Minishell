@@ -87,6 +87,7 @@ resetting to 1\n"
 # define ERROR_RES_NOT_ENOUGH "minishell: fork:\
 Resource temporarily unavailable\n"
 
+
 int	g_exit_status_msh;
 
 typedef struct s_term_and_work_dir
