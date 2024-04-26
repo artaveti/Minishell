@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "lib_for_minishell.h"
 
 int	ft_wrong_name(char *name, char *command)

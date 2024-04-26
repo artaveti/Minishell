@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "lib_for_minishell.h"
 
 char	*ft_creat_last_part_of_word_for_export(char *string, char *symbols);
